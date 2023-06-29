@@ -1,15 +1,15 @@
 # Wasspord
-Password Storage and Management Program
+Password Manager
 By Tanner Ghosen
 
-<b>Requirements:</b><br>
-Visual Studio 2019-2022
-* C#
-* .NET 7.8 (Could possibly run with older versions above 4.0/5.0)
+<b>Requirements:</b>
+* Visual Studio 2019-2022
+** C#
+** .NET 7.8 (Could possibly run with older versions above 4.0/5.0)
 
 # Summary
 ## What is this program?
-This is a password and storage management program for storing passwords in a centralized way,
+This is a password management program for storing passwords in a centralized way,
 so if you use multiple browsers or devices you can use this program to record those details.
 
 ## How does it accomplish this? (Code Explanation)
