@@ -3,9 +3,13 @@ Password Manager
 By Tanner Ghosen
 
 <b>Requirements:</b>
-* Visual Studio 2019-2022
-** C#
-** .NET 7.8 (Could possibly run with older versions above 4.0/5.0)
+<ul>
+<li>Visual Studio 2019-2022</li>
+<ul>
+  <li>C#</li>
+  <li>NET 7.8 (Could possibly run with older versions above 4.0/5.0)</li>
+</ul>
+</ul>
 
 # Summary
 ## What is this program?
