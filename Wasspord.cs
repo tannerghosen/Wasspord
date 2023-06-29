@@ -95,7 +95,11 @@ namespace Wasspord
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     var spl = line.Split('|');
-                    Accounts.Add(new Account { where = spl[0], username = spl[1] }, spl[2]);
+                    // below is in case we have duplicate keys, which can happen if you try to load again.
+                    if (!Accounts.ContainsKey(new Account { where = spl[0], username = spl[1] }))
+                    {
+                        Accounts.Add(new Account { where = spl[0], username = spl[1] }, spl[2]);
+                    }
                 }
             }
             return "Loaded Username/Password List";
@@ -109,8 +113,8 @@ namespace Wasspord
             {
                 display += 
                 "Account Location: " + pair.Key.where 
-                + " Account Username: " + pair.Key.username 
-                + " Account Password: " + pair.Value + "\n";
+                + " | Account Username: " + pair.Key.username 
+                + " | Account Password: " + pair.Value + "\r\n";
             }
             return display;
         }

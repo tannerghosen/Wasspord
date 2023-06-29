@@ -24,6 +24,7 @@ namespace Wasspord
         private void LoadButton_Click(object sender, EventArgs e)
         {
             Wasspord.Load();
+            OutputTextbox.Text = Wasspord.Display();
         }
 
         private void AddAccountButton_Click(object sender, EventArgs e)
