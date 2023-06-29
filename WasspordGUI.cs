@@ -41,5 +41,10 @@ namespace Wasspord
         {
             new UpdatePasswordGUI().ShowDialog();
         }
+
+        private void WasspordGUI_Load(object sender, EventArgs e)
+        {
+            OutputTextbox.Text = Wasspord.Display();
+        }
     }
 }

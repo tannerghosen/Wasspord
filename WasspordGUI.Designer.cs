@@ -44,7 +44,6 @@
             this.OutputTextbox.Name = "OutputTextbox";
             this.OutputTextbox.Size = new System.Drawing.Size(500, 350);
             this.OutputTextbox.TabIndex = 0;
-            //this.OutputTextbox.Text = Wasspord.Display();
             // 
             // SaveButton
             // 
@@ -109,6 +108,7 @@
             this.Controls.Add(this.OutputTextbox);
             this.Name = "WasspordGUI";
             this.Text = "Wasspord";
+            this.Load += new System.EventHandler(this.WasspordGUI_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
