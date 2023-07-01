@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace Wasspord
 {
@@ -30,6 +31,7 @@ namespace Wasspord
             }
             else
             {
+                password = Encrypt(password);
                 Accounts.Add(acc, password);
                 return "Account '" + username + "' for '"+where+"' Added.";
             }
@@ -46,6 +48,7 @@ namespace Wasspord
             }
             else
             {
+                password = Encrypt(password);
                 Accounts[acc] = password;
                 return "Updated Password for " + username + " for '" + where + "'.";
             }
@@ -114,9 +117,23 @@ namespace Wasspord
                 display += 
                 "Account Location: " + pair.Key.where 
                 + " | Account Username: " + pair.Key.username 
-                + " | Account Password: " + pair.Value + "\r\n";
+                + " | Account Password: " + Decrypt(pair.Value) + "\r\n";
             }
             return display;
+        }
+        private static string Encrypt(string password)
+        {
+            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(password);
+            string encrypted = Convert.ToBase64String(b);
+            return encrypted;
+        }
+        private static string Decrypt(string password)
+        {
+            byte[] b;
+            string decrypted;
+            b = Convert.FromBase64String(password);
+            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+            return decrypted;
         }
     }
 }

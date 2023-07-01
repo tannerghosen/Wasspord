@@ -49,9 +49,9 @@
             // 
             // PasswordTextbox
             // 
-            this.PasswordTextbox.Location = new System.Drawing.Point(76, 83);
+            this.PasswordTextbox.Location = new System.Drawing.Point(99, 83);
             this.PasswordTextbox.Name = "PasswordTextbox";
-            this.PasswordTextbox.Size = new System.Drawing.Size(196, 20);
+            this.PasswordTextbox.Size = new System.Drawing.Size(173, 20);
             this.PasswordTextbox.TabIndex = 12;
             // 
             // UsernameTextbox
@@ -73,9 +73,9 @@
             this.PasswordLabel.AutoSize = true;
             this.PasswordLabel.Location = new System.Drawing.Point(12, 83);
             this.PasswordLabel.Name = "PasswordLabel";
-            this.PasswordLabel.Size = new System.Drawing.Size(56, 13);
+            this.PasswordLabel.Size = new System.Drawing.Size(81, 13);
             this.PasswordLabel.TabIndex = 9;
-            this.PasswordLabel.Text = "Password:";
+            this.PasswordLabel.Text = "New Password:";
             // 
             // UsernameLabel
             // 

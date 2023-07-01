@@ -35,6 +35,7 @@
             this.AddAccountButton = new System.Windows.Forms.Button();
             this.UpdatePasswordButton = new System.Windows.Forms.Button();
             this.DeleteAccountButton = new System.Windows.Forms.Button();
+            this.AutosaveCheckbox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // OutputTextbox
@@ -95,11 +96,23 @@
             this.DeleteAccountButton.UseVisualStyleBackColor = true;
             this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
             // 
+            // AutosaveCheckbox
+            // 
+            this.AutosaveCheckbox.AutoSize = true;
+            this.AutosaveCheckbox.Location = new System.Drawing.Point(542, 406);
+            this.AutosaveCheckbox.Name = "AutosaveCheckbox";
+            this.AutosaveCheckbox.Size = new System.Drawing.Size(71, 17);
+            this.AutosaveCheckbox.TabIndex = 6;
+            this.AutosaveCheckbox.Text = "Autosave";
+            this.AutosaveCheckbox.UseVisualStyleBackColor = true;
+            this.AutosaveCheckbox.CheckedChanged += new System.EventHandler(this.AutosaveCheckbox_CheckedChanged);
+            // 
             // WasspordGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 461);
+            this.Controls.Add(this.AutosaveCheckbox);
             this.Controls.Add(this.DeleteAccountButton);
             this.Controls.Add(this.UpdatePasswordButton);
             this.Controls.Add(this.AddAccountButton);
@@ -122,6 +135,7 @@
         private System.Windows.Forms.Button AddAccountButton;
         private System.Windows.Forms.Button UpdatePasswordButton;
         private System.Windows.Forms.Button DeleteAccountButton;
+        private System.Windows.Forms.CheckBox AutosaveCheckbox;
     }
 }
 
