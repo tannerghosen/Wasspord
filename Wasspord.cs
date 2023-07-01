@@ -9,12 +9,18 @@ using System.Security.Cryptography;
 
 namespace Wasspord
 {
+    /// <summary> 
+    /// Wasspord.cs
+    /// Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Encrypt, Decrypt
+    /// Purpose of File: Brains of the program, handles adding/modifying/delete accounts, saving/loading them
+    /// and ensuring passwords are encrypted.
+    /// </summary>
     using System.Collections;
     using System.IO.Pipes;
 
     public static class Wasspord
     {
-        private static Dictionary<Account,string> Accounts = new Dictionary<Account,string>();
+        private static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
         private struct Account
         {
             public string where;
@@ -33,7 +39,7 @@ namespace Wasspord
             {
                 password = Encrypt(password);
                 Accounts.Add(acc, password);
-                return "Account '" + username + "' for '"+where+"' Added.";
+                return "Account '" + username + "' for '" + where + "' Added.";
             }
         }
 
@@ -70,12 +76,12 @@ namespace Wasspord
         }
         public static string Save()
         {
-            if (!File.Exists("Accounts.txt"))
+            if (!File.Exists("Accounts.wasspord"))
             {
                 // This should really never happen, but if it does let's not cause an error
-                File.Create("Accounts.txt").Dispose();
+                File.Create("Accounts.wasspord").Dispose();
             }
-            using (StreamWriter sw = new StreamWriter("Accounts.txt"))
+            using (StreamWriter sw = new StreamWriter("Accounts.wasspord"))
             {
                 foreach (var pair in Accounts)
                 {
@@ -87,11 +93,11 @@ namespace Wasspord
 
         public static string Load()
         {
-            if (!File.Exists("Accounts.txt"))
+            if (!File.Exists("Accounts.wasspord"))
             {
-                File.Create("Accounts.txt").Dispose();
+                File.Create("Accounts.wasspord").Dispose();
             }
-            var fileStream = new FileStream("Accounts.txt", FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream("Accounts.wasspord", FileMode.Open, FileAccess.Read);
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
             {
                 string line;
@@ -114,16 +120,17 @@ namespace Wasspord
             string display = "";
             foreach (var pair in Accounts)
             {
-                display += 
-                "Account Location: " + pair.Key.where 
-                + " | Account Username: " + pair.Key.username 
+                display +=
+                "Account Location: " + pair.Key.where
+                + " | Account Username: " + pair.Key.username
                 + " | Account Password: " + Decrypt(pair.Value) + "\r\n";
             }
             return display;
         }
+
         private static string Encrypt(string password)
         {
-            byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(password);
+           byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(password);
             string encrypted = Convert.ToBase64String(b);
             return encrypted;
         }
@@ -133,7 +140,7 @@ namespace Wasspord
             string decrypted;
             b = Convert.FromBase64String(password);
             decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
-            return decrypted;
+            return decrypted; 
         }
     }
 }
