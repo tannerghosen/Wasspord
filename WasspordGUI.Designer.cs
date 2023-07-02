@@ -40,11 +40,14 @@
             // 
             // OutputTextbox
             // 
+            this.OutputTextbox.AcceptsReturn = true;
             this.OutputTextbox.Location = new System.Drawing.Point(65, 50);
             this.OutputTextbox.Multiline = true;
             this.OutputTextbox.Name = "OutputTextbox";
+            this.OutputTextbox.ReadOnly = true;
             this.OutputTextbox.Size = new System.Drawing.Size(500, 350);
             this.OutputTextbox.TabIndex = 0;
+            this.OutputTextbox.WordWrap = false;
             // 
             // SaveButton
             // 
@@ -99,6 +102,8 @@
             // AutosaveCheckbox
             // 
             this.AutosaveCheckbox.AutoSize = true;
+            this.AutosaveCheckbox.Checked = true;
+            this.AutosaveCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutosaveCheckbox.Location = new System.Drawing.Point(542, 406);
             this.AutosaveCheckbox.Name = "AutosaveCheckbox";
             this.AutosaveCheckbox.Size = new System.Drawing.Size(71, 17);
