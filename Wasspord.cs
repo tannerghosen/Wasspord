@@ -74,30 +74,40 @@ namespace Wasspord
                 return "Removed " + username + " for '" + where + "'.";
             }
         }
-        public static string Save()
+        public static string Save(string location, string filename)
         {
-            if (!File.Exists("Accounts.wasspord"))
+            string file = location + @"\" + filename;
+            // This try statement is in case someone tries to save with no file open, causing an exception.
+            try
             {
-                // This should really never happen, but if it does let's not cause an error
-                File.Create("Accounts.wasspord").Dispose();
-            }
-            using (StreamWriter sw = new StreamWriter("Accounts.wasspord"))
-            {
-                foreach (var pair in Accounts)
+                if (!File.Exists(file))
                 {
-                    sw.WriteLine(pair.Key.where + "|" + pair.Key.username + "|" + pair.Value);
+                    // This should really never happen, but if it does let's not cause an error
+                    File.Create(file).Dispose();
                 }
+                using (StreamWriter sw = new StreamWriter(file))
+                {
+                    foreach (var pair in Accounts)
+                    {
+                        sw.WriteLine(pair.Key.where + "|" + pair.Key.username + "|" + pair.Value);
+                    }
+                }
+                return "Saved Username/Password List";
             }
-            return "Saved Username/Password List";
+            catch
+            {
+                return "Error saving Username/Password List";
+            }
         }
 
-        public static string Load()
+        public static string Load(string location, string filename)
         {
-            if (!File.Exists("Accounts.wasspord"))
+            string file = location + @"\" + filename;
+            if (!File.Exists(file))
             {
-                File.Create("Accounts.wasspord").Dispose();
+                File.Create(file).Dispose();
             }
-            var fileStream = new FileStream("Accounts.wasspord", FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
             {
                 string line;
@@ -112,7 +122,6 @@ namespace Wasspord
                 }
             }
             return "Loaded Username/Password List";
-
         }
 
         public static string Display()
