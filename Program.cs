@@ -14,7 +14,7 @@ namespace Wasspord
         [STAThread]
         static void Main()
         {
-            Wasspord.Load();
+            //Wasspord.Load();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WasspordGUI());

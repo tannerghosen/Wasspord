@@ -16,16 +16,15 @@ namespace Wasspord
         public WasspordGUI()
         {
             InitializeComponent();
-        }
-        private void SaveButton_Click(object sender, EventArgs e)
-        {
-            Wasspord.Save();
-        }
-
-        private void LoadButton_Click(object sender, EventArgs e)
-        {
-            Wasspord.Load();
-            OutputTextbox.Text = Wasspord.Display();
+            if (Autosave)
+            {
+                AutosaveCheckbox.Checked = true;
+            }
+            else if (!Autosave)
+            {
+                AutosaveCheckbox.Checked = false;
+            }
+            Console.WriteLine(Autosave);
         }
 
         private void AddAccountButton_Click(object sender, EventArgs e)
@@ -63,6 +62,23 @@ namespace Wasspord
                 Autosave = true;
             else if (AutosaveCheckbox.Checked == false)
                 Autosave = false;
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Wasspord.Save();
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Wasspord.Load();
+            OutputTextbox.Text = Wasspord.Display();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // MessageBox is weirdly backwards, that's funny!
+            System.Windows.Forms.MessageBox.Show("The Password Management Program\nBy Tanner Ghosen\n2023\n\nhttps://www.github.com/tannerghosen/Wasspord","Wasspord");
         }
     }
 }

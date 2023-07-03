@@ -30,12 +30,17 @@
         private void InitializeComponent()
         {
             this.OutputTextbox = new System.Windows.Forms.TextBox();
-            this.SaveButton = new System.Windows.Forms.Button();
-            this.LoadButton = new System.Windows.Forms.Button();
             this.AddAccountButton = new System.Windows.Forms.Button();
             this.UpdatePasswordButton = new System.Windows.Forms.Button();
             this.DeleteAccountButton = new System.Windows.Forms.Button();
             this.AutosaveCheckbox = new System.Windows.Forms.CheckBox();
+            this.WasspordMenustrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.WasspordMenustrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // OutputTextbox
@@ -48,26 +53,6 @@
             this.OutputTextbox.Size = new System.Drawing.Size(500, 350);
             this.OutputTextbox.TabIndex = 0;
             this.OutputTextbox.WordWrap = false;
-            // 
-            // SaveButton
-            // 
-            this.SaveButton.Location = new System.Drawing.Point(12, 12);
-            this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 23);
-            this.SaveButton.TabIndex = 1;
-            this.SaveButton.Text = "Save";
-            this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-            // 
-            // LoadButton
-            // 
-            this.LoadButton.Location = new System.Drawing.Point(93, 12);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(75, 23);
-            this.LoadButton.TabIndex = 2;
-            this.LoadButton.Text = "Load";
-            this.LoadButton.UseVisualStyleBackColor = true;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // AddAccountButton
             // 
@@ -112,6 +97,54 @@
             this.AutosaveCheckbox.UseVisualStyleBackColor = true;
             this.AutosaveCheckbox.CheckedChanged += new System.EventHandler(this.AutosaveCheckbox_CheckedChanged);
             // 
+            // WasspordMenustrip
+            // 
+            this.WasspordMenustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.WasspordMenustrip.Location = new System.Drawing.Point(0, 0);
+            this.WasspordMenustrip.Name = "WasspordMenustrip";
+            this.WasspordMenustrip.Size = new System.Drawing.Size(634, 24);
+            this.WasspordMenustrip.TabIndex = 7;
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.loadToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // WasspordGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -121,12 +154,14 @@
             this.Controls.Add(this.DeleteAccountButton);
             this.Controls.Add(this.UpdatePasswordButton);
             this.Controls.Add(this.AddAccountButton);
-            this.Controls.Add(this.LoadButton);
-            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.OutputTextbox);
+            this.Controls.Add(this.WasspordMenustrip);
+            this.MainMenuStrip = this.WasspordMenustrip;
             this.Name = "WasspordGUI";
             this.Text = "Wasspord";
             this.Load += new System.EventHandler(this.WasspordGUI_Load);
+            this.WasspordMenustrip.ResumeLayout(false);
+            this.WasspordMenustrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,12 +170,16 @@
         #endregion
 
         public System.Windows.Forms.TextBox OutputTextbox;
-        private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.Button AddAccountButton;
         private System.Windows.Forms.Button UpdatePasswordButton;
         private System.Windows.Forms.Button DeleteAccountButton;
         private System.Windows.Forms.CheckBox AutosaveCheckbox;
+        private System.Windows.Forms.MenuStrip WasspordMenustrip;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

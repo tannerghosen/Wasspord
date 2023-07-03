@@ -20,7 +20,7 @@ namespace Wasspord
         private void OKButton_Click(object sender, EventArgs e)
         {
             Wasspord.DeleteAccount(LocationTextbox.Text, UsernameTextbox.Text);
-            Wasspord.Save();
+            //Wasspord.Save();
             this.Close();
         }
     }
