@@ -22,5 +22,17 @@ namespace Wasspord.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Autosave {
+            get {
+                return ((bool)(this["Autosave"]));
+            }
+            set {
+                this["Autosave"] = value;
+            }
+        }
     }
 }

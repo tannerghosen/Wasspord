@@ -15,7 +15,8 @@ namespace Wasspord
 {
     public partial class WasspordGUI : Form
     {
-        public bool Autosave = false;
+
+        public bool Autosave = Properties.Settings.Default.Autosave;
         public string Openfilename = "";
         public string Openfilepath = "";
         public WasspordGUI()
@@ -63,9 +64,13 @@ namespace Wasspord
         private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (AutosaveCheckbox.Checked == true)
-                Autosave = true;
+            {
+                Properties.Settings.Default.Autosave = Autosave = true;
+                Properties.Settings.Default.Save();
+            }
             else if (AutosaveCheckbox.Checked == false)
-                Autosave = false;
+                Properties.Settings.Default.Autosave = Autosave = false;
+                Properties.Settings.Default.Save();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
