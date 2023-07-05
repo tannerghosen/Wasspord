@@ -26,55 +26,52 @@ namespace Wasspord
             public string where;
             public string username;
         }
-        public static string AddAccount(string where, string username, string password)
+        public static void AddAccount(string where, string username, string password)
         {
             Account acc;
             acc.where = where;
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
-                return "Duplicate Account";
+                Console.Error.WriteLine("Duplicate Account");
             }
             else
             {
                 password = Encrypt(password);
                 Accounts.Add(acc, password);
-                return "Account '" + username + "' for '" + where + "' Added.";
             }
         }
 
-        public static string UpdatePassword(string where, string username, string password)
+        public static void UpdatePassword(string where, string username, string password)
         {
             Account acc;
             acc.where = where;
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                return "Invalid Account";
+                Console.Error.WriteLine("Account doesn't exist / is invalid");
             }
             else
             {
                 password = Encrypt(password);
                 Accounts[acc] = password;
-                return "Updated Password for " + username + " for '" + where + "'.";
             }
         }
-        public static string DeleteAccount(string where, string username)
+        public static void DeleteAccount(string where, string username)
         {
             Account acc;
             acc.where = where;
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                return "Invalid Account";
+                Console.Error.WriteLine("Duplicate Account");
             }
             else
             {
                 Accounts.Remove(acc);
-                return "Removed " + username + " for '" + where + "'.";
             }
         }
-        public static string Save(string location, string filename)
+        public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
             // This try statement is in case someone tries to save with no file open, causing an exception.
@@ -92,15 +89,14 @@ namespace Wasspord
                         sw.WriteLine(pair.Key.where + "|" + pair.Key.username + "|" + pair.Value);
                     }
                 }
-                return "Saved Username/Password List";
             }
             catch
             {
-                return "Error saving Username/Password List";
+                Console.Error.WriteLine("Error saving to file");
             }
         }
 
-        public static string Load(string location, string filename)
+        public static void Load(string location, string filename)
         {
             string file = location + @"\" + filename;
             if (!File.Exists(file))
@@ -121,7 +117,6 @@ namespace Wasspord
                     }
                 }
             }
-            return "Loaded Username/Password List";
         }
 
         public static string Display()
