@@ -86,11 +86,6 @@ namespace Wasspord
                 Wasspord.Save(Openfilepath, Openfilename);
             }
         }
-        /*private void loadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Wasspord.Load();
-            OutputTextbox.Text = Wasspord.Display();
-        }*/
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -111,6 +106,5 @@ namespace Wasspord
             // MessageBox is weirdly backwards, that's funny!
             System.Windows.Forms.MessageBox.Show("The Password Manager\nBy Tanner Ghosen\n2023\n\nhttps://www.github.com/tannerghosen/Wasspord","Wasspord");
         }
-
     }
 }

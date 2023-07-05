@@ -36,9 +36,9 @@
             this.AutosaveCheckbox = new System.Windows.Forms.CheckBox();
             this.WasspordMenustrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
@@ -118,6 +118,13 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Text = "Open";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
@@ -131,13 +138,6 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loadToolStripMenuItem.Text = "Open";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
