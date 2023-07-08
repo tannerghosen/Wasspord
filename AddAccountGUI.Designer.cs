@@ -107,6 +107,10 @@
             this.Controls.Add(this.PasswordLabel);
             this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.WhereLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 200);
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "AddAccountGUI";
             this.Text = "Add Account";
             this.ResumeLayout(false);
