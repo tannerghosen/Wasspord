@@ -99,6 +99,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(284, 161);
             this.Controls.Add(this.OKButton);
             this.Controls.Add(this.PasswordTextbox);
@@ -107,6 +109,10 @@
             this.Controls.Add(this.PasswordLabel);
             this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.WhereLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 200);
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "AddAccountGUI";
             this.Text = "Add Account";
             this.ResumeLayout(false);

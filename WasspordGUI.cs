@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace Wasspord
 {
@@ -108,8 +109,28 @@ namespace Wasspord
         }
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // MessageBox is weirdly backwards, that's funny!
-            System.Windows.Forms.MessageBox.Show("The Password Manager\nBy Tanner Ghosen\n2023\n\nhttps://www.github.com/tannerghosen/Wasspord","Wasspord");
+            Form AboutForm = new Form();
+            AboutForm.Text = "Wasspord";
+            AboutForm.Width = 400;
+            AboutForm.Height = 300;
+            AboutForm.MaximizeBox = false;
+            AboutForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+            System.Windows.Forms.Label AboutFormLabel = new System.Windows.Forms.Label();
+            AboutFormLabel.Location = new Point(100, 175);
+            AboutFormLabel.Size = new Size(250, 50);
+            AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023";
+            LinkLabel AboutFormLinkLabel = new LinkLabel();
+            AboutFormLinkLabel.Location = new Point(100, 225);
+            AboutFormLinkLabel.Size = new Size(250, 15);
+            AboutFormLinkLabel.Text = "https://www.github.com/tannerghosen/Wasspord";
+            AboutFormLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(AboutFormLinkClicked);
+            AboutForm.Controls.Add(AboutFormLabel);
+            AboutForm.Controls.Add(AboutFormLinkLabel);
+            AboutForm.ShowDialog();
+        }
+        private void AboutFormLinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.github.com/tannerghosen/Wasspord");
         }
     }
 }

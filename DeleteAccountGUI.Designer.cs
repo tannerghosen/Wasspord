@@ -81,13 +81,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(284, 161);
             this.Controls.Add(this.OKButton);
             this.Controls.Add(this.UsernameTextbox);
             this.Controls.Add(this.LocationTextbox);
             this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.WhereLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(300, 200);
+            this.MinimumSize = new System.Drawing.Size(300, 39);
             this.Name = "DeleteAccountGUI";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Delete Account";
             this.ResumeLayout(false);
             this.PerformLayout();

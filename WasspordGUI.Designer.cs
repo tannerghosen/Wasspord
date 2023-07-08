@@ -165,8 +165,13 @@
             this.Controls.Add(this.AddAccountButton);
             this.Controls.Add(this.OutputTextbox);
             this.Controls.Add(this.WasspordMenustrip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.WasspordMenustrip;
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(650, 500);
+            this.MinimumSize = new System.Drawing.Size(650, 500);
             this.Name = "WasspordGUI";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Wasspord";
             this.Load += new System.EventHandler(this.WasspordGUI_Load);
             this.WasspordMenustrip.ResumeLayout(false);
