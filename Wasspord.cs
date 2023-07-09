@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security;
 using System.IO;
+using System.Collections;
+using System.IO.Pipes;
 using System.Security.Cryptography;
 
 namespace Wasspord
@@ -15,8 +17,6 @@ namespace Wasspord
     /// Purpose of File: Brains of the program, handles adding/modifying/delete accounts, saving/loading them
     /// and ensuring passwords are encrypted.
     /// </summary>
-    using System.Collections;
-    using System.IO.Pipes;
 
     public static class Wasspord
     {
@@ -74,12 +74,11 @@ namespace Wasspord
         public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
-            // This try statement is in case someone tries to save with no file open, causing an exception.
             try
             {
                 if (!File.Exists(file))
                 {
-                    // This should really never happen, but if it does let's not cause an error
+                    // This should only ever happen if the file being saved is deleted (via the Save option, Save As should be fine.)
                     File.Create(file).Dispose();
                 }
                 using (StreamWriter sw = new StreamWriter(file))
@@ -99,6 +98,7 @@ namespace Wasspord
         public static void Load(string location, string filename)
         {
             string file = location + @"\" + filename;
+            // This should never happen, but if it does create a blank file.
             if (!File.Exists(file))
             {
                 File.Create(file).Dispose();
@@ -110,7 +110,7 @@ namespace Wasspord
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     var spl = line.Split('|');
-                    // below is in case we have duplicate keys, which can happen if you try to load again.
+                    // Below is in case we have duplicate keys, which can happen if you try to load the same file again.
                     if (!Accounts.ContainsKey(new Account { where = spl[0], username = spl[1] }))
                     {
                         Accounts.Add(new Account { where = spl[0], username = spl[1] }, spl[2]);
@@ -134,7 +134,7 @@ namespace Wasspord
 
         private static string Encrypt(string password)
         {
-           byte[] b = System.Text.ASCIIEncoding.ASCII.GetBytes(password);
+            byte[] b = ASCIIEncoding.ASCII.GetBytes(password);
             string encrypted = Convert.ToBase64String(b);
             return encrypted;
         }
@@ -143,7 +143,7 @@ namespace Wasspord
             byte[] b;
             string decrypted;
             b = Convert.FromBase64String(password);
-            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(b);
+            decrypted = ASCIIEncoding.ASCII.GetString(b);
             return decrypted; 
         }
     }

@@ -123,14 +123,14 @@ namespace Wasspord
             AboutFormLinkLabel.Location = new Point(100, 225);
             AboutFormLinkLabel.Size = new Size(250, 15);
             AboutFormLinkLabel.Text = "https://www.github.com/tannerghosen/Wasspord";
-            AboutFormLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(AboutFormLinkClicked);
+            AboutFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(AboutFormLinkClicked);
             AboutForm.Controls.Add(AboutFormLabel);
             AboutForm.Controls.Add(AboutFormLinkLabel);
             AboutForm.ShowDialog();
         }
-        private void AboutFormLinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void AboutFormLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.github.com/tannerghosen/Wasspord");
+            Process.Start("https://www.github.com/tannerghosen/Wasspord");
         }
     }
 }

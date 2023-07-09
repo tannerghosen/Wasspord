@@ -20,7 +20,6 @@ namespace Wasspord
         private void OKButton_Click(object sender, EventArgs e)
         {
             Wasspord.AddAccount(LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
-            //Wasspord.Save();
             this.Close();
         }
     }
