@@ -42,6 +42,7 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.DisplayButton = new System.Windows.Forms.Button();
+			this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.WasspordMenustrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -53,10 +54,7 @@
 			this.OutputTextbox.Multiline = true;
 			this.OutputTextbox.Name = "OutputTextbox";
 			this.OutputTextbox.ReadOnly = true;
-<<<<<<< HEAD
 			this.OutputTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-=======
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.OutputTextbox.Size = new System.Drawing.Size(500, 350);
 			this.OutputTextbox.TabIndex = 0;
 			this.OutputTextbox.UseSystemPasswordChar = true;
@@ -65,11 +63,7 @@
 			// 
 			// AddAccountButton
 			// 
-<<<<<<< HEAD
 			this.AddAccountButton.Location = new System.Drawing.Point(65, 412);
-=======
-			this.AddAccountButton.Location = new System.Drawing.Point(65, 406);
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.AddAccountButton.Name = "AddAccountButton";
 			this.AddAccountButton.Size = new System.Drawing.Size(85, 23);
 			this.AddAccountButton.TabIndex = 3;
@@ -79,11 +73,7 @@
 			// 
 			// UpdatePasswordButton
 			// 
-<<<<<<< HEAD
 			this.UpdatePasswordButton.Location = new System.Drawing.Point(252, 412);
-=======
-			this.UpdatePasswordButton.Location = new System.Drawing.Point(252, 406);
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.UpdatePasswordButton.Name = "UpdatePasswordButton";
 			this.UpdatePasswordButton.Size = new System.Drawing.Size(100, 23);
 			this.UpdatePasswordButton.TabIndex = 4;
@@ -93,11 +83,7 @@
 			// 
 			// DeleteAccountButton
 			// 
-<<<<<<< HEAD
 			this.DeleteAccountButton.Location = new System.Drawing.Point(156, 412);
-=======
-			this.DeleteAccountButton.Location = new System.Drawing.Point(156, 406);
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.DeleteAccountButton.Name = "DeleteAccountButton";
 			this.DeleteAccountButton.Size = new System.Drawing.Size(90, 23);
 			this.DeleteAccountButton.TabIndex = 5;
@@ -110,11 +96,7 @@
 			this.AutosaveCheckbox.AutoSize = true;
 			this.AutosaveCheckbox.Checked = true;
 			this.AutosaveCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-<<<<<<< HEAD
 			this.AutosaveCheckbox.Location = new System.Drawing.Point(551, 418);
-=======
-			this.AutosaveCheckbox.Location = new System.Drawing.Point(551, 412);
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.AutosaveCheckbox.Name = "AutosaveCheckbox";
 			this.AutosaveCheckbox.Size = new System.Drawing.Size(71, 17);
 			this.AutosaveCheckbox.TabIndex = 6;
@@ -166,7 +148,8 @@
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.howToUseToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "Help";
@@ -174,23 +157,26 @@
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// DisplayButton
 			// 
-<<<<<<< HEAD
 			this.DisplayButton.Location = new System.Drawing.Point(470, 412);
-=======
-			this.DisplayButton.Location = new System.Drawing.Point(470, 406);
->>>>>>> 5528273c42cc74c457d95ecfc73fe3087c3cc3e6
 			this.DisplayButton.Name = "DisplayButton";
 			this.DisplayButton.Size = new System.Drawing.Size(75, 23);
 			this.DisplayButton.TabIndex = 8;
 			this.DisplayButton.Text = "Show / Hide";
 			this.DisplayButton.UseVisualStyleBackColor = true;
 			this.DisplayButton.Click += new System.EventHandler(this.DisplayButton_Click);
+			// 
+			// howToUseToolStripMenuItem
+			// 
+			this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
+			this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.howToUseToolStripMenuItem.Text = "How To Use";
+			this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
 			// 
 			// WasspordGUI
 			// 
@@ -235,6 +221,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
 		private System.Windows.Forms.Button DisplayButton;
+		private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
 	}
 }
 

@@ -76,7 +76,15 @@ namespace Wasspord
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Wasspord.Save(Openfilepath, Openfilename);
+            if (Openfilename == "" && Openfilepath == "")
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+            }
+            else
+            {
+                Wasspord.Save(Openfilepath, Openfilename);
+            }
+
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -136,6 +144,22 @@ namespace Wasspord
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
             OutputTextbox.Visible = OutputTextbox.Visible == false ? true : false;
+		}
+
+		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            Form HelpForm = new Form();
+            HelpForm.Text = "How to use Wasspord";
+			HelpForm.Width = 400;
+			HelpForm.Height = 300;
+			HelpForm.MaximizeBox = false;
+			HelpForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+			System.Windows.Forms.Label HelpFormLabel = new System.Windows.Forms.Label();
+			HelpFormLabel.Location = new Point(75, 10);
+			HelpFormLabel.Size = new Size(250, 300);
+			HelpFormLabel.Text = "Report bugs and glitches to the repo's issues. The link to it is provided in 'About'!\r\n\r\nWasspord's features and what they do:\r\n\r\n* Save/Save As/Load: Saves to a loaded file, saves to a new file, and loads an existing account file. These files are .wasspord extension files, and contains the details for your accounts.\r\n* Add Account: Adds an account to the account list.\r\n* Update Password: Updates an account's password.\r\n* Delete Account: Deletes an account.\r\n* Show / Hide: Shows/hides your account details. Hidden by default.\r\n* Autosave: Toggles the ability to automatically save to the loaded account file. Off by default.";
+			HelpForm.Controls.Add(HelpFormLabel);
+			HelpForm.ShowDialog();
 		}
 	}
 }
