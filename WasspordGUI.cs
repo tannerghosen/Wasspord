@@ -132,5 +132,10 @@ namespace Wasspord
         {
             Process.Start("https://www.github.com/tannerghosen/Wasspord");
         }
-    }
+
+		private void DisplayButton_Click(object sender, EventArgs e)
+		{
+            OutputTextbox.Visible = OutputTextbox.Visible == false ? true : false;
+		}
+	}
 }
