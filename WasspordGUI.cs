@@ -161,5 +161,75 @@ namespace Wasspord
 			HelpForm.Controls.Add(HelpFormLabel);
 			HelpForm.ShowDialog();
 		}
+
+		private void addAccountToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            AddAccountButton_Click(sender, e);
+		}
+
+		private void updatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            UpdatePasswordButton_Click(sender, e);
+		}
+
+		private void deleteAccountToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            DeleteAccountButton_Click(sender, e);
+		}
+
+		private void autosaveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            if (Autosave == true)
+            {
+                Properties.Settings.Default.Autosave = Autosave = false;
+                Properties.Settings.Default.Save();
+                AutosaveCheckbox.Checked = false;
+            }
+            else if (Autosave == false)
+            {
+                Properties.Settings.Default.Autosave = Autosave = true;
+                Properties.Settings.Default.Save();
+				AutosaveCheckbox.Checked = true;
+			}
+		}
+
+		private void showHideAccountsPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            DisplayButton_Click(sender, e);
+		}
+
+		private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+            GeneratePasswordButton_Click(sender, e);
+		}
+
+		private void GeneratePasswordButton_Click(object sender, EventArgs e)
+		{
+            Form PassForm = new Form();
+            PassForm.Text = "Generated Password";
+			PassForm.Width = 300;
+			PassForm.Height = 150;
+			PassForm.MaximizeBox = false;
+			PassForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+			/*Button PassFormOKButton = new Button();
+            PassFormOKButton.Text = "OK";
+            PassFormOKButton.Width = 75;
+			PassFormOKButton.Height = 23;
+            PassFormOKButton.Location = new Point(100, 75);
+            */
+			TextBox PassFormTextBox = new TextBox();
+            PassFormTextBox.Text = Wasspord.GeneratePassword();
+            PassFormTextBox.Location = new Point(80, 50);
+            PassFormTextBox.Height = 23;
+            PassFormTextBox.Width = 120;
+			System.Windows.Forms.Label PassFormLabel = new System.Windows.Forms.Label();
+			PassFormLabel.Text = "Here's your generated password!";
+			PassFormLabel.Location = new Point(60, 30);
+            PassFormLabel.Width = 200;
+			//PassForm.Controls.Add(PassFormOKButton);
+			PassForm.Controls.Add(PassFormTextBox);
+            PassForm.Controls.Add(PassFormLabel);
+			PassForm.ShowDialog();
+		}
 	}
 }

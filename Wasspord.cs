@@ -167,5 +167,18 @@ namespace Wasspord
             decrypted = ASCIIEncoding.ASCII.GetString(b);
             return decrypted; 
         }
+        public static string GeneratePassword()
+        {
+            const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+            StringBuilder sb = new StringBuilder();
+            Random r = new Random();
+            int i = 0;
+            while (i < 16)
+            {
+                sb.Append(characters[r.Next(characters.Length)]);
+                i++;
+            }
+            return sb.ToString();
+        }
     }
 }

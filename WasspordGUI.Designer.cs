@@ -41,8 +41,17 @@
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.DisplayButton = new System.Windows.Forms.Button();
 			this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.DisplayButton = new System.Windows.Forms.Button();
+			this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.addAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.updatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showHideAccountsPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.autosaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.generatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.GeneratePasswordButton = new System.Windows.Forms.Button();
 			this.WasspordMenustrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -73,7 +82,7 @@
 			// 
 			// UpdatePasswordButton
 			// 
-			this.UpdatePasswordButton.Location = new System.Drawing.Point(252, 412);
+			this.UpdatePasswordButton.Location = new System.Drawing.Point(156, 414);
 			this.UpdatePasswordButton.Name = "UpdatePasswordButton";
 			this.UpdatePasswordButton.Size = new System.Drawing.Size(100, 23);
 			this.UpdatePasswordButton.TabIndex = 4;
@@ -83,7 +92,7 @@
 			// 
 			// DeleteAccountButton
 			// 
-			this.DeleteAccountButton.Location = new System.Drawing.Point(156, 412);
+			this.DeleteAccountButton.Location = new System.Drawing.Point(262, 414);
 			this.DeleteAccountButton.Name = "DeleteAccountButton";
 			this.DeleteAccountButton.Size = new System.Drawing.Size(90, 23);
 			this.DeleteAccountButton.TabIndex = 5;
@@ -108,6 +117,8 @@
 			// 
 			this.WasspordMenustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.accountsToolStripMenuItem,
+            this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.WasspordMenustrip.Location = new System.Drawing.Point(0, 0);
 			this.WasspordMenustrip.Name = "WasspordMenustrip";
@@ -127,21 +138,21 @@
 			// loadToolStripMenuItem
 			// 
 			this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-			this.loadToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+			this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.loadToolStripMenuItem.Text = "Open";
 			this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.saveToolStripMenuItem.Text = "Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.saveAsToolStripMenuItem.Text = "Save As";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
@@ -157,9 +168,16 @@
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+			// 
+			// howToUseToolStripMenuItem
+			// 
+			this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
+			this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+			this.howToUseToolStripMenuItem.Text = "How To Use";
+			this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
 			// 
 			// DisplayButton
 			// 
@@ -171,18 +189,84 @@
 			this.DisplayButton.UseVisualStyleBackColor = true;
 			this.DisplayButton.Click += new System.EventHandler(this.DisplayButton_Click);
 			// 
-			// howToUseToolStripMenuItem
+			// accountsToolStripMenuItem
 			// 
-			this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-			this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.howToUseToolStripMenuItem.Text = "How To Use";
-			this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
+			this.accountsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addAccountToolStripMenuItem,
+            this.updatePasswordToolStripMenuItem,
+            this.deleteAccountToolStripMenuItem,
+            this.generatePasswordToolStripMenuItem});
+			this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
+			this.accountsToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+			this.accountsToolStripMenuItem.Text = "Accounts";
+			// 
+			// addAccountToolStripMenuItem
+			// 
+			this.addAccountToolStripMenuItem.Name = "addAccountToolStripMenuItem";
+			this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.addAccountToolStripMenuItem.Text = "Add Account";
+			this.addAccountToolStripMenuItem.Click += new System.EventHandler(this.addAccountToolStripMenuItem_Click);
+			// 
+			// deleteAccountToolStripMenuItem
+			// 
+			this.deleteAccountToolStripMenuItem.Name = "deleteAccountToolStripMenuItem";
+			this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.deleteAccountToolStripMenuItem.Text = "Delete Account";
+			this.deleteAccountToolStripMenuItem.Click += new System.EventHandler(this.deleteAccountToolStripMenuItem_Click);
+			// 
+			// updatePasswordToolStripMenuItem
+			// 
+			this.updatePasswordToolStripMenuItem.Name = "updatePasswordToolStripMenuItem";
+			this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.updatePasswordToolStripMenuItem.Text = "Update Password";
+			this.updatePasswordToolStripMenuItem.Click += new System.EventHandler(this.updatePasswordToolStripMenuItem_Click);
+			// 
+			// settingsToolStripMenuItem
+			// 
+			this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showHideAccountsPasswordsToolStripMenuItem,
+            this.autosaveToolStripMenuItem});
+			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+			this.settingsToolStripMenuItem.Text = "Settings";
+			// 
+			// showHideAccountsPasswordsToolStripMenuItem
+			// 
+			this.showHideAccountsPasswordsToolStripMenuItem.Name = "showHideAccountsPasswordsToolStripMenuItem";
+			this.showHideAccountsPasswordsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+			this.showHideAccountsPasswordsToolStripMenuItem.Text = "Show / Hide Accounts/Passwords";
+			this.showHideAccountsPasswordsToolStripMenuItem.Click += new System.EventHandler(this.showHideAccountsPasswordsToolStripMenuItem_Click);
+			// 
+			// autosaveToolStripMenuItem
+			// 
+			this.autosaveToolStripMenuItem.Name = "autosaveToolStripMenuItem";
+			this.autosaveToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+			this.autosaveToolStripMenuItem.Text = "Autosave";
+			this.autosaveToolStripMenuItem.Click += new System.EventHandler(this.autosaveToolStripMenuItem_Click);
+			// 
+			// generatePasswordToolStripMenuItem
+			// 
+			this.generatePasswordToolStripMenuItem.Name = "generatePasswordToolStripMenuItem";
+			this.generatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.generatePasswordToolStripMenuItem.Text = "Generate Password";
+			this.generatePasswordToolStripMenuItem.Click += new System.EventHandler(this.generatePasswordToolStripMenuItem_Click);
+			// 
+			// GeneratePasswordButton
+			// 
+			this.GeneratePasswordButton.Location = new System.Drawing.Point(379, 412);
+			this.GeneratePasswordButton.Name = "GeneratePasswordButton";
+			this.GeneratePasswordButton.Size = new System.Drawing.Size(85, 23);
+			this.GeneratePasswordButton.TabIndex = 9;
+			this.GeneratePasswordButton.Text = "Generate Pass";
+			this.GeneratePasswordButton.UseVisualStyleBackColor = true;
+			this.GeneratePasswordButton.Click += new System.EventHandler(this.GeneratePasswordButton_Click);
 			// 
 			// WasspordGUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(634, 461);
+			this.Controls.Add(this.GeneratePasswordButton);
 			this.Controls.Add(this.DisplayButton);
 			this.Controls.Add(this.AutosaveCheckbox);
 			this.Controls.Add(this.DeleteAccountButton);
@@ -222,6 +306,15 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
 		private System.Windows.Forms.Button DisplayButton;
 		private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem addAccountToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem updatePasswordToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deleteAccountToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showHideAccountsPasswordsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem autosaveToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem generatePasswordToolStripMenuItem;
+		private System.Windows.Forms.Button GeneratePasswordButton;
 	}
 }
 
