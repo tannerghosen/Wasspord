@@ -7,7 +7,7 @@ By Tanner Ghosen
 <li>Visual Studio 2019-2022</li>
 <ul>
   <li>C#</li>
-  <li>NET Latest Version Recommended (Could possibly run with older versions above 4.72)</li>
+  <li>.NET 4.8</li>
 </ul>
 </ul>
 

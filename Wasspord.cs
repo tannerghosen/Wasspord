@@ -11,12 +11,10 @@ using System.Security.Cryptography;
 
 namespace Wasspord
 {
-    /// <summary> 
-    /// Wasspord.cs
-    /// Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Encrypt, Decrypt
-    /// Purpose of File: Brains of the program, handles adding/modifying/delete accounts, saving/loading them
-    /// and ensuring passwords are encrypted.
-    /// </summary>
+    /*
+     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Encrypt, Decrypt
+     * Important Variables/Misc: Account Dictionary, Account Struct
+    */
 
     public static class Wasspord
     {
