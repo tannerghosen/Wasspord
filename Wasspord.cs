@@ -73,7 +73,7 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                Console.Error.WriteLine("Duplicate Account");
+                Console.Error.WriteLine("Account doesn't exist / is invalid");
             }
             else
             {
@@ -165,6 +165,8 @@ namespace Wasspord
             decrypted = ASCIIEncoding.ASCII.GetString(b);
             return decrypted; 
         }
+        /* GeneratePassword: Generates a random password that's 16 characters in length.
+         * Returns: Generated Password */
         public static string GeneratePassword()
         {
             const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
