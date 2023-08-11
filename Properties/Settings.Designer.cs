@@ -34,5 +34,17 @@ namespace Wasspord.Properties {
                 this["Autosave"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Display {
+            get {
+                return ((bool)(this["Display"]));
+            }
+            set {
+                this["Display"] = value;
+            }
+        }
     }
 }

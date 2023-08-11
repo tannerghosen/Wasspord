@@ -18,6 +18,7 @@ namespace Wasspord
     {
 
         public bool Autosave = Properties.Settings.Default.Autosave;
+        public bool Display = Properties.Settings.Default.Display;
         public string Openfilename = "";
         public string Openfilepath = "";
         public WasspordGUI()
@@ -60,6 +61,8 @@ namespace Wasspord
         private void WasspordGUI_Load(object sender, EventArgs e)
         {
             OutputTextbox.Text = Wasspord.Display();
+            if (Display == true)
+                OutputTextbox.Visible = true;
         }
 
         private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -84,7 +87,6 @@ namespace Wasspord
             {
                 Wasspord.Save(Openfilepath, Openfilename);
             }
-
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -144,6 +146,8 @@ namespace Wasspord
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
             OutputTextbox.Visible = OutputTextbox.Visible == false ? true : false;
+			Properties.Settings.Default.Display = Display = OutputTextbox.Visible;
+			Properties.Settings.Default.Save();
 		}
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
