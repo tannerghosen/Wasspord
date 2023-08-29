@@ -110,7 +110,8 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
-            string file = location + @"\" + filename;
+            Accounts.Clear();
+			string file = location + @"\" + filename;
 			// This should never happen, but if it does create a blank file.
 			if (!File.Exists(file))
             {
