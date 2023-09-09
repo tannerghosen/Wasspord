@@ -171,15 +171,15 @@ namespace Wasspord
         public static string GeneratePassword()
         {
             const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
-            string password = "";
+            StringBuilder password = new StringBuilder(string.Empty);
             Random r = new Random();
             int i = 0;
             while (i < 16)
             {
-                password += characters[r.Next(characters.Length)];
+                password.Append(characters[r.Next(characters.Length)]);
                 i++;
             }
-            return password;
+            return password.ToString();
         }
     }
 }
