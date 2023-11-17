@@ -153,7 +153,6 @@ namespace Wasspord
         /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
 		 * Parameters: password 
 		 * Returns: encrypted password */
-
         public static string Encrypt(string password)
         {
             // Get bytes from password

@@ -256,6 +256,8 @@ namespace Wasspord
         {
 			Wasspord.Reset();
 			OutputTextbox.Text = "";
-        }
+			Openfilename = "";
+			Openfilepath = "";
+		}
     }
 }
