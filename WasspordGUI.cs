@@ -251,5 +251,11 @@ namespace Wasspord
 			PassForm.Controls.Add(PassFormLabel);
 			PassForm.ShowDialog();
 		}
-	}
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			Wasspord.Reset();
+			OutputTextbox.Text = "";
+        }
+    }
 }

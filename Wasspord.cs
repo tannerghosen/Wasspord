@@ -229,5 +229,11 @@ namespace Wasspord
             }
             return password.ToString();
         }
+
+        /* Reset: Clears the dictionary and resets the program. Used when "New" is clicked in the GUI. */
+        public static void Reset()
+        {
+            Accounts.Clear();
+        }
     }
 }
