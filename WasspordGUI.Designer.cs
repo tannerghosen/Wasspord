@@ -69,7 +69,6 @@
             this.OutputTextbox.Size = new System.Drawing.Size(500, 350);
             this.OutputTextbox.TabIndex = 0;
             this.OutputTextbox.UseSystemPasswordChar = true;
-            this.OutputTextbox.Visible = false;
             this.OutputTextbox.WordWrap = false;
             // 
             // AddAccountButton
