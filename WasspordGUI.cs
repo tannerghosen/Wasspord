@@ -151,8 +151,8 @@ namespace Wasspord
 
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
-			OutputTextbox.Visible = OutputTextbox.Visible == false ? true : false;
-			Properties.Settings.Default.Display = Display = OutputTextbox.Visible;
+			OutputTextbox.ForeColor = OutputTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White"): Color.FromName("Black");
+			Properties.Settings.Default.Display = !Properties.Settings.Default.Display;
 			Properties.Settings.Default.Save();
 		}
 

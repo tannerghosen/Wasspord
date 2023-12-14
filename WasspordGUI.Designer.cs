@@ -39,6 +39,7 @@
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,14 +53,14 @@
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DisplayButton = new System.Windows.Forms.Button();
             this.GeneratePasswordButton = new System.Windows.Forms.Button();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // OutputTextbox
             // 
             this.OutputTextbox.AcceptsReturn = true;
-            this.OutputTextbox.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.OutputTextbox.BackColor = System.Drawing.Color.Black;
+            this.OutputTextbox.ForeColor = System.Drawing.Color.Black;
             this.OutputTextbox.Location = new System.Drawing.Point(65, 50);
             this.OutputTextbox.Multiline = true;
             this.OutputTextbox.Name = "OutputTextbox";
@@ -140,23 +141,30 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.loadToolStripMenuItem.Text = "Open";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // accountsToolStripMenuItem
             // 
@@ -262,13 +270,6 @@
             this.GeneratePasswordButton.Text = "Generate Pass";
             this.GeneratePasswordButton.UseVisualStyleBackColor = true;
             this.GeneratePasswordButton.Click += new System.EventHandler(this.GeneratePasswordButton_Click);
-            // 
-            // newToolStripMenuItem
-            // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // WasspordGUI
             // 
