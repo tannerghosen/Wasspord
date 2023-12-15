@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace Wasspord
 {
@@ -128,7 +120,7 @@ namespace Wasspord
 			System.Windows.Forms.Label AboutFormLabel = new System.Windows.Forms.Label();
 			AboutFormLabel.Location = new Point(100, 175);
 			AboutFormLabel.Size = new Size(250, 50);
-			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023";
+			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023 - 2024";
 			LinkLabel AboutFormLinkLabel = new LinkLabel();
 			AboutFormLinkLabel.Location = new Point(100, 225);
 			AboutFormLinkLabel.Size = new Size(250, 15);

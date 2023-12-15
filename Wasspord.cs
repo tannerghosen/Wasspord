@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Security;
 using System.IO;
-using System.Collections;
-using System.IO.Pipes;
 using System.Security.Cryptography;
 
 
@@ -14,24 +9,35 @@ namespace Wasspord
 {
     /*
      * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Encrypt, Decrypt
-     * Important Variables/Misc: Account Dictionary, Account Struct
+     * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
     */
 
     public static class Wasspord
     {
-        /* Account Dictionary: 2 key (where, username) dictionary that contains information on 
-           where the account is used, the username and the password. The struct below this is a part
-           of this and other functions that look for/add accounts to the dictionary, as it's the only way
-           to have a key that's 2 things (where, username) combined, which in turn means any looking/adding 
-           requires both to be defined. */
+        /* Account Dictionary: A dictionary with a key made of 2 parts (where, username)  that contains information on 
+           where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
+           under the same username/email at multiple websites.
+        */
         private static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
+        /* Account Struct: This is our key when we insert entries into the Account dictionary,
+           which is also the same key used to find entries in other functions. where is where 
+           the account is used, username is the username/email used.
+        */
         private struct Account
         {
             public string where;
             public string username;
         }
+        /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
+           is an encryption key used in the encryption/decryption and our bytes is 
+           our IV (initialization vector, or initial state). 
+        */
         private static string Key = "p055w4rd";
         private static byte[] Bytes = { 0x31, 0xab, 0xa7, 0x91, 0x93, 0x9b, 0x7d, 0x1f, 0x3b, 0xf7, 0x8d, 0x3f, 0x9a };
+
+        /* Passwords: Generated passwords kept track of by the program to prevent duplicates. */
+        private static HashSet<string> Passwords = new HashSet<string>();
+
         /* AddAccount: Adds an account with a location *where* it's used, the username and the encrypted password, to above mentioned
 		   account dictionary, which can be saved to a .wasspord file down the line.
          * Parameters: where (location), username, password. */
@@ -213,9 +219,11 @@ namespace Wasspord
             }
             return password;
         }
-        /* GeneratePassword: Generates a random password that's 16 characters in length.
+        /* GeneratePassword: Generates a random password that's 16 characters in length,
+           while also trying to prevent duplicates by recursively calling itself up to 10 times
+           before going with a duplicate.
          * Returns: Generated Password */
-        public static string GeneratePassword()
+        public static string GeneratePassword(int attempt = 0)
         {
             const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
             StringBuilder password = new StringBuilder(string.Empty);
@@ -226,7 +234,22 @@ namespace Wasspord
                 password.Append(characters[r.Next(characters.Length)]);
                 i++;
             }
-            return password.ToString();
+            string GeneratedPass = password.ToString();
+            if (!Passwords.Contains(GeneratedPass))
+            {
+                Passwords.Add(GeneratedPass);
+                return GeneratedPass;
+            }
+            else if (Passwords.Contains(GeneratedPass))
+            {
+                attempt++;
+                return GeneratePassword(attempt);
+            }
+            else if (attempt == 10)
+            {
+                return GeneratedPass; // Unfortunately if recursion goes beyond 10 we'll have to settle for a duplicate.
+            }
+            return "";
         }
 
         /* Reset: Clears the dictionary and resets the program. Used when "New" is clicked in the GUI. */
