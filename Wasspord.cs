@@ -14,7 +14,7 @@ namespace Wasspord
 
     public static class Wasspord
     {
-        /* Account Dictionary: A dictionary with a key made of 2 parts (where, username)  that contains information on 
+        /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
            where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
            under the same username/email at multiple websites.
         */
@@ -25,7 +25,7 @@ namespace Wasspord
         */
         private struct Account
         {
-            public string where;
+            public string location;
             public string username;
         }
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
@@ -40,11 +40,11 @@ namespace Wasspord
 
         /* AddAccount: Adds an account with a location *where* it's used, the username and the encrypted password, to above mentioned
 		   account dictionary, which can be saved to a .wasspord file down the line.
-         * Parameters: where (location), username, password. */
-        public static void AddAccount(string where, string username, string password)
+         * Parameters: location, username, password. */
+        public static void AddAccount(string location, string username, string password)
         {
             Account acc;
-            acc.where = where;
+            acc.location = location;
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
@@ -57,11 +57,11 @@ namespace Wasspord
             }
         }
 		/* UpdatePassword: Updates a password for a defined location and username in the account dictionary.
-		 * Parameters: where (location), username, password. */
-		public static void UpdatePassword(string where, string username, string password)
+		 * Parameters: location, username, password. */
+		public static void UpdatePassword(string location, string username, string password)
         {
             Account acc;
-            acc.where = where;
+            acc.location = location;
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
@@ -74,11 +74,11 @@ namespace Wasspord
             }
         }
 	   /* DeleteAccount: Deletes an account specified for a location and username from the account dictionary.
-        * Parameters: where (location), username. */
-        public static void DeleteAccount(string where, string username)
+        * Parameters: location, username. */
+        public static void DeleteAccount(string location, string username)
         {
             Account acc;
-            acc.where = where;
+            acc.location = location;
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
@@ -102,11 +102,11 @@ namespace Wasspord
                 {
                     File.Create(file).Dispose();
                 }
-                using (StreamWriter sw = new StreamWriter(file))
+                using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
-                    foreach (var pair in Accounts)
+                    foreach (var acc in Accounts) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
-                        sw.WriteLine(pair.Key.where + "|" + pair.Key.username + "|" + pair.Value);
+                        sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
                     }
                 }
             }
@@ -119,27 +119,31 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
-            Reset();
+            Reset(); // Reset ahead of time so we don't have errors down the line.
 			string file = location + @"\" + filename;
 			// This should never happen, but if it does create a blank file.
 			if (!File.Exists(file))
             {
                 File.Create(file).Dispose();
             }
-            var fs = new FileStream(file, FileMode.Open, FileAccess.Read);
-            using (var sr = new StreamReader(fs, Encoding.UTF8))
+            var fs = new FileStream(file, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
+            using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string line; // our current line
+                while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                 {
-                    var spl = line.Split('|');
+                    // Split the details we need (where, username, password) by the |'s into arrays
+                    // acc[0] = where, acc[1] = username, acc[2] = password
+                    var acc = line.Split('|');
                     // Below is in case we have duplicate keys, which can happen if you try to load the same file again.
-                    if (!Accounts.ContainsKey(new Account { where = spl[0], username = spl[1] }))
+                    // If the dictionary doesn't already have this key, add it.
+                    if (!Accounts.ContainsKey(new Account { location = acc[0], username = acc[1] }))
                     {
-                        Accounts.Add(new Account { where = spl[0], username = spl[1] }, spl[2]);
+                        Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
                     }
                 }
             }
+            fs.Dispose(); // Dispose of FileStream once we're done.
         }
         /* Display: Displays account information from the account dictionary. Used to output to a textbox in WasspordGUI as of this time. 
          * Returns: Output from account dictionary. */
@@ -148,10 +152,11 @@ namespace Wasspord
             string display = "";
             foreach (var pair in Accounts)
             {
-                display +=
-                "Account Location: " + pair.Key.where
-                + " | Account Username: " + pair.Key.username
-                + " | Account Password: " + Decrypt(pair.Value) + "\r\n";
+                    display +=
+                    "Account Location: " + pair.Key.location
+               + " | Account Username: " + pair.Key.username
+               + " | Account Password: " + Decrypt(pair.Value) 
+               + "\r\n";
             }
             return display;
         }
@@ -167,10 +172,10 @@ namespace Wasspord
             // Create Aes object
             using (Aes encrypt = Aes.Create())
             {
-                // Derieve bytes from Key and Bytes
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(Key, Bytes);
-                encrypt.Key = pdb.GetBytes(32); 
-                encrypt.IV = pdb.GetBytes(16);
+                // Derieve bytes from Key and Bytes to create a key for encryption
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
+                encrypt.Key = key.GetBytes(32); // this is our key
+                encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
                 // Create streams for encryption
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -179,7 +184,7 @@ namespace Wasspord
                         cs.Write(b, 0, b.Length);
                         cs.Close();
                     }
-                    // Password is encrypted as a Base64 String based on the content from above Streams.
+                    // Password is encrypted as a Base64 String based on the content from above streams.
                     password = Convert.ToBase64String(ms.ToArray());
                 }
             }
@@ -191,7 +196,8 @@ namespace Wasspord
 		 * Returns: decrypted password */
         public static string Decrypt(string password)
         {
-            // This is in case passwords had a space in them (like "test world"), it would error out without this.
+            // This is in case passwords had a space in them prior to decrypting (so if it was encrypted as "hello world"),
+            // it would error out without this line below.
             password = password.Replace(" ", "+");
 
             // Get bytes from password
@@ -200,10 +206,10 @@ namespace Wasspord
             // Create Aes object
             using (Aes encrypt = Aes.Create())
             {
-                // Derieve bytes from Key and Bytes
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(Key, Bytes);
-                encrypt.Key = pdb.GetBytes(32);
-                encrypt.IV = pdb.GetBytes(16);
+                // Derieve bytes from Key and Bytes to create a key for decryption
+                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
+                encrypt.Key = key.GetBytes(32); // this is our key
+                encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
 
                 // Create streams for encryption
                 using (MemoryStream ms = new MemoryStream())
@@ -213,7 +219,7 @@ namespace Wasspord
                         cs.Write(b, 0, b.Length);
                         cs.Close();
                     }
-                    // Password is converted to a regular Unicode String based on contents from above stream.
+                    // Password is converted to a regular Unicode String based on contents from above streams.
                     password = Encoding.Unicode.GetString(ms.ToArray());
                 }
             }
@@ -235,24 +241,24 @@ namespace Wasspord
                 i++;
             }
             string GeneratedPass = password.ToString();
-            if (!Passwords.Contains(GeneratedPass))
+            if (!Passwords.Contains(GeneratedPass)) // Add it to the list of passwords used so we don't call on it again unless we hit the last else if here later.
             {
-                Passwords.Add(GeneratedPass);
+                Passwords.Add(GeneratedPass); 
                 return GeneratedPass;
             }
-            else if (Passwords.Contains(GeneratedPass))
+            else if (Passwords.Contains(GeneratedPass)) // The password here has already been used, increase the attempt by 1 and recursively call GeneratePassword on that attempt.
             {
-                attempt++;
+                attempt++; 
                 return GeneratePassword(attempt);
             }
-            else if (attempt == 10)
+            else if (attempt == 10) // Unfortunately if recursion goes beyond 10 we'll have to settle for a duplicate. Don't want to slow the program.
             {
-                return GeneratedPass; // Unfortunately if recursion goes beyond 10 we'll have to settle for a duplicate.
+                return GeneratedPass; 
             }
             return "";
         }
 
-        /* Reset: Clears the dictionary and resets the program. Used when "New" is clicked in the GUI. */
+        /* Reset: Clears the dictionary and "resets". Used when "New" or "Load" is clicked in the GUI. */
         public static void Reset()
         {
             Accounts.Clear();
