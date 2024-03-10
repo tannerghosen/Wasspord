@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
-
+using System.Text.RegularExpressions;
 
 namespace Wasspord
 {
     /*
-     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Encrypt, Decrypt
+     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
+     * GeneratePassword, ValidatePassword, Display
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
+     * Variables/Misc: regex, regexpattern, characters
     */
 
     public static class Wasspord
@@ -37,6 +39,19 @@ namespace Wasspord
 
         /* Passwords: Generated passwords kept track of by the program to prevent duplicates. */
         private static HashSet<string> Passwords = new HashSet<string>();
+
+        /* Other Misc Things: characters, regexpattern, regex */
+        private static string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+        private static string regexpattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
+        /* It checks for:
+        1 uppercase letter
+        1 lowercase letter
+        1 number
+        1 special character
+        should not repeat characters more than 5 times consecutively
+        8-32 characters in width
+        */
+        private static Regex regex = new Regex(regexpattern);
 
         /* AddAccount: Adds an account with a location *where* it's used, the username and the encrypted password, to above mentioned
 		   account dictionary, which can be saved to a .wasspord file down the line.
@@ -231,7 +246,6 @@ namespace Wasspord
          * Returns: Generated Password */
         public static string GeneratePassword(int attempt = 0)
         {
-            const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
             StringBuilder password = new StringBuilder(string.Empty);
             Random r = new Random();
             int i = 0;
@@ -256,6 +270,14 @@ namespace Wasspord
                 return GeneratedPass; 
             }
             return "";
+        }
+
+        /* ValidatePassword: Validates a given password against a regex (details on what it checks is above).
+         * Parameters: password
+         * Returns: Regex result (either positive or negative) */
+        public static string ValidatePassword(string password)
+        {
+            return !regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
 
         /* Reset: Clears the dictionary and "resets". Used when "New" or "Load" is clicked in the GUI. */
