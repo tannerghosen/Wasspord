@@ -16,14 +16,15 @@ namespace Wasspord
 		public WasspordGUI()
 		{
 			InitializeComponent();
-			if (Autosave)
+			/*if (Autosave)
 			{
 				AutosaveCheckbox.Checked = true;
 			}
 			else if (!Autosave)
 			{
 				AutosaveCheckbox.Checked = false;
-			}
+			}*/
+			AutosaveCheckbox.Checked = Autosave ? true : false;
 		}
 
 		private void AddAccountButton_Click(object sender, EventArgs e)
@@ -65,8 +66,10 @@ namespace Wasspord
 				Properties.Settings.Default.Save();
 			}
 			else if (AutosaveCheckbox.Checked == false)
+			{
 				Properties.Settings.Default.Autosave = Autosave = false;
-			Properties.Settings.Default.Save();
+				Properties.Settings.Default.Save();
+			}
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -117,7 +120,7 @@ namespace Wasspord
 			AboutForm.Height = 300;
 			AboutForm.MaximizeBox = false;
 			AboutForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-			System.Windows.Forms.Label AboutFormLabel = new System.Windows.Forms.Label();
+			Label AboutFormLabel = new Label();
 			AboutFormLabel.Location = new Point(100, 175);
 			AboutFormLabel.Size = new Size(250, 50);
 			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023 - 2024";
@@ -156,7 +159,7 @@ namespace Wasspord
 			HelpForm.Height = 300;
 			HelpForm.MaximizeBox = false;
 			HelpForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-			System.Windows.Forms.Label HelpFormLabel = new System.Windows.Forms.Label();
+			Label HelpFormLabel = new Label();
 			HelpFormLabel.Location = new Point(75, 50);
 			HelpFormLabel.Size = new Size(250, 300);
 			HelpFormLabel.Text = "Wasspord's features and what they do:\r\n\r\n* Save/Save As/Load: Saves to a loaded file, saves to a new file, and loads an existing account file. These files are .wasspord extension files, and contains the details for your accounts.\r\n* Add Account: Adds an account to the account list.\r\n* Update Password: Updates an account's password.\r\n* Delete Account: Deletes an account.\r\n* Show / Hide: Shows/hides your account details. Hidden by default.\r\n* Autosave: Toggles the ability to automatically save to the loaded account file. Off by default.";
@@ -209,41 +212,6 @@ namespace Wasspord
 		{
 			DisplayButton_Click(sender, e);
 		}
-
-		private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			GeneratePasswordButton_Click(sender, e);
-		}
-
-		private void GeneratePasswordButton_Click(object sender, EventArgs e)
-		{
-			Form PassForm = new Form();
-			PassForm.Text = "Generated Password";
-			PassForm.Width = 300;
-			PassForm.Height = 150;
-			PassForm.MaximizeBox = false;
-			PassForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-			/*Button PassFormOKButton = new Button();
-            PassFormOKButton.Text = "OK";
-            PassFormOKButton.Width = 75;
-			PassFormOKButton.Height = 23;
-            PassFormOKButton.Location = new Point(100, 75);
-            */
-			TextBox PassFormTextBox = new TextBox();
-			PassFormTextBox.Text = Wasspord.GeneratePassword();
-			PassFormTextBox.Location = new Point(80, 50);
-			PassFormTextBox.Height = 23;
-			PassFormTextBox.Width = 120;
-			System.Windows.Forms.Label PassFormLabel = new System.Windows.Forms.Label();
-			PassFormLabel.Text = "Here's your generated password!";
-			PassFormLabel.Location = new Point(60, 30);
-			PassFormLabel.Width = 200;
-			//PassForm.Controls.Add(PassFormOKButton);
-			PassForm.Controls.Add(PassFormTextBox);
-			PassForm.Controls.Add(PassFormLabel);
-			PassForm.ShowDialog();
-		}
-
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			Wasspord.Reset();
@@ -251,5 +219,69 @@ namespace Wasspord
 			Openfilename = "";
 			Openfilepath = "";
 		}
+
+        private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form PassForm = new Form();
+            PassForm.Text = "Generated Password";
+            PassForm.Width = 300;
+            PassForm.Height = 150;
+            PassForm.MaximizeBox = false;
+            PassForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+            /*Button PassFormOKButton = new Button();
+            PassFormOKButton.Text = "OK";
+            PassFormOKButton.Width = 75;
+			PassFormOKButton.Height = 23;
+            PassFormOKButton.Location = new Point(100, 75);
+            */
+            TextBox PassFormTextBox = new TextBox();
+            PassFormTextBox.Text = Wasspord.GeneratePassword();
+            PassFormTextBox.Location = new Point(80, 50);
+            PassFormTextBox.Height = 23;
+            PassFormTextBox.Width = 120;
+            Label PassFormLabel = new Label();
+            PassFormLabel.Text = "Here's your generated password!";
+            PassFormLabel.Location = new Point(60, 30);
+            PassFormLabel.Width = 200;
+            //PassForm.Controls.Add(PassFormOKButton);
+            PassForm.Controls.Add(PassFormTextBox);
+            PassForm.Controls.Add(PassFormLabel);
+            PassForm.ShowDialog();
+        }
+
+        private void validatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+			Form ValidateForm = new Form();
+            ValidateForm.Text = "Validate Password";
+            ValidateForm.Width = 300;
+            ValidateForm.Height = 150;
+            TextBox ValidateFormTextBox = new TextBox();
+            ValidateFormTextBox.Text = "";
+            ValidateFormTextBox.Location = new Point(80, 50);
+            ValidateFormTextBox.Height = 23;
+            ValidateFormTextBox.Width = 120;
+            Label ValidateFormLabel = new Label();
+            ValidateFormLabel.Text = "Input your password in the textbox below,\nand press OK to validate it.";
+            ValidateFormLabel.Location = new Point(45, 20);
+            ValidateFormLabel.Width = 300;
+			ValidateFormLabel.Height = 50;
+			Button ValidateFormOKButton = new Button();
+            ValidateFormOKButton.Text = "OK";
+            ValidateFormOKButton.Width = 75;
+            ValidateFormOKButton.Height = 23;
+            ValidateFormOKButton.Location = new Point(100, 75);
+            ValidateFormOKButton.Click += (s, ev) =>
+			{
+				ValidateFormOKButton_Click(ValidateFormTextBox.Text);
+			};
+            ValidateForm.Controls.Add(ValidateFormTextBox);
+            ValidateForm.Controls.Add(ValidateFormLabel);
+            ValidateForm.Controls.Add(ValidateFormOKButton);
+            ValidateForm.ShowDialog();
+        }
+        private void ValidateFormOKButton_Click(string password)
+        {
+			MessageBox.Show(Wasspord.ValidatePassword(password));
+        }
     }
 }

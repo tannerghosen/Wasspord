@@ -255,17 +255,19 @@ namespace Wasspord
                 i++;
             }
             string GeneratedPass = password.ToString();
-            if (!Passwords.Contains(GeneratedPass)) // Add it to the list of passwords used so we don't call on it again unless we hit the last else if here later.
+            // if Passwords doesn't contain GeneratedPass and it's good according to our regex
+            if (!Passwords.Contains(GeneratedPass) && regex.IsMatch(GeneratedPass)) 
             {
-                Passwords.Add(GeneratedPass); 
+                Passwords.Add(GeneratedPass); // add it to the list
                 return GeneratedPass;
             }
-            else if (Passwords.Contains(GeneratedPass)) // The password here has already been used, increase the attempt by 1 and recursively call GeneratePassword on that attempt.
+            // Otherwise we try again
+            else if (attempt < 100) 
             {
                 attempt++; 
                 return GeneratePassword(attempt);
             }
-            else if (attempt == 10) // Unfortunately if recursion goes beyond 10 we'll have to settle for a duplicate. Don't want to slow the program.
+            else if (attempt == 100) // Unfortunately if recursion goes beyond 100 we'll have to settle for a duplicate. Don't want to slow the program.
             {
                 return GeneratedPass; 
             }
