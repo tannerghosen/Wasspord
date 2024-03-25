@@ -186,7 +186,7 @@ namespace Wasspord
 		 * Returns: encrypted password */
         public static string Encrypt(string password)
         {
-            // Get bytes from password
+            // Get bytes from our string password
             byte[] b = Encoding.Unicode.GetBytes(password);
 
             // Create Aes object
@@ -220,7 +220,7 @@ namespace Wasspord
             // it would error out without this line below.
             password = password.Replace(" ", "+");
 
-            // Get bytes from password
+            // Get bytes from our base64 string encrypted password
             byte[] b = Convert.FromBase64String(password);
 
             // Create Aes object
@@ -249,10 +249,11 @@ namespace Wasspord
                 {
                     // This comes from older code, pre-commit 14ff6c5
                     // This is to keep compability with older files.
-                    byte[] oldb;
-                    string oldpassword;
-                    oldb = Convert.FromBase64String(password);
-                    oldpassword = ASCIIEncoding.ASCII.GetString(b);
+                    // Because we already get our bytes from our base64 string earlier in our code,
+                    // we don't need to have all of the old code.
+                    // (namely, declaring a new bytes array and calling another Convert.FromBase64String())
+                    string oldpassword; // string container for our decrypted password
+                    oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
                 }
             }
