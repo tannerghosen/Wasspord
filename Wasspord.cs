@@ -176,6 +176,11 @@ namespace Wasspord
             return display;
         }
 
+        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
+        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rfc2898derivebytes?view=net-8.0
+        // https://learn.microsoft.com/en-us/dotnet/api/system.io.memorystream?view=net-8.0
+        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptostream?view=net-8.0
+
         /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
 		 * Parameters: password 
 		 * Returns: encrypted password */
@@ -187,7 +192,7 @@ namespace Wasspord
             // Create Aes object
             using (Aes encrypt = Aes.Create())
             {
-                // Derieve bytes from Key and Bytes to create a key for encryption
+                // Derive bytes from Key and Bytes to create a key for encryption
                 Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
                 encrypt.Key = key.GetBytes(32); // this is our key
                 encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
@@ -221,28 +226,41 @@ namespace Wasspord
             // Create Aes object
             using (Aes encrypt = Aes.Create())
             {
-                // Derieve bytes from Key and Bytes to create a key for decryption
+                // Derive bytes from Key and Bytes to create a key for decryption
                 Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
                 encrypt.Key = key.GetBytes(32); // this is our key
                 encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
 
-                // Create streams for encryption
-                using (MemoryStream ms = new MemoryStream())
+                try // Let's try our current method unless an error occurs
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encrypt.CreateDecryptor(), CryptoStreamMode.Write))
+                    // Create streams for decryption
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        cs.Write(b, 0, b.Length);
-                        cs.Close();
+                        using (CryptoStream cs = new CryptoStream(ms, encrypt.CreateDecryptor(), CryptoStreamMode.Write))
+                        {
+                            cs.Write(b, 0, b.Length);
+                            cs.Close();
+                        }
+                        // Password is converted to a regular Unicode String based on contents from above streams.
+                        password = Encoding.Unicode.GetString(ms.ToArray());
                     }
-                    // Password is converted to a regular Unicode String based on contents from above streams.
-                    password = Encoding.Unicode.GetString(ms.ToArray());
+                }
+                catch
+                {
+                    // This comes from older code, pre-commit 14ff6c5
+                    // This is to keep compability with older files.
+                    byte[] oldb;
+                    string oldpassword;
+                    oldb = Convert.FromBase64String(password);
+                    oldpassword = ASCIIEncoding.ASCII.GetString(b);
+                    return oldpassword;
                 }
             }
             return password;
         }
         /* GeneratePassword: Generates a random password that's 16 characters in length,
-           while also trying to prevent duplicates by recursively calling itself up to 10 times
-           before going with a duplicate.
+           while also trying to prevent duplicates and non-regex following attempts
+           by recursively calling itself up to 500 times before going with a duplicate / failed password.
          * Returns: Generated Password */
         public static string GeneratePassword(int attempt = 0)
         {
@@ -262,12 +280,12 @@ namespace Wasspord
                 return GeneratedPass;
             }
             // Otherwise we try again
-            else if (attempt < 100) 
+            else if (attempt < 500) 
             {
                 attempt++; 
                 return GeneratePassword(attempt);
             }
-            else if (attempt == 100) // Unfortunately if recursion goes beyond 100 we'll have to settle for a duplicate. Don't want to slow the program.
+            else if (attempt == 500) // Unfortunately if recursion goes beyond 500 we'll have to settle for a duplicate. Don't want to slow the program.
             {
                 return GeneratedPass; 
             }
