@@ -9,7 +9,7 @@ namespace Wasspord
 {
     /*
      * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
-     * GeneratePassword, ValidatePassword, Display
+     * GeneratePassword, ValidatePassword, Print
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
      * Variables/Misc: regex, regexpattern, characters
     */
@@ -160,22 +160,23 @@ namespace Wasspord
             }
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
-        /* Display: Displays account information from the account dictionary. Used to output to a textbox in WasspordGUI as of this time. 
+        /* Print: Print account information from the account dictionary. Used to output to a textbox in WasspordGUI as of this time. 
          * Returns: Output from account dictionary. */
-        public static string Display()
+        public static string Print()
         {
-            string display = "";
+            string print = "";
             foreach (var pair in Accounts)
             {
-                    display +=
+                    print +=
                     "Account Location: " + pair.Key.location
                + " | Account Username: " + pair.Key.username
                + " | Account Password: " + Decrypt(pair.Value) 
                + "\r\n";
             }
-            return display;
+            return print;
         }
 
+        // Reference on Encryption / Decryption being done here:
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rfc2898derivebytes?view=net-8.0
         // https://learn.microsoft.com/en-us/dotnet/api/system.io.memorystream?view=net-8.0
@@ -247,11 +248,12 @@ namespace Wasspord
                 }
                 catch
                 {
-                    // This comes from older code, pre-commit 14ff6c5
-                    // This is to keep compability with older files.
-                    // Because we already get our bytes from our base64 string earlier in our code,
-                    // we don't need to have all of the old code.
-                    // (namely, declaring a new bytes array and calling another Convert.FromBase64String())
+                    /* This comes from older code, pre-commit 14ff6c5
+                       This is to keep compability with older files.
+                       Because we already get our bytes from our base64 string earlier in our code,
+                       we don't need to have all of the old code.
+                       (namely, declaring a new bytes array and calling another Convert.FromBase64String())
+                    */
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;

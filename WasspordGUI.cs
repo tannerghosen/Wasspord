@@ -16,14 +16,6 @@ namespace Wasspord
 		public WasspordGUI()
 		{
 			InitializeComponent();
-			/*if (Autosave)
-			{
-				AutosaveCheckbox.Checked = true;
-			}
-			else if (!Autosave)
-			{
-				AutosaveCheckbox.Checked = false;
-			}*/
 			AutosaveCheckbox.Checked = Autosave ? true : false;
 		}
 
@@ -32,7 +24,7 @@ namespace Wasspord
 			new AddAccountGUI().ShowDialog();
 			if (Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
-			OutputTextbox.Text = Wasspord.Display();
+			OutputTextbox.Text = Wasspord.Print();
 		}
 
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
@@ -40,7 +32,7 @@ namespace Wasspord
 			new DeleteAccountGUI().ShowDialog();
 			if (Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
-			OutputTextbox.Text = Wasspord.Display();
+			OutputTextbox.Text = Wasspord.Print();
 		}
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
@@ -48,12 +40,12 @@ namespace Wasspord
 			new UpdatePasswordGUI().ShowDialog();
 			if (Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
-			OutputTextbox.Text = Wasspord.Display();
-		}
+			OutputTextbox.Text = Wasspord.Print();
+        }
 
 		private void WasspordGUI_Load(object sender, EventArgs e)
 		{
-			OutputTextbox.Text = Wasspord.Display();
+			OutputTextbox.Text = Wasspord.Print();
 			if (Display == true)
 				OutputTextbox.ForeColor = Color.FromName("White");
 		}
@@ -109,7 +101,7 @@ namespace Wasspord
 				Openfilename = Path.GetFileName(of.FileName);
 				Openfilepath = Path.GetDirectoryName(of.FileName);
 				Wasspord.Load(Openfilepath, Openfilename);
-				OutputTextbox.Text = Wasspord.Display();
+				OutputTextbox.Text = Wasspord.Print();
 			}
 		}
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,27 +113,23 @@ namespace Wasspord
 			AboutForm.MaximizeBox = false;
 			AboutForm.FormBorderStyle = FormBorderStyle.FixedSingle;
 			Label AboutFormLabel = new Label();
-			AboutFormLabel.Location = new Point(100, 175);
+			AboutFormLabel.Location = new Point(125, 175);
 			AboutFormLabel.Size = new Size(250, 50);
 			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023 - 2024";
 			LinkLabel AboutFormLinkLabel = new LinkLabel();
-			AboutFormLinkLabel.Location = new Point(100, 225);
+			AboutFormLinkLabel.Location = new Point(75, 225);
 			AboutFormLinkLabel.Size = new Size(250, 15);
 			AboutFormLinkLabel.Text = "https://www.github.com/tannerghosen/Wasspord";
-			AboutFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(AboutFormLinkClicked);
+			AboutFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(GitHubLinkClicked);
 			LinkLabel AboutFormLinkLabel2 = new LinkLabel();
-			AboutFormLinkLabel2.Location = new Point(100, 240);
+			AboutFormLinkLabel2.Location = new Point(75, 240);
 			AboutFormLinkLabel2.Size = new Size(250, 15);
 			AboutFormLinkLabel2.Text = "Glitches or Bugs? Report them here.";
-			AboutFormLinkLabel2.LinkClicked += new LinkLabelLinkClickedEventHandler(HowToFormLinkClicked);
+			AboutFormLinkLabel2.LinkClicked += new LinkLabelLinkClickedEventHandler(IssuesLinkClicked);
 			AboutForm.Controls.Add(AboutFormLabel);
 			AboutForm.Controls.Add(AboutFormLinkLabel);
 			AboutForm.Controls.Add(AboutFormLinkLabel2);
 			AboutForm.ShowDialog();
-		}
-		private void AboutFormLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			Process.Start("https://www.github.com/tannerghosen/Wasspord");
 		}
 
 		private void DisplayButton_Click(object sender, EventArgs e)
@@ -168,16 +156,22 @@ namespace Wasspord
 			HelpFormLinkLabel.Location = new Point(75, 30);
 			HelpFormLinkLabel.Size = new Size(250, 15);
 			HelpFormLinkLabel.Text = "Report bugs and glitches to the repo's issues!";
-			HelpFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(HowToFormLinkClicked);
+			HelpFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(IssuesLinkClicked);
 			HelpForm.Controls.Add(HelpFormLabel);
 			HelpForm.Controls.Add(HelpFormLinkLabel);
 			HelpForm.ShowDialog();
 		}
-		private void HowToFormLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			Process.Start("https://github.com/tannerghosen/Wasspord/issues");
-		}
-		private void addAccountToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void GitHubLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://www.github.com/tannerghosen/Wasspord");
+        }
+        private void IssuesLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/tannerghosen/Wasspord/issues");
+        }
+
+        private void addAccountToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AddAccountButton_Click(sender, e);
 		}
