@@ -8,21 +8,20 @@ namespace Wasspord
 {
 	public partial class WasspordGUI : Form
 	{
-
-		public bool Autosave = Properties.Settings.Default.Autosave;
-		public bool Display = Properties.Settings.Default.Display;
+		public bool loaded = false;
 		public string Openfilename = "";
 		public string Openfilepath = "";
 		public WasspordGUI()
 		{
 			InitializeComponent();
-			AutosaveCheckbox.Checked = Autosave ? true : false;
+			AutosaveCheckbox.Checked = Wasspord.Autosave ? true : false;
+			loaded = true;
 		}
 
 		private void AddAccountButton_Click(object sender, EventArgs e)
 		{
 			new AddAccountGUI().ShowDialog();
-			if (Autosave == true)
+			if (Wasspord.Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
 			OutputTextbox.Text = Wasspord.Print();
 		}
@@ -30,7 +29,7 @@ namespace Wasspord
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
 		{
 			new DeleteAccountGUI().ShowDialog();
-			if (Autosave == true)
+			if (Wasspord.Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
 			OutputTextbox.Text = Wasspord.Print();
 		}
@@ -38,7 +37,7 @@ namespace Wasspord
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
 			new UpdatePasswordGUI().ShowDialog();
-			if (Autosave == true)
+			if (Wasspord.Autosave == true)
 				Wasspord.Save(Openfilename, Openfilepath);
 			OutputTextbox.Text = Wasspord.Print();
         }
@@ -46,13 +45,13 @@ namespace Wasspord
 		private void WasspordGUI_Load(object sender, EventArgs e)
 		{
 			OutputTextbox.Text = Wasspord.Print();
-			if (Display == true)
+			if (Wasspord.Display == true)
 				OutputTextbox.ForeColor = Color.FromName("White");
 		}
 
 		private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (AutosaveCheckbox.Checked == true)
+			/*if (AutosaveCheckbox.Checked == true)
 			{
 				Properties.Settings.Default.Autosave = Autosave = true;
 				Properties.Settings.Default.Save();
@@ -61,6 +60,10 @@ namespace Wasspord
 			{
 				Properties.Settings.Default.Autosave = Autosave = false;
 				Properties.Settings.Default.Save();
+			}*/
+			if (loaded == true)
+			{
+				Wasspord.UpdateSettings("Autosave");
 			}
 		}
 
@@ -135,9 +138,8 @@ namespace Wasspord
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
 			OutputTextbox.ForeColor = OutputTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White"): Color.FromName("Black");
-			Properties.Settings.Default.Display = Display = !Properties.Settings.Default.Display;
-			Properties.Settings.Default.Save();
-		}
+            Wasspord.UpdateSettings("Display");
+        }
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -188,17 +190,15 @@ namespace Wasspord
 
 		private void autosaveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Autosave == true)
+			if (Wasspord.Autosave == true)
 			{
-				Properties.Settings.Default.Autosave = Autosave = false;
-				Properties.Settings.Default.Save();
-				AutosaveCheckbox.Checked = false;
+                Wasspord.UpdateSettings("Autosave");
+                AutosaveCheckbox.Checked = false;
 			}
-			else if (Autosave == false)
+			else if (Wasspord.Autosave == false)
 			{
-				Properties.Settings.Default.Autosave = Autosave = true;
-				Properties.Settings.Default.Save();
-				AutosaveCheckbox.Checked = true;
+                Wasspord.UpdateSettings("Autosave");
+                AutosaveCheckbox.Checked = true;
 			}
 		}
 

@@ -4,7 +4,8 @@ using System.Text;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-
+using System.Text.Json;
+// using System.Diagnostics;
 namespace Wasspord
 {
     /*
@@ -16,6 +17,10 @@ namespace Wasspord
 
     public static class Wasspord
     {
+        /* Wasspord Program Settings */
+        public static string Settings = "./settings.json";
+        public static bool Autosave { get; set; }
+        public static bool Display { get; set; }
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
            where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
            under the same username/email at multiple websites.
@@ -308,5 +313,68 @@ namespace Wasspord
         {
             Accounts.Clear();
         }
+
+        /* Init: Initalizes our program settings. */
+        public static void Init()
+        {
+            //Debug.WriteLine("DEBUG: INITIAL STATE: A: " + Autosave + " D: " + Display);
+            if (!File.Exists(Settings)) // if config file doesn't exist
+            {
+                Autosave = false;
+                Display = true;
+                //Debug.WriteLine("DEBUG: FIRST TIME: A: " + Autosave + " D: " + Display);
+                SaveSettings();
+            }
+            else
+            {
+                string json = File.ReadAllText(Settings); // read the file as a string
+                JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
+                Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
+                Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
+                //Debug.WriteLine("DEBUG: OUR ACTUAL START: A: " + Autosave + " D: " + Display);
+                settings.Dispose();
+            }
+        }
+
+        /* UpdateSettings: Updates a specified setting.
+         * Parameters: setting
+         */
+        public static void UpdateSettings(string setting)
+        {
+            // Simply enough, this switch inverts our setting
+            switch (setting)
+            {
+                case "Autosave":
+                    Autosave = !Autosave;
+                    break;
+                case "Display":
+                    Display = !Display;
+                    break;
+            }
+
+            // And we save our settings.
+            SaveSettings();
+
+            //Debug.WriteLine("DEBUG: VALUE CHANGED IS ''" + setting + "''");
+        }
+
+        /* SaveSettings: Saves our settings to config.json. */
+        public static void SaveSettings()
+        {
+            // We write into our config.json file an JSON object
+            // This contains our settings.
+            using (StreamWriter writer = new StreamWriter(Settings))
+            {
+                // Because C# bools are capitalized, we need to lowercase it before we send it,
+                // as shown in the code below.
+                writer.WriteLine("{");
+                writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
+                writer.WriteLine("\"Display\":" + Display.ToString().ToLower());
+                writer.WriteLine("}");
+            }
+            //Debug.WriteLine("DEBUG: Autosave Value: " + Autosave + " Display Value: " + Display + "");
+            //Debug.WriteLine("DEBUG: Autosave Value (json boolean): " + Autosave.ToString().ToLower() + " Display Value (json boolean): " + Display.ToString().ToLower() + "");
+        }
+
     }
 }
