@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Diagnostics;
+// using System.Diagnostics;
 
 namespace Wasspord
 {
@@ -10,8 +10,9 @@ namespace Wasspord
 	{
 		public bool loaded = false;
 		public string Openfilename = "";
-		public string Openfilepath = "";
-		public WasspordGUI()
+		public string Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+
+        public WasspordGUI()
 		{
 			InitializeComponent();
 			AutosaveCheckbox.Checked = Wasspord.Autosave ? true : false;
@@ -84,7 +85,9 @@ namespace Wasspord
 			SaveFileDialog sf = new SaveFileDialog();
 			sf.Title = "Save";
 			sf.Filter = "Wasspord Text File|*.wasspord";
-			sf.RestoreDirectory = true;
+			sf.InitialDirectory = Openfilename;
+			//Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
+            sf.RestoreDirectory = true;
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
 				Openfilename = Path.GetFileName(sf.FileName);
@@ -98,8 +101,10 @@ namespace Wasspord
 			OpenFileDialog of = new OpenFileDialog();
 			of.Title = "Open";
 			of.Filter = "Wasspord Text File|*.wasspord";
-			of.RestoreDirectory = true;
-			if (of.ShowDialog() == DialogResult.OK)
+			of.InitialDirectory = Openfilepath;
+            of.RestoreDirectory = true;
+            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
+            if (of.ShowDialog() == DialogResult.OK)
 			{
 				Openfilename = Path.GetFileName(of.FileName);
 				Openfilepath = Path.GetDirectoryName(of.FileName);

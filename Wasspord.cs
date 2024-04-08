@@ -332,6 +332,11 @@ namespace Wasspord
                 //Debug.WriteLine("DEBUG: OUR ACTUAL START: A: " + Autosave + " D: " + Display);
                 settings.Dispose();
             }
+
+            if (!Directory.Exists("Accounts"))
+            {
+                Directory.CreateDirectory("Accounts");
+            }
         }
 
         /* UpdateSettings: Updates a specified setting.
