@@ -274,11 +274,9 @@ namespace Wasspord
         {
             StringBuilder password = new StringBuilder(string.Empty);
             Random r = new Random();
-            int i = 0;
-            while (i < 16)
+            for(int i = 0; i < 16; i++)
             {
                 password.Append(characters[r.Next(characters.Length)]);
-                i++;
             }
             string GeneratedPass = password.ToString();
             // if Passwords doesn't contain GeneratedPass and it's good according to our regex
@@ -356,6 +354,7 @@ namespace Wasspord
             SaveSettings();
 
             //Debug.WriteLine("DEBUG: VALUE CHANGED IS ''" + setting + "''");
+            //Debug.WriteLine("DEBUG: (in UpdateSettings) Autosave Value: " + Autosave + " Display Value: " + Display + "");
         }
 
         /* SaveSettings: Saves our settings to config.json. */
