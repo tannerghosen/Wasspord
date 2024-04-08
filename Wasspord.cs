@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Text.Json;
+using System.Windows.Forms;
 // using System.Diagnostics;
 namespace Wasspord
 {
@@ -21,6 +22,11 @@ namespace Wasspord
         public static string Settings = "./settings.json";
         public static bool Autosave { get; set; }
         public static bool Display { get; set; }
+
+        public static string Openfilename = "";
+
+        public static string Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
            where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
            under the same username/email at multiple websites.
@@ -380,5 +386,38 @@ namespace Wasspord
             //Debug.WriteLine("DEBUG: Autosave Value (json boolean): " + Autosave.ToString().ToLower() + " Display Value (json boolean): " + Display.ToString().ToLower() + "");
         }
 
+        /* OpenFileDialog: Used to load .wasspord files. */
+        public static void OpenFileDialog()
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Title = "Open";
+            of.Filter = "Wasspord Text File|*.wasspord";
+            of.InitialDirectory = Openfilepath;
+            of.RestoreDirectory = true;
+            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                Openfilename = Path.GetFileName(of.FileName);
+                Openfilepath = Path.GetDirectoryName(of.FileName);
+                Load(Openfilepath, Openfilename);
+            }
+        }
+
+        /* SaveFileDialog: Used to save .wasspord files. */
+        public static void SaveFileDialog()
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.Title = "Save";
+            sf.Filter = "Wasspord Text File|*.wasspord";
+            sf.InitialDirectory = Openfilepath;
+            //Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
+            sf.RestoreDirectory = true;
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                Openfilename = Path.GetFileName(sf.FileName);
+                Openfilepath = Path.GetDirectoryName(sf.FileName);
+                Save(Openfilepath, Openfilename);
+            }
+        }
     }
 }

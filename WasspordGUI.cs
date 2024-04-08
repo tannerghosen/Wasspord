@@ -2,15 +2,13 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-// using System.Diagnostics;
+using System.Diagnostics;
 
 namespace Wasspord
 {
 	public partial class WasspordGUI : Form
 	{
 		public bool loaded = false;
-		public string Openfilename = "";
-		public string Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
 
         public WasspordGUI()
 		{
@@ -23,7 +21,7 @@ namespace Wasspord
 		{
 			new AddAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-				Wasspord.Save(Openfilename, Openfilepath);
+				Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
 			OutputTextbox.Text = Wasspord.Print();
 		}
 
@@ -31,16 +29,16 @@ namespace Wasspord
 		{
 			new DeleteAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-				Wasspord.Save(Openfilename, Openfilepath);
-			OutputTextbox.Text = Wasspord.Print();
+                Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
+            OutputTextbox.Text = Wasspord.Print();
 		}
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
 			new UpdatePasswordGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-				Wasspord.Save(Openfilename, Openfilepath);
-			OutputTextbox.Text = Wasspord.Print();
+                Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
+            OutputTextbox.Text = Wasspord.Print();
         }
 
 		private void WasspordGUI_Load(object sender, EventArgs e)
@@ -70,19 +68,19 @@ namespace Wasspord
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Openfilename == "" && Openfilepath == "")
+			if (Wasspord.Openfilename == "" && Wasspord.Openfilepath == Directory.GetCurrentDirectory() + "\\Accounts\\")
 			{
 				saveAsToolStripMenuItem_Click(sender, e);
 			}
 			else
 			{
-				Wasspord.Save(Openfilepath, Openfilename);
+				Wasspord.Save(Wasspord.Openfilepath, Wasspord.Openfilename);
 			}
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SaveFileDialog sf = new SaveFileDialog();
+			/*SaveFileDialog sf = new SaveFileDialog();
 			sf.Title = "Save";
 			sf.Filter = "Wasspord Text File|*.wasspord";
 			sf.InitialDirectory = Openfilename;
@@ -93,12 +91,13 @@ namespace Wasspord
 				Openfilename = Path.GetFileName(sf.FileName);
 				Openfilepath = Path.GetDirectoryName(sf.FileName);
 				Wasspord.Save(Openfilepath, Openfilename);
-			}
-		}
+			}*/
+            Wasspord.SaveFileDialog();
+        }
 
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog of = new OpenFileDialog();
+			/*OpenFileDialog of = new OpenFileDialog();
 			of.Title = "Open";
 			of.Filter = "Wasspord Text File|*.wasspord";
 			of.InitialDirectory = Openfilepath;
@@ -110,8 +109,10 @@ namespace Wasspord
 				Openfilepath = Path.GetDirectoryName(of.FileName);
 				Wasspord.Load(Openfilepath, Openfilename);
 				OutputTextbox.Text = Wasspord.Print();
-			}
-		}
+			}*/
+			Wasspord.OpenFileDialog();
+            OutputTextbox.Text = Wasspord.Print();
+        }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Form AboutForm = new Form();
@@ -215,9 +216,9 @@ namespace Wasspord
         {
 			Wasspord.Reset();
 			OutputTextbox.Text = "";
-			Openfilename = "";
-			Openfilepath = "";
-		}
+			Wasspord.Openfilename = "";
+			Wasspord.Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+        }
 
         private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
