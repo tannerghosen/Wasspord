@@ -16,50 +16,47 @@ namespace Wasspord
 			AutosaveCheckbox.Checked = Wasspord.Autosave ? true : false;
 			loaded = true;
 		}
-
-		private void AddAccountButton_Click(object sender, EventArgs e)
+        private void AddAccountButton_Click(object sender, EventArgs e)
 		{
 			new AddAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
 				Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
-			OutputTextbox.Text = Wasspord.Print();
-		}
+			LocationTextbox.Text = Wasspord.Print("Location");
+            UsernameTextbox.Text = Wasspord.Print("Username");
+            PasswordTextbox.Text = Wasspord.Print("Password");
+        }
 
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
 		{
 			new DeleteAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
-            OutputTextbox.Text = Wasspord.Print();
-		}
+            LocationTextbox.Text = Wasspord.Print("Location");
+            UsernameTextbox.Text = Wasspord.Print("Username");
+            PasswordTextbox.Text = Wasspord.Print("Password");
+        }
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
 			new UpdatePasswordGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
-            OutputTextbox.Text = Wasspord.Print();
+            LocationTextbox.Text = Wasspord.Print("Location");
+            UsernameTextbox.Text = Wasspord.Print("Username");
+            PasswordTextbox.Text = Wasspord.Print("Password");
         }
 
 		private void WasspordGUI_Load(object sender, EventArgs e)
 		{
-			OutputTextbox.Text = Wasspord.Print();
-			if (Wasspord.Display == true)
-				OutputTextbox.ForeColor = Color.FromName("White");
-		}
+            LocationTextbox.Text = Wasspord.Print("Location");
+            UsernameTextbox.Text = Wasspord.Print("Username");
+            PasswordTextbox.Text = Wasspord.Print("Password");
+            if (Wasspord.Display == true)
+				LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
+        }
 
 		private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			/*if (AutosaveCheckbox.Checked == true)
-			{
-				Properties.Settings.Default.Autosave = Autosave = true;
-				Properties.Settings.Default.Save();
-			}
-			else if (AutosaveCheckbox.Checked == false)
-			{
-				Properties.Settings.Default.Autosave = Autosave = false;
-				Properties.Settings.Default.Save();
-			}*/
 			if (loaded == true)
 			{
 				Wasspord.UpdateSettings("Autosave");
@@ -80,38 +77,15 @@ namespace Wasspord
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			/*SaveFileDialog sf = new SaveFileDialog();
-			sf.Title = "Save";
-			sf.Filter = "Wasspord Text File|*.wasspord";
-			sf.InitialDirectory = Openfilename;
-			//Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
-            sf.RestoreDirectory = true;
-			if (sf.ShowDialog() == DialogResult.OK)
-			{
-				Openfilename = Path.GetFileName(sf.FileName);
-				Openfilepath = Path.GetDirectoryName(sf.FileName);
-				Wasspord.Save(Openfilepath, Openfilename);
-			}*/
-            Wasspord.SaveFileDialog();
+            SaveFileDialog();
         }
 
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			/*OpenFileDialog of = new OpenFileDialog();
-			of.Title = "Open";
-			of.Filter = "Wasspord Text File|*.wasspord";
-			of.InitialDirectory = Openfilepath;
-            of.RestoreDirectory = true;
-            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
-            if (of.ShowDialog() == DialogResult.OK)
-			{
-				Openfilename = Path.GetFileName(of.FileName);
-				Openfilepath = Path.GetDirectoryName(of.FileName);
-				Wasspord.Load(Openfilepath, Openfilename);
-				OutputTextbox.Text = Wasspord.Print();
-			}*/
-			Wasspord.OpenFileDialog();
-            OutputTextbox.Text = Wasspord.Print();
+			OpenFileDialog();
+            LocationTextbox.Text = Wasspord.Print("Location");
+            UsernameTextbox.Text = Wasspord.Print("Username");
+            PasswordTextbox.Text = Wasspord.Print("Password");
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -143,7 +117,7 @@ namespace Wasspord
 
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
-			OutputTextbox.ForeColor = OutputTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White"): Color.FromName("Black");
+            LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = LocationTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White"): Color.FromName("Black");
             Wasspord.UpdateSettings("Display");
         }
 
@@ -215,7 +189,7 @@ namespace Wasspord
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			Wasspord.Reset();
-			OutputTextbox.Text = "";
+			LocationTextbox.Text = "";
 			Wasspord.Openfilename = "";
 			Wasspord.Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
         }
@@ -228,12 +202,11 @@ namespace Wasspord
             PassForm.Height = 150;
             PassForm.MaximizeBox = false;
             PassForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-            /*Button PassFormOKButton = new Button();
+            Button PassFormOKButton = new Button();
             PassFormOKButton.Text = "OK";
             PassFormOKButton.Width = 75;
 			PassFormOKButton.Height = 23;
             PassFormOKButton.Location = new Point(100, 75);
-            */
             TextBox PassFormTextBox = new TextBox();
             PassFormTextBox.Text = Wasspord.GeneratePassword();
             PassFormTextBox.Location = new Point(80, 50);
@@ -243,9 +216,13 @@ namespace Wasspord
             PassFormLabel.Text = "Here's your generated password!";
             PassFormLabel.Location = new Point(60, 30);
             PassFormLabel.Width = 200;
-            //PassForm.Controls.Add(PassFormOKButton);
+            PassForm.Controls.Add(PassFormOKButton);
             PassForm.Controls.Add(PassFormTextBox);
             PassForm.Controls.Add(PassFormLabel);
+            PassFormOKButton.Click += (s, ev) =>
+            {
+				PassForm.Close();
+            };
             PassForm.ShowDialog();
         }
 
@@ -265,7 +242,7 @@ namespace Wasspord
             ValidateFormLabel.Location = new Point(45, 20);
             ValidateFormLabel.Width = 300;
 			ValidateFormLabel.Height = 50;
-			Button ValidateFormOKButton = new Button();
+            Button ValidateFormOKButton = new Button();
             ValidateFormOKButton.Text = "OK";
             ValidateFormOKButton.Width = 75;
             ValidateFormOKButton.Height = 23;
@@ -273,7 +250,8 @@ namespace Wasspord
             ValidateFormOKButton.Click += (s, ev) =>
 			{
 				ValidateFormOKButton_Click(ValidateFormTextBox.Text);
-			};
+                ValidateForm.Close();
+            };
             ValidateForm.Controls.Add(ValidateFormTextBox);
             ValidateForm.Controls.Add(ValidateFormLabel);
             ValidateForm.Controls.Add(ValidateFormOKButton);
@@ -282,6 +260,47 @@ namespace Wasspord
         private void ValidateFormOKButton_Click(string password)
         {
 			MessageBox.Show(Wasspord.ValidatePassword(password));
+        }
+
+        /* OpenFileDialog: Used to load .wasspord files. */
+        public static void OpenFileDialog()
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.Title = "Open";
+            of.Filter = "Wasspord Text File|*.wasspord";
+            of.InitialDirectory = Wasspord.Openfilepath;
+            of.RestoreDirectory = true;
+            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                Wasspord.Openfilename = Path.GetFileName(of.FileName);
+                Wasspord.Openfilepath = Path.GetDirectoryName(of.FileName);
+                Wasspord.Load(Wasspord.Openfilepath, Wasspord.Openfilename);
+            }
+        }
+
+        /* SaveFileDialog: Used to save .wasspord files. */
+        public static void SaveFileDialog()
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.Title = "Save";
+            sf.Filter = "Wasspord Text File|*.wasspord";
+            sf.InitialDirectory = Wasspord.Openfilepath;
+            //Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
+            sf.RestoreDirectory = true;
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                Wasspord.Openfilename = Path.GetFileName(sf.FileName);
+                Wasspord.Openfilepath = Path.GetDirectoryName(sf.FileName);
+                Wasspord.Save(Wasspord.Openfilepath, Wasspord.Openfilename);
+            }
+        }
+
+        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            LocationTextbox.Top = -ScrollBar.Value;
+            UsernameTextbox.Top = -ScrollBar.Value;
+            PasswordTextbox.Top = -ScrollBar.Value;
         }
     }
 }

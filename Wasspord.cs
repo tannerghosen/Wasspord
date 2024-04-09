@@ -5,20 +5,23 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Text.Json;
-using System.Windows.Forms;
 // using System.Diagnostics;
 namespace Wasspord
 {
     /*
      * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
-     * GeneratePassword, ValidatePassword, Print
+     * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
-     * Variables/Misc: regex, regexpattern, characters
+     * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Openfilename, Openfilepath
     */
 
     public static class Wasspord
     {
-        /* Wasspord Program Settings */
+        /* Wasspord Program Settings:
+           This includes our program's settings (located at ./settings.json), Autosave and Display settings,
+           and the file path and file name of our loaded .wasspord file (which by default is located at 
+           (programdir)/Accounts
+         */
         public static string Settings = "./settings.json";
         public static bool Autosave { get; set; }
         public static bool Display { get; set; }
@@ -173,7 +176,7 @@ namespace Wasspord
         }
         /* Print: Print account information from the account dictionary. Used to output to a textbox in WasspordGUI as of this time. 
          * Returns: Output from account dictionary. */
-        public static string Print()
+        /*public static string Print()
         {
             string print = "";
             foreach (var pair in Accounts)
@@ -185,8 +188,28 @@ namespace Wasspord
                + "\r\n";
             }
             return print;
+        }*/
+        public static string Print(string thing)
+        {
+            string print = "";
+            foreach (var pair in Accounts)
+            {
+                switch (thing)
+                {
+                    case "Location":
+                        print += pair.Key.location + "\r\n";
+                        break;
+                    case "Username":
+                        print += pair.Key.username + "\r\n";
+                        break;
+                    case "Password":
+                        print += Decrypt(pair.Value) + "\r\n";
+                        break;
+                }
+            }
+            return print;
         }
-
+        
         // Reference on Encryption / Decryption being done here:
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rfc2898derivebytes?view=net-8.0
@@ -318,7 +341,7 @@ namespace Wasspord
             Accounts.Clear();
         }
 
-        /* Init: Initalizes our program settings. */
+        /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
         public static void Init()
         {
             //Debug.WriteLine("DEBUG: INITIAL STATE: A: " + Autosave + " D: " + Display);
@@ -368,10 +391,10 @@ namespace Wasspord
             //Debug.WriteLine("DEBUG: (in UpdateSettings) Autosave Value: " + Autosave + " Display Value: " + Display + "");
         }
 
-        /* SaveSettings: Saves our settings to config.json. */
+        /* SaveSettings: Saves our settings to settings.json. */
         public static void SaveSettings()
         {
-            // We write into our config.json file an JSON object
+            // We write into our settings.json file an JSON object
             // This contains our settings.
             using (StreamWriter writer = new StreamWriter(Settings))
             {
@@ -384,40 +407,6 @@ namespace Wasspord
             }
             //Debug.WriteLine("DEBUG: Autosave Value: " + Autosave + " Display Value: " + Display + "");
             //Debug.WriteLine("DEBUG: Autosave Value (json boolean): " + Autosave.ToString().ToLower() + " Display Value (json boolean): " + Display.ToString().ToLower() + "");
-        }
-
-        /* OpenFileDialog: Used to load .wasspord files. */
-        public static void OpenFileDialog()
-        {
-            OpenFileDialog of = new OpenFileDialog();
-            of.Title = "Open";
-            of.Filter = "Wasspord Text File|*.wasspord";
-            of.InitialDirectory = Openfilepath;
-            of.RestoreDirectory = true;
-            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
-            if (of.ShowDialog() == DialogResult.OK)
-            {
-                Openfilename = Path.GetFileName(of.FileName);
-                Openfilepath = Path.GetDirectoryName(of.FileName);
-                Load(Openfilepath, Openfilename);
-            }
-        }
-
-        /* SaveFileDialog: Used to save .wasspord files. */
-        public static void SaveFileDialog()
-        {
-            SaveFileDialog sf = new SaveFileDialog();
-            sf.Title = "Save";
-            sf.Filter = "Wasspord Text File|*.wasspord";
-            sf.InitialDirectory = Openfilepath;
-            //Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
-            sf.RestoreDirectory = true;
-            if (sf.ShowDialog() == DialogResult.OK)
-            {
-                Openfilename = Path.GetFileName(sf.FileName);
-                Openfilepath = Path.GetDirectoryName(sf.FileName);
-                Save(Openfilepath, Openfilename);
-            }
         }
     }
 }
