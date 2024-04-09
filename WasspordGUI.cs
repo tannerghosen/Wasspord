@@ -273,6 +273,7 @@ namespace Wasspord
             //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
             if (of.ShowDialog() == DialogResult.OK)
             {
+                Wasspord.Reset();
                 Wasspord.Openfilename = Path.GetFileName(of.FileName);
                 Wasspord.Openfilepath = Path.GetDirectoryName(of.FileName);
                 Wasspord.Load(Wasspord.Openfilepath, Wasspord.Openfilename);

@@ -55,8 +55,8 @@
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DisplayButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.UsernameTextbox = new System.Windows.Forms.TextBox();
+            this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.LocationsLabel = new System.Windows.Forms.Label();
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
@@ -149,28 +149,28 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.loadToolStripMenuItem.Text = "Open";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -294,20 +294,6 @@
             this.panel1.Size = new System.Drawing.Size(500, 350);
             this.panel1.TabIndex = 9;
             // 
-            // PasswordTextbox
-            // 
-            this.PasswordTextbox.AcceptsReturn = true;
-            this.PasswordTextbox.BackColor = System.Drawing.Color.Black;
-            this.PasswordTextbox.ForeColor = System.Drawing.Color.Black;
-            this.PasswordTextbox.Location = new System.Drawing.Point(325, 0);
-            this.PasswordTextbox.Multiline = true;
-            this.PasswordTextbox.Name = "PasswordTextbox";
-            this.PasswordTextbox.ReadOnly = true;
-            this.PasswordTextbox.Size = new System.Drawing.Size(175, 900);
-            this.PasswordTextbox.TabIndex = 10;
-            this.PasswordTextbox.UseSystemPasswordChar = true;
-            this.PasswordTextbox.WordWrap = false;
-            // 
             // UsernameTextbox
             // 
             this.UsernameTextbox.AcceptsReturn = true;
@@ -321,6 +307,20 @@
             this.UsernameTextbox.TabIndex = 11;
             this.UsernameTextbox.UseSystemPasswordChar = true;
             this.UsernameTextbox.WordWrap = false;
+            // 
+            // PasswordTextbox
+            // 
+            this.PasswordTextbox.AcceptsReturn = true;
+            this.PasswordTextbox.BackColor = System.Drawing.Color.Black;
+            this.PasswordTextbox.ForeColor = System.Drawing.Color.Black;
+            this.PasswordTextbox.Location = new System.Drawing.Point(325, 0);
+            this.PasswordTextbox.Multiline = true;
+            this.PasswordTextbox.Name = "PasswordTextbox";
+            this.PasswordTextbox.ReadOnly = true;
+            this.PasswordTextbox.Size = new System.Drawing.Size(175, 900);
+            this.PasswordTextbox.TabIndex = 10;
+            this.PasswordTextbox.UseSystemPasswordChar = true;
+            this.PasswordTextbox.WordWrap = false;
             // 
             // LocationsLabel
             // 

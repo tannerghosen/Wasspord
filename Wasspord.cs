@@ -148,7 +148,7 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
-            Reset(); // Reset ahead of time so we don't have errors down the line.
+            //Reset(); // Reset ahead of time so we don't have errors down the line.
 			string file = location + @"\" + filename;
 			// This should never happen, but if it does create a blank file.
 			if (!File.Exists(file))
@@ -321,10 +321,12 @@ namespace Wasspord
             return !regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
 
-        /* Reset: Clears the dictionary and "resets". Used when "New" or "Load" is clicked in the GUI. */
+        /* Reset: Clears the dictionary and resets the opened file name / file path back to the starting point. Used when "New" or "Load" is clicked in the GUI. */
         public static void Reset()
         {
             Accounts.Clear();
+            Openfilename = "";
+            Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
