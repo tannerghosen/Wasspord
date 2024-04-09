@@ -189,7 +189,7 @@ namespace Wasspord
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			Wasspord.Reset();
-			LocationTextbox.Text = "";
+			LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
 			Wasspord.Openfilename = "";
 			Wasspord.Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
         }

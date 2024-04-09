@@ -174,21 +174,7 @@ namespace Wasspord
             }
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
-        /* Print: Print account information from the account dictionary. Used to output to a textbox in WasspordGUI as of this time. 
-         * Returns: Output from account dictionary. */
-        /*public static string Print()
-        {
-            string print = "";
-            foreach (var pair in Accounts)
-            {
-                    print +=
-                    "Account Location: " + pair.Key.location
-               + " | Account Username: " + pair.Key.username
-               + " | Account Password: " + Decrypt(pair.Value) 
-               + "\r\n";
-            }
-            return print;
-        }*/
+
         public static string Print(string thing)
         {
             string print = "";
