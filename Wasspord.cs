@@ -310,6 +310,7 @@ namespace Wasspord
             Random r = new Random();
             for(int i = 0; i < 16; i++)
             {
+                                // characters[Random([0, characters' length])];
                 password.Append(characters[r.Next(characters.Length)]);
             }
             string GeneratedPass = password.ToString();
@@ -359,13 +360,15 @@ namespace Wasspord
                 //Debug.WriteLine("DEBUG: FIRST TIME: A: " + Autosave + " D: " + Display);
                 SaveSettings();
             }
-            else
+            else // else load the settings from the config
             {
                 string json = File.ReadAllText(Settings); // read the file as a string
                 JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
+
                 Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
                 //Debug.WriteLine("DEBUG: OUR ACTUAL START: A: " + Autosave + " D: " + Display);
+
                 settings.Dispose();
             }
 

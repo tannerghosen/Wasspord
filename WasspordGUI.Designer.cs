@@ -74,7 +74,7 @@
             this.LocationTextbox.Multiline = true;
             this.LocationTextbox.Name = "LocationTextbox";
             this.LocationTextbox.ReadOnly = true;
-            this.LocationTextbox.Size = new System.Drawing.Size(175, 900);
+            this.LocationTextbox.Size = new System.Drawing.Size(175, 9999);
             this.LocationTextbox.TabIndex = 0;
             this.LocationTextbox.UseSystemPasswordChar = true;
             this.LocationTextbox.WordWrap = false;
@@ -303,7 +303,7 @@
             this.UsernameTextbox.Multiline = true;
             this.UsernameTextbox.Name = "UsernameTextbox";
             this.UsernameTextbox.ReadOnly = true;
-            this.UsernameTextbox.Size = new System.Drawing.Size(150, 900);
+            this.UsernameTextbox.Size = new System.Drawing.Size(150, 9999);
             this.UsernameTextbox.TabIndex = 11;
             this.UsernameTextbox.UseSystemPasswordChar = true;
             this.UsernameTextbox.WordWrap = false;
@@ -317,7 +317,7 @@
             this.PasswordTextbox.Multiline = true;
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.ReadOnly = true;
-            this.PasswordTextbox.Size = new System.Drawing.Size(175, 900);
+            this.PasswordTextbox.Size = new System.Drawing.Size(175, 9999);
             this.PasswordTextbox.TabIndex = 10;
             this.PasswordTextbox.UseSystemPasswordChar = true;
             this.PasswordTextbox.WordWrap = false;
@@ -352,9 +352,10 @@
             // ScrollBar
             // 
             this.ScrollBar.Location = new System.Drawing.Point(568, 44);
-            this.ScrollBar.Maximum = 550;
+            this.ScrollBar.Maximum = 9649;
             this.ScrollBar.Name = "ScrollBar";
             this.ScrollBar.Size = new System.Drawing.Size(17, 350);
+            this.ScrollBar.SmallChange = 10;
             this.ScrollBar.TabIndex = 12;
             this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
