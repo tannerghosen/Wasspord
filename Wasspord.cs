@@ -30,6 +30,8 @@ namespace Wasspord
 
         public static string Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
 
+        public static string Log = "./Wasspord.log";
+
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
            where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
            under the same username/email at multiple websites.
@@ -77,11 +79,12 @@ namespace Wasspord
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
-                Console.Error.WriteLine("Duplicate Account");
+                LogWrite("Duplicate Account '"+acc.username+"'", "ERROR");
             }
             else
             {
                 password = Encrypt(password);
+                LogWrite("Added Account '"+acc.username+ "'.");
                 Accounts.Add(acc, password);
             }
         }
@@ -94,11 +97,12 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                Console.Error.WriteLine("Account doesn't exist / is invalid");
+                LogWrite("Account '"+acc.username+"' doesn't exist / is invalid", "ERROR");
             }
             else
             {
                 password = Encrypt(password);
+                LogWrite("Updated Password of Account '" + acc.username + "'.");
                 Accounts[acc] = password;
             }
         }
@@ -111,10 +115,11 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                Console.Error.WriteLine("Account doesn't exist / is invalid");
+                LogWrite("Account '"+acc.username +"' doesn't exist / is invalid", "ERROR");
             }
             else
             {
+                LogWrite("Deleted Account '" + acc.username + "'.");
                 Accounts.Remove(acc);
             }
         }
@@ -150,7 +155,7 @@ namespace Wasspord
             }
             catch
             {
-                Console.Error.WriteLine("Error saving to file");
+                LogWrite("Error saving to file "+file, "ERROR");
             }
         }
 		/* Load: Loads previously saved account information from a .wasspord file to the account dictionary for current use. 
@@ -293,6 +298,7 @@ namespace Wasspord
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                     */
+                    LogWrite("Caught old password encryption, will decrypt this time.", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
@@ -318,6 +324,7 @@ namespace Wasspord
             if (!Passwords.Contains(GeneratedPass) && regex.IsMatch(GeneratedPass)) 
             {
                 Passwords.Add(GeneratedPass); // add it to the list
+                LogWrite("Generated Password Successfully!");
                 return GeneratedPass;
             }
             // Otherwise we try again
@@ -328,6 +335,7 @@ namespace Wasspord
             }
             else if (attempt == 500) // Unfortunately if recursion goes beyond 500 we'll have to settle for a duplicate. Don't want to slow the program.
             {
+                LogWrite("Failed to give a unique password after predefined attempt limit.","WARNING");
                 return GeneratedPass; 
             }
             return "";
@@ -345,20 +353,24 @@ namespace Wasspord
         public static void Reset()
         {
             Accounts.Clear();
+
             Openfilename = "";
             Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+
+            LogWrite("Resetted filepath and filename, cleared dictionary");
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
         public static void Init()
         {
-            //Debug.WriteLine("DEBUG: INITIAL STATE: A: " + Autosave + " D: " + Display);
             if (!File.Exists(Settings)) // if config file doesn't exist
             {
                 Autosave = false;
                 Display = true;
-                //Debug.WriteLine("DEBUG: FIRST TIME: A: " + Autosave + " D: " + Display);
+
                 SaveSettings();
+
+                LogWrite("Created settings file.");
             }
             else // else load the settings from the config
             {
@@ -367,9 +379,10 @@ namespace Wasspord
 
                 Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
-                //Debug.WriteLine("DEBUG: OUR ACTUAL START: A: " + Autosave + " D: " + Display);
 
                 settings.Dispose();
+
+                LogWrite("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
             }
 
             if (!Directory.Exists("Accounts"))
@@ -377,7 +390,6 @@ namespace Wasspord
                 Directory.CreateDirectory("Accounts");
             }
         }
-
         /* UpdateSettings: Updates a specified setting.
          * Parameters: setting
          */
@@ -394,11 +406,9 @@ namespace Wasspord
                     break;
             }
 
+            LogWrite("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
             // And we save our settings.
             SaveSettings();
-
-            //Debug.WriteLine("DEBUG: VALUE CHANGED IS ''" + setting + "''");
-            //Debug.WriteLine("DEBUG: (in UpdateSettings) Autosave Value: " + Autosave + " Display Value: " + Display + "");
         }
 
         /* SaveSettings: Saves our settings to settings.json. */
@@ -414,9 +424,22 @@ namespace Wasspord
                 writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
                 writer.WriteLine("\"Display\":" + Display.ToString().ToLower());
                 writer.WriteLine("}");
+                writer.Close();
             }
-            //Debug.WriteLine("DEBUG: Autosave Value: " + Autosave + " Display Value: " + Display + "");
-            //Debug.WriteLine("DEBUG: Autosave Value (json boolean): " + Autosave.ToString().ToLower() + " Display Value (json boolean): " + Display.ToString().ToLower() + "");
+            LogWrite("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
+        }
+
+        /* LogWrite: Writes a message to our Wasspord.log, usually important info */
+        public static void LogWrite(string message, string messagetype = "LOG")
+        {
+            string Time = DateTime.Now.ToString("h:mm:ss tt");
+            using (StreamWriter writer = new StreamWriter(Log, true))
+            {
+                // Because C# bools are capitalized, we need to lowercase it before we send it,
+                // as shown in the code below.
+                writer.WriteLine(Time+" "+messagetype+": "+message);
+                writer.Close();
+            }
         }
     }
 }
