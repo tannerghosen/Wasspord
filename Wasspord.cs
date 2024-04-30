@@ -382,6 +382,7 @@ namespace Wasspord
 
                 Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
+                // Folder = settings.RootElement.GetProperty("Folder").GetString();
 
                 settings.Dispose();
 
@@ -407,6 +408,10 @@ namespace Wasspord
                 case "Display":
                     Display = !Display;
                     break;
+              /*case "Folder":
+                    
+                    break;
+              */
             }
 
             LogWrite("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
