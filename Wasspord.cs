@@ -10,7 +10,7 @@ namespace Wasspord
 {
     /*
      * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
-     * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings
+     * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings, LogWrite
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
      * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Openfilename, Openfilepath
     */
@@ -79,12 +79,12 @@ namespace Wasspord
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
-                LogWrite("Duplicate Account '"+acc.username+"'", "ERROR");
+                LogWrite("Duplicate Account '" + acc.username + "'", "ERROR");
             }
             else
             {
                 password = Encrypt(password);
-                LogWrite("Added Account '"+acc.username+ "'.");
+                LogWrite("Added Account '" + acc.username + "'.");
                 Accounts.Add(acc, password);
             }
         }
@@ -97,7 +97,7 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                LogWrite("Account '"+acc.username+"' doesn't exist / is invalid", "ERROR");
+                LogWrite("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
             }
             else
             {
@@ -115,7 +115,7 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                LogWrite("Account '"+acc.username +"' doesn't exist / is invalid", "ERROR");
+                LogWrite("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
             }
             else
             {
@@ -152,6 +152,7 @@ namespace Wasspord
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
                     }
                 }
+                LogWrite("File saved to: " + file);
             }
             catch
             {
@@ -186,6 +187,7 @@ namespace Wasspord
                     }
                 }
             }
+            LogWrite("File loaded: " + file);
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 
@@ -298,7 +300,7 @@ namespace Wasspord
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                     */
-                    LogWrite("Caught old password encryption, will decrypt this time.", "WARNING");
+                    LogWrite("Caught old password encryption", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
@@ -429,14 +431,12 @@ namespace Wasspord
             LogWrite("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
         }
 
-        /* LogWrite: Writes a message to our Wasspord.log, usually important info */
+        /* LogWrite: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate. */
         public static void LogWrite(string message, string messagetype = "LOG")
         {
             string Time = DateTime.Now.ToString("h:mm:ss tt");
             using (StreamWriter writer = new StreamWriter(Log, true))
             {
-                // Because C# bools are capitalized, we need to lowercase it before we send it,
-                // as shown in the code below.
                 writer.WriteLine(Time+" "+messagetype+": "+message);
                 writer.Close();
             }
