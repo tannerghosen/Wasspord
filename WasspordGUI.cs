@@ -20,7 +20,7 @@ namespace Wasspord
 		{
 			new AddAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-				Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
+				Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
 			LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
             PasswordTextbox.Text = Wasspord.Print("Password");
@@ -30,7 +30,7 @@ namespace Wasspord
 		{
 			new DeleteAccountGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-                Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
+                Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
             PasswordTextbox.Text = Wasspord.Print("Password");
@@ -40,7 +40,7 @@ namespace Wasspord
 		{
 			new UpdatePasswordGUI().ShowDialog();
 			if (Wasspord.Autosave == true)
-                Wasspord.Save(Wasspord.Openfilename, Wasspord.Openfilepath);
+                Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
             PasswordTextbox.Text = Wasspord.Print("Password");
@@ -65,13 +65,13 @@ namespace Wasspord
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Wasspord.Openfilename == "" && Wasspord.Openfilepath == Directory.GetCurrentDirectory() + "\\Accounts\\")
+			if (Wasspord.Filename == "" && Wasspord.Folder == Directory.GetCurrentDirectory() + "\\Accounts\\")
 			{
 				saveAsToolStripMenuItem_Click(sender, e);
 			}
 			else
 			{
-				Wasspord.Save(Wasspord.Openfilepath, Wasspord.Openfilename);
+				Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
 			}
 		}
 
@@ -190,8 +190,8 @@ namespace Wasspord
         {
 			Wasspord.Reset();
 			LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
-			Wasspord.Openfilename = "";
-			Wasspord.Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+			Wasspord.Filename = "";
+			Wasspord.Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
         }
 
         private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -268,15 +268,15 @@ namespace Wasspord
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Open";
             of.Filter = "Wasspord Text File|*.wasspord";
-            of.InitialDirectory = Wasspord.Openfilepath;
+            of.InitialDirectory = Wasspord.Folder;
             of.RestoreDirectory = true;
             //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
             if (of.ShowDialog() == DialogResult.OK)
             {
                 Wasspord.Reset();
-                Wasspord.Openfilename = Path.GetFileName(of.FileName);
-                Wasspord.Openfilepath = Path.GetDirectoryName(of.FileName);
-                Wasspord.Load(Wasspord.Openfilepath, Wasspord.Openfilename);
+                Wasspord.Filename = Path.GetFileName(of.FileName);
+                Wasspord.Folder = Path.GetDirectoryName(of.FileName);
+                Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
             }
         }
 
@@ -286,14 +286,14 @@ namespace Wasspord
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Save";
             sf.Filter = "Wasspord Text File|*.wasspord";
-            sf.InitialDirectory = Wasspord.Openfilepath;
+            sf.InitialDirectory = Wasspord.Folder;
             //Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
             sf.RestoreDirectory = true;
             if (sf.ShowDialog() == DialogResult.OK)
             {
-                Wasspord.Openfilename = Path.GetFileName(sf.FileName);
-                Wasspord.Openfilepath = Path.GetDirectoryName(sf.FileName);
-                Wasspord.Save(Wasspord.Openfilepath, Wasspord.Openfilename);
+                Wasspord.Filename = Path.GetFileName(sf.FileName);
+                Wasspord.Folder = Path.GetDirectoryName(sf.FileName);
+                Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
             }
         }
 

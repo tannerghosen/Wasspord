@@ -5,14 +5,14 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Text.Json;
-// using System.Diagnostics;
+
 namespace Wasspord
 {
     /*
      * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
      * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings, LogWrite
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
-     * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Openfilename, Openfilepath
+     * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Filename, Folder
     */
 
     public static class Wasspord
@@ -26,9 +26,9 @@ namespace Wasspord
         public static bool Autosave { get; set; }
         public static bool Display { get; set; }
 
-        public static string Openfilename = "";
+        public static string Filename = ""; // Our file's name
 
-        public static string Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+        public static string Folder = Directory.GetCurrentDirectory() + "\\Accounts\\"; // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
 
         public static string Log = "./Wasspord.log";
 
@@ -228,6 +228,7 @@ namespace Wasspord
            When CryptoStream is used inside a MemoryStream, the data inside the MemoryStream can be encrypted
            or decrypted, depnding on the desired result.
          */
+
         /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
 		 * Parameters: password 
 		 * Returns: encrypted password */
@@ -356,8 +357,8 @@ namespace Wasspord
         {
             Accounts.Clear();
 
-            Openfilename = "";
-            Openfilepath = Directory.GetCurrentDirectory() + "\\Accounts\\";
+            Filename = "";
+            Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
 
             LogWrite("Resetted filepath and filename, cleared dictionary");
         }
@@ -425,6 +426,7 @@ namespace Wasspord
                 writer.WriteLine("{");
                 writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
                 writer.WriteLine("\"Display\":" + Display.ToString().ToLower());
+                //writer.WriteLine("\"Folder\":" + Folder);
                 writer.WriteLine("}");
                 writer.Close();
             }
