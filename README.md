@@ -13,8 +13,7 @@ By Tanner Ghosen
 
 # Summary
 ## What is this?
-This is a password management program for storing passwords in a centralized way,
-so if you use multiple browsers or devices you can use this program to record those details.
+This is a password management program for storing passwords in a .wasspord file readable and decryptable by Wasspord, ensuring secure password management while offering user flexibility.
 
 ## How does it work?
 In short: it has functionality to save, update, and delete accounts and their passwords from the accounts dictionary (where these details are loaded from/saved into .wasspord files).
