@@ -266,8 +266,13 @@ namespace Wasspord
 			MessageBox.Show(Wasspord.ValidatePassword(password));
         }
 
+        private void accountsFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AccountsFolderDialog();
+        }
+
         /* OpenFileDialog: Used to load .wasspord files. */
-        public static void OpenFileDialog()
+        private static void OpenFileDialog()
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Open";
@@ -285,7 +290,7 @@ namespace Wasspord
         }
 
         /* SaveFileDialog: Used to save .wasspord files. */
-        public static void SaveFileDialog()
+        private static void SaveFileDialog()
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Save";
@@ -298,6 +303,19 @@ namespace Wasspord
                 Wasspord.Filename = Path.GetFileName(sf.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(sf.FileName);
                 Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
+            }
+        }
+
+        /* AccountsFolderDialog: Used to select the default Accounts folder to save/open files from by default. */
+        private static void AccountsFolderDialog()
+        {
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                string path = fd.SelectedPath;
+                path = fd.SelectedPath.Replace(@"\", @"\\"); // replace \'s with \\ to avoid a JSON error using escape characters
+                Wasspord.UpdateSettings("Folder", path);
             }
         }
 

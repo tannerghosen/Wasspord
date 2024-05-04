@@ -382,7 +382,7 @@ namespace Wasspord
 
                 Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
-                // Folder = settings.RootElement.GetProperty("Folder").GetString();
+                Folder = settings.RootElement.GetProperty("Folder").GetString();
 
                 settings.Dispose();
 
@@ -408,13 +408,29 @@ namespace Wasspord
                 case "Display":
                     Display = !Display;
                     break;
-              /*case "Folder":
-                    
+                default:
+                    LogWrite("Invalid setting was specified for UpdateSettings without value parameter", "ERROR");
                     break;
-              */
             }
 
             LogWrite("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
+            // And we save our settings.
+            SaveSettings();
+        }
+        public static void UpdateSettings(string setting, string value)
+        {
+            // Simply enough, this switch inverts our setting
+            switch (setting)
+            {
+                case "Folder":
+                    Folder = value;
+                    break;
+                default:
+                    LogWrite("Invalid setting was specified for UpdateSettings with value parameter", "ERROR");
+                    break;
+            }
+
+            LogWrite("Updated Settings: Folder Value = " + Folder + ".");
             // And we save our settings.
             SaveSettings();
         }
@@ -430,12 +446,12 @@ namespace Wasspord
                 // as shown in the code below.
                 writer.WriteLine("{");
                 writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
-                writer.WriteLine("\"Display\":" + Display.ToString().ToLower());
-                //writer.WriteLine("\"Folder\":" + Folder);
+                writer.WriteLine("\"Display\":" + Display.ToString().ToLower() + ",");
+                writer.WriteLine("\"Folder\": \"" + Folder + "\"");
                 writer.WriteLine("}");
                 writer.Close();
             }
-            LogWrite("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
+            LogWrite("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
         }
 
         /* LogWrite: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate. */

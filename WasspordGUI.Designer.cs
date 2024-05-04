@@ -306,8 +306,9 @@
             // accountsFolderToolStripMenuItem
             // 
             this.accountsFolderToolStripMenuItem.Name = "accountsFolderToolStripMenuItem";
-            this.accountsFolderToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.accountsFolderToolStripMenuItem.Text = "Accounts Folder";
+            this.accountsFolderToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.accountsFolderToolStripMenuItem.Text = "Custom Accounts Folder";
+            this.accountsFolderToolStripMenuItem.Click += new System.EventHandler(this.accountsFolderToolStripMenuItem_Click);
             // 
             // WasspordGUI
             // 
