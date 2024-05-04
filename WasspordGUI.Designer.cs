@@ -30,10 +30,6 @@
         private void InitializeComponent()
         {
             this.LocationTextbox = new System.Windows.Forms.TextBox();
-            this.AddAccountButton = new System.Windows.Forms.Button();
-            this.UpdatePasswordButton = new System.Windows.Forms.Button();
-            this.DeleteAccountButton = new System.Windows.Forms.Button();
-            this.AutosaveCheckbox = new System.Windows.Forms.CheckBox();
             this.WasspordMenustrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +49,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DisplayButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.UsernameTextbox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
@@ -61,6 +56,7 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.ScrollBar = new System.Windows.Forms.VScrollBar();
+            this.accountsFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -78,49 +74,6 @@
             this.LocationTextbox.TabIndex = 0;
             this.LocationTextbox.UseSystemPasswordChar = true;
             this.LocationTextbox.WordWrap = false;
-            // 
-            // AddAccountButton
-            // 
-            this.AddAccountButton.Location = new System.Drawing.Point(65, 414);
-            this.AddAccountButton.Name = "AddAccountButton";
-            this.AddAccountButton.Size = new System.Drawing.Size(85, 23);
-            this.AddAccountButton.TabIndex = 3;
-            this.AddAccountButton.Text = "Add Account";
-            this.AddAccountButton.UseVisualStyleBackColor = true;
-            this.AddAccountButton.Click += new System.EventHandler(this.AddAccountButton_Click);
-            // 
-            // UpdatePasswordButton
-            // 
-            this.UpdatePasswordButton.Location = new System.Drawing.Point(156, 414);
-            this.UpdatePasswordButton.Name = "UpdatePasswordButton";
-            this.UpdatePasswordButton.Size = new System.Drawing.Size(100, 23);
-            this.UpdatePasswordButton.TabIndex = 4;
-            this.UpdatePasswordButton.Text = "Update Password";
-            this.UpdatePasswordButton.UseVisualStyleBackColor = true;
-            this.UpdatePasswordButton.Click += new System.EventHandler(this.UpdatePasswordButton_Click);
-            // 
-            // DeleteAccountButton
-            // 
-            this.DeleteAccountButton.Location = new System.Drawing.Point(262, 414);
-            this.DeleteAccountButton.Name = "DeleteAccountButton";
-            this.DeleteAccountButton.Size = new System.Drawing.Size(90, 23);
-            this.DeleteAccountButton.TabIndex = 5;
-            this.DeleteAccountButton.Text = "Delete Account";
-            this.DeleteAccountButton.UseVisualStyleBackColor = true;
-            this.DeleteAccountButton.Click += new System.EventHandler(this.DeleteAccountButton_Click);
-            // 
-            // AutosaveCheckbox
-            // 
-            this.AutosaveCheckbox.AutoSize = true;
-            this.AutosaveCheckbox.Checked = true;
-            this.AutosaveCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AutosaveCheckbox.Location = new System.Drawing.Point(551, 418);
-            this.AutosaveCheckbox.Name = "AutosaveCheckbox";
-            this.AutosaveCheckbox.Size = new System.Drawing.Size(71, 17);
-            this.AutosaveCheckbox.TabIndex = 6;
-            this.AutosaveCheckbox.Text = "Autosave";
-            this.AutosaveCheckbox.UseVisualStyleBackColor = true;
-            this.AutosaveCheckbox.CheckedChanged += new System.EventHandler(this.AutosaveCheckbox_CheckedChanged);
             // 
             // WasspordMenustrip
             // 
@@ -187,21 +140,21 @@
             // addAccountToolStripMenuItem
             // 
             this.addAccountToolStripMenuItem.Name = "addAccountToolStripMenuItem";
-            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addAccountToolStripMenuItem.Text = "Add Account";
             this.addAccountToolStripMenuItem.Click += new System.EventHandler(this.addAccountToolStripMenuItem_Click);
             // 
             // updatePasswordToolStripMenuItem
             // 
             this.updatePasswordToolStripMenuItem.Name = "updatePasswordToolStripMenuItem";
-            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.updatePasswordToolStripMenuItem.Text = "Update Password";
             this.updatePasswordToolStripMenuItem.Click += new System.EventHandler(this.updatePasswordToolStripMenuItem_Click);
             // 
             // deleteAccountToolStripMenuItem
             // 
             this.deleteAccountToolStripMenuItem.Name = "deleteAccountToolStripMenuItem";
-            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteAccountToolStripMenuItem.Text = "Delete Account";
             this.deleteAccountToolStripMenuItem.Click += new System.EventHandler(this.deleteAccountToolStripMenuItem_Click);
             // 
@@ -209,7 +162,8 @@
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showHideAccountsPasswordsToolStripMenuItem,
-            this.autosaveToolStripMenuItem});
+            this.autosaveToolStripMenuItem,
+            this.accountsFolderToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -217,14 +171,14 @@
             // showHideAccountsPasswordsToolStripMenuItem
             // 
             this.showHideAccountsPasswordsToolStripMenuItem.Name = "showHideAccountsPasswordsToolStripMenuItem";
-            this.showHideAccountsPasswordsToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
-            this.showHideAccountsPasswordsToolStripMenuItem.Text = "Show / Hide Accounts/Passwords";
+            this.showHideAccountsPasswordsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showHideAccountsPasswordsToolStripMenuItem.Text = "Show / Hide";
             this.showHideAccountsPasswordsToolStripMenuItem.Click += new System.EventHandler(this.showHideAccountsPasswordsToolStripMenuItem_Click);
             // 
             // autosaveToolStripMenuItem
             // 
             this.autosaveToolStripMenuItem.Name = "autosaveToolStripMenuItem";
-            this.autosaveToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.autosaveToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.autosaveToolStripMenuItem.Text = "Autosave";
             this.autosaveToolStripMenuItem.Click += new System.EventHandler(this.autosaveToolStripMenuItem_Click);
             // 
@@ -273,16 +227,6 @@
             this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.howToUseToolStripMenuItem.Text = "How To Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
-            // 
-            // DisplayButton
-            // 
-            this.DisplayButton.Location = new System.Drawing.Point(470, 414);
-            this.DisplayButton.Name = "DisplayButton";
-            this.DisplayButton.Size = new System.Drawing.Size(75, 23);
-            this.DisplayButton.TabIndex = 8;
-            this.DisplayButton.Text = "Show / Hide";
-            this.DisplayButton.UseVisualStyleBackColor = true;
-            this.DisplayButton.Click += new System.EventHandler(this.DisplayButton_Click);
             // 
             // panel1
             // 
@@ -359,6 +303,12 @@
             this.ScrollBar.TabIndex = 12;
             this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
+            // accountsFolderToolStripMenuItem
+            // 
+            this.accountsFolderToolStripMenuItem.Name = "accountsFolderToolStripMenuItem";
+            this.accountsFolderToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.accountsFolderToolStripMenuItem.Text = "Accounts Folder";
+            // 
             // WasspordGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -369,11 +319,6 @@
             this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.LocationsLabel);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.DisplayButton);
-            this.Controls.Add(this.AutosaveCheckbox);
-            this.Controls.Add(this.DeleteAccountButton);
-            this.Controls.Add(this.UpdatePasswordButton);
-            this.Controls.Add(this.AddAccountButton);
             this.Controls.Add(this.WasspordMenustrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.WasspordMenustrip;
@@ -396,10 +341,6 @@
         #endregion
 
         public System.Windows.Forms.TextBox LocationTextbox;
-        private System.Windows.Forms.Button AddAccountButton;
-        private System.Windows.Forms.Button UpdatePasswordButton;
-        private System.Windows.Forms.Button DeleteAccountButton;
-        private System.Windows.Forms.CheckBox AutosaveCheckbox;
         private System.Windows.Forms.MenuStrip WasspordMenustrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
@@ -407,7 +348,6 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-		private System.Windows.Forms.Button DisplayButton;
 		private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem addAccountToolStripMenuItem;
@@ -427,6 +367,7 @@
         private System.Windows.Forms.Label UsernameLabel;
         private System.Windows.Forms.Label PasswordLabel;
         private System.Windows.Forms.VScrollBar ScrollBar;
+        private System.Windows.Forms.ToolStripMenuItem accountsFolderToolStripMenuItem;
     }
 }
 

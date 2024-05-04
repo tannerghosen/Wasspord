@@ -13,8 +13,9 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-			AutosaveCheckbox.Checked = Wasspord.Autosave ? true : false;
 			loaded = true;
+            showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
 		}
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
@@ -51,8 +52,9 @@ namespace Wasspord
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
             PasswordTextbox.Text = Wasspord.Print("Password");
-            if (Wasspord.Display == true)
-				LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
+			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
+            if (Wasspord.Display == false)
+                PasswordTextbox.ForeColor = Color.FromName("Black");
         }
 
 		private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -61,7 +63,9 @@ namespace Wasspord
 			{
 				Wasspord.UpdateSettings("Autosave");
 			}
-		}
+            
+            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+        }
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -117,8 +121,9 @@ namespace Wasspord
 
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
-            LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = LocationTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White"): Color.FromName("Black");
+            PasswordTextbox.ForeColor = PasswordTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White") : Color.FromName("Black");
             Wasspord.UpdateSettings("Display");
+            showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
         }
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,14 +178,13 @@ namespace Wasspord
 			if (Wasspord.Autosave == true)
 			{
                 Wasspord.UpdateSettings("Autosave");
-                AutosaveCheckbox.Checked = false;
 			}
 			else if (Wasspord.Autosave == false)
 			{
                 Wasspord.UpdateSettings("Autosave");
-                AutosaveCheckbox.Checked = true;
 			}
-		}
+            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+        }
 
 		private void showHideAccountsPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
