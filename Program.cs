@@ -17,6 +17,7 @@ namespace Wasspord
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Wasspord.Init();
+            Wasspord.LogWrite("Launching Wasspord");
             Application.Run(new WasspordGUI());
         }
     }
