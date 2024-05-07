@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace Wasspord
 {
     /*
-     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Encrypt, Decrypt, 
+     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, ClearAccounts Encrypt, Decrypt, 
      * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings, LogWrite
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
      * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Filename, Folder
@@ -25,10 +25,8 @@ namespace Wasspord
         public static string Settings = "./settings.json";
         public static bool Autosave { get; set; }
         public static bool Display { get; set; }
-
-        public static string Filename = ""; // Our file's name
-
-        public static string Folder = Directory.GetCurrentDirectory() + "\\Accounts\\"; // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
+        public static string Filename { get; set; } // Our file's name
+        public static string Folder { get; set; }// Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
 
         public static string Log = "./Wasspord.log";
 
@@ -352,15 +350,20 @@ namespace Wasspord
             return !regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
 
-        /* Reset: Clears the dictionary and resets the opened file name / file path back to the starting point. Used when "New" or "Load" is clicked in the GUI. */
+        /* Reset & ClearAccounts: Clears the dictionary AND resets the opened file name / file path back to the starting point, and ONLY clear the accounts dictionary. Used when "New" and "Load" is clicked in the GUI, respectively */
         public static void Reset()
         {
-            Accounts.Clear();
-
+            ClearAccounts();
             Filename = "";
-            Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
-
-            LogWrite("Resetted filepath and filename, cleared dictionary");
+            string json = File.ReadAllText(Settings);
+            JsonDocument settings = JsonDocument.Parse(json);
+            Folder = settings.RootElement.GetProperty("Folder").GetString();
+            LogWrite("Reset filename / filepath.");
+        }
+        public static void ClearAccounts()
+        {
+            Accounts.Clear();
+            LogWrite("Cleared accounts dictionary.");
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
@@ -370,6 +373,7 @@ namespace Wasspord
             {
                 Autosave = false;
                 Display = true;
+                Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
 
                 SaveSettings();
 
@@ -380,18 +384,26 @@ namespace Wasspord
                 string json = File.ReadAllText(Settings); // read the file as a string
                 JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
 
-                Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave and Display
+                Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave, Display and Folder
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
                 Folder = settings.RootElement.GetProperty("Folder").GetString();
+                if (!Directory.Exists(Folder))
+                {
+                    Directory.CreateDirectory(Folder);
+
+                    LogWrite("Custom accounts folder was missing; creating it.");
+                }
 
                 settings.Dispose();
 
-                LogWrite("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
+                LogWrite("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
             }
 
             if (!Directory.Exists("Accounts"))
             {
                 Directory.CreateDirectory("Accounts");
+
+                LogWrite("Created Accounts folder.");
             }
         }
         /* UpdateSettings: Updates a specified setting.
@@ -419,7 +431,6 @@ namespace Wasspord
         }
         public static void UpdateSettings(string setting, string value)
         {
-            // Simply enough, this switch inverts our setting
             switch (setting)
             {
                 case "Folder":
@@ -431,7 +442,7 @@ namespace Wasspord
             }
 
             LogWrite("Updated Settings: Folder Value = " + Folder + ".");
-            // And we save our settings.
+            
             SaveSettings();
         }
 
@@ -457,7 +468,7 @@ namespace Wasspord
         /* LogWrite: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate. */
         public static void LogWrite(string message, string messagetype = "LOG")
         {
-            string Time = DateTime.Now.ToString("h:mm:ss tt");
+            string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
             using (StreamWriter writer = new StreamWriter(Log, true))
             {
                 writer.WriteLine(Time+" "+messagetype+": "+message);

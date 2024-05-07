@@ -194,8 +194,6 @@ namespace Wasspord
         {
 			Wasspord.Reset();
 			LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
-			Wasspord.Filename = "";
-			Wasspord.Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
         }
 
         private void generatePasswordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -282,7 +280,7 @@ namespace Wasspord
             //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
             if (of.ShowDialog() == DialogResult.OK)
             {
-                Wasspord.Reset();
+                Wasspord.ClearAccounts();
                 Wasspord.Filename = Path.GetFileName(of.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(of.FileName);
                 Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
