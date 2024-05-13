@@ -189,12 +189,15 @@ namespace Wasspord
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 
-        public static string Print(string thing)
+        /* Print: Prints out specific account information depending on the value of parameter item.
+         * Parameters: item (the item we want to print out a list for, i.e. locations, usernames, passwords)*/
+
+        public static string Print(string item)
         {
             string print = "";
             foreach (var pair in Accounts)
             {
-                switch (thing)
+                switch (item)
                 {
                     case "Location":
                         print += pair.Key.location + "\r\n";
