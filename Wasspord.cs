@@ -19,8 +19,7 @@ namespace Wasspord
     {
         /* Wasspord Program Settings:
            This includes our program's settings (located at ./settings.json), Autosave and Display settings,
-           and the file path and file name of our loaded .wasspord file (which by default is located at 
-           (programdir)/Accounts
+           and the file path and file name of our loaded .wasspord file
          */
         public static string Settings = "./settings.json";
         public static bool Autosave { get; set; }
@@ -190,7 +189,7 @@ namespace Wasspord
         }
 
         /* Print: Prints out specific account information depending on the value of parameter item.
-         * Parameters: item (the item we want to print out a list for, i.e. locations, usernames, passwords)*/
+         * Parameters: item (the item we want to print out a list for, i.e. locations, usernames, passwords) */
 
         public static string Print(string item)
         {
@@ -376,7 +375,7 @@ namespace Wasspord
             {
                 Autosave = false;
                 Display = true;
-                Folder = Directory.GetCurrentDirectory() + "\\Accounts\\";
+                Folder = Path.Combine(Directory.GetCurrentDirectory() + "\\Accounts\\");
 
                 SaveSettings();
 
@@ -461,7 +460,7 @@ namespace Wasspord
                 writer.WriteLine("{");
                 writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
                 writer.WriteLine("\"Display\":" + Display.ToString().ToLower() + ",");
-                writer.WriteLine("\"Folder\": \"" + Folder + "\"");
+                writer.WriteLine("\"Folder\": " + JsonSerializer.Serialize(Folder));
                 writer.WriteLine("}");
                 writer.Close();
             }

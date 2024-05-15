@@ -109,24 +109,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddAccountGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddAccountGUI.Designer.cs">
-      <DependentUpon>AddAccountGUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DeleteAccountGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DeleteAccountGUI.Designer.cs">
-      <DependentUpon>DeleteAccountGUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UpdatePasswordGUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UpdatePasswordGUI.Designer.cs">
-      <DependentUpon>UpdatePasswordGUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="Wasspord.cs" />
     <Compile Include="WasspordGUI.cs">
       <SubType>Form</SubType>
@@ -136,15 +118,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddAccountGUI.resx">
-      <DependentUpon>AddAccountGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DeleteAccountGUI.resx">
-      <DependentUpon>DeleteAccountGUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UpdatePasswordGUI.resx">
-      <DependentUpon>UpdatePasswordGUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WasspordGUI.resx">
       <DependentUpon>WasspordGUI.cs</DependentUpon>
     </EmbeddedResource>

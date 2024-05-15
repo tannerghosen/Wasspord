@@ -19,7 +19,7 @@ namespace Wasspord
 		}
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
-			new AddAccountGUI().ShowDialog();
+            Account("add");
 			if (Wasspord.Autosave == true)
 				Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
 			LocationTextbox.Text = Wasspord.Print("Location");
@@ -29,8 +29,8 @@ namespace Wasspord
 
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
 		{
-			new DeleteAccountGUI().ShowDialog();
-			if (Wasspord.Autosave == true)
+            Account("delete");
+            if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
@@ -39,8 +39,8 @@ namespace Wasspord
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
-			new UpdatePasswordGUI().ShowDialog();
-			if (Wasspord.Autosave == true)
+            Account("update");
+            if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
@@ -269,6 +269,75 @@ namespace Wasspord
             AccountsFolderDialog();
         }
 
+        /* Account: Sends adding/deleting/updating requests to Wasspord via GUI */
+        private void Account(string type)
+        {
+            Wasspord.LogWrite("testing void Account in WasspordGUI");
+            Form AccountForm = new Form();
+            AccountForm.Text = type.Substring(0, 1).ToUpper() + type.Substring(1, type.Length-1) + " Account";
+            AccountForm.Width = 300;
+            AccountForm.Height = 200;
+            Label WhereLabel = new Label();
+            WhereLabel.Text = "Location (Site/Place):";
+            WhereLabel.Location = new Point(12, 38);
+            WhereLabel.Width = 110;
+            WhereLabel.Height = 13;
+            Label UsernameLabel = new Label();
+            UsernameLabel.Text = "Username:";
+            UsernameLabel.Width = 58;
+            UsernameLabel.Height = 13;
+            UsernameLabel.Location = new Point(10, 64);
+            Label PasswordLabel = new Label();
+            PasswordLabel.Text = "Password:";
+            PasswordLabel.Width = 56;
+            PasswordLabel.Height = 13;
+            PasswordLabel.Location = new Point(10, 92);
+            TextBox LocationTextbox = new TextBox();
+            LocationTextbox.Location = new Point(128, 35);
+            LocationTextbox.Width = 144;
+            LocationTextbox.Height = 20;
+            TextBox UsernameTextbox = new TextBox();
+            UsernameTextbox.Location = new Point(76, 61);
+            UsernameTextbox.Width = 196;
+            UsernameTextbox.Height = 20;
+            TextBox PasswordTextbox = new TextBox();
+            PasswordTextbox.Location = new Point(76, 87);
+            PasswordTextbox.Width = 196;
+            PasswordTextbox.Height = 20;
+            Button OKButton = new Button();
+            OKButton.Width = 75;
+            OKButton.Height = 23;
+            OKButton.Text = "OK";
+            OKButton.Location = new Point(100, 125);
+            OKButton.Click += (s, ev) =>
+            {
+                switch (type)
+                {
+                    case "add":
+                        Wasspord.AddAccount(LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        break;
+                    case "update":
+                        Wasspord.UpdatePassword(LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        break;
+                    case "delete":
+                        Wasspord.DeleteAccount(LocationTextbox.Text, UsernameTextbox.Text);
+                        break;
+                }
+                AccountForm.Close();
+            };
+            AccountForm.Controls.Add(WhereLabel);
+            AccountForm.Controls.Add(UsernameLabel);
+            AccountForm.Controls.Add(LocationTextbox);
+            AccountForm.Controls.Add(UsernameTextbox);
+            if (type == "add" || type == "update")
+            {
+                AccountForm.Controls.Add(PasswordLabel);
+                AccountForm.Controls.Add(PasswordTextbox);
+            }
+            AccountForm.Controls.Add(OKButton);
+            AccountForm.ShowDialog();
+
+        }
         /* OpenFileDialog: Used to load .wasspord files. */
         private static void OpenFileDialog()
         {
