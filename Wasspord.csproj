@@ -109,6 +109,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EncryptDecrypt.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Wasspord.cs" />
     <Compile Include="WasspordGUI.cs">
       <SubType>Form</SubType>

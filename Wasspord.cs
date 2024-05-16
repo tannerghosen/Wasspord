@@ -9,8 +9,8 @@ using System.Text.Json;
 namespace Wasspord
 {
     /*
-     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, ClearAccounts Encrypt, Decrypt, 
-     * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings, LogWrite
+     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, ClearAccounts,
+     * GeneratePassword, ValidatePassword, Print, Init, UpdateSettings, SaveSettings
      * Important Variables/Misc: Account Dictionary, Account Struct, Key, Bytes, Passwords
      * Variables/Misc: regex, regexpattern, characters, Settings, Autosave, Display, Filename, Folder
     */
@@ -27,8 +27,6 @@ namespace Wasspord
         public static string Filename { get; set; } // Our file's name
         public static string Folder { get; set; }// Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
 
-        public static string Log = "./Wasspord.log";
-
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
            where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
            under the same username/email at multiple websites.
@@ -43,12 +41,6 @@ namespace Wasspord
             public string location;
             public string username;
         }
-        /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
-           is an encryption key used in the encryption/decryption and our bytes is 
-           our IV (initialization vector, or initial state). 
-        */
-        private static string Key = "p055w4rd";
-        private static byte[] Bytes = { 0x31, 0xab, 0xa7, 0x91, 0x93, 0x9b, 0x7d, 0x1f, 0x3b, 0xf7, 0x8d, 0x3f, 0x9a };
 
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
@@ -76,12 +68,12 @@ namespace Wasspord
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
-                LogWrite("Duplicate Account '" + acc.username + "'", "ERROR");
+                Logger.Write("Duplicate Account '" + acc.username + "'", "ERROR");
             }
             else
             {
-                password = Encrypt(password);
-                LogWrite("Added Account '" + acc.username + "'.");
+                password = EncryptDecrypt.Encrypt(password);
+                Logger.Write("Added Account '" + acc.username + "'.");
                 Accounts.Add(acc, password);
             }
         }
@@ -94,12 +86,12 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                LogWrite("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
+                Logger.Write("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
             }
             else
             {
-                password = Encrypt(password);
-                LogWrite("Updated Password of Account '" + acc.username + "'.");
+                password = EncryptDecrypt.Encrypt(password);
+                Logger.Write("Updated Password of Account '" + acc.username + "'.");
                 Accounts[acc] = password;
             }
         }
@@ -112,11 +104,11 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                LogWrite("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
+                Logger.Write("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
             }
             else
             {
-                LogWrite("Deleted Account '" + acc.username + "'.");
+                Logger.Write("Deleted Account '" + acc.username + "'.");
                 Accounts.Remove(acc);
             }
         }
@@ -149,11 +141,11 @@ namespace Wasspord
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
                     }
                 }
-                LogWrite("File saved to: " + file);
+                Logger.Write("File saved to: " + file);
             }
             catch
             {
-                LogWrite("Error saving to file "+file, "ERROR");
+                Logger.Write("Error saving to file "+file, "ERROR");
             }
         }
 		/* Load: Loads previously saved account information from a .wasspord file to the account dictionary for current use. 
@@ -184,7 +176,7 @@ namespace Wasspord
                     }
                 }
             }
-            LogWrite("File loaded: " + file);
+            Logger.Write("File loaded: " + file);
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 
@@ -205,110 +197,13 @@ namespace Wasspord
                         print += pair.Key.username + "\r\n";
                         break;
                     case "Password":
-                        print += Decrypt(pair.Value) + "\r\n";
+                        print += EncryptDecrypt.Decrypt(pair.Value) + "\r\n";
                         break;
                 }
             }
             return print;
         }
 
-        // Reference on Encryption / Decryption being done here:
-        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
-        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.rfc2898derivebytes?view=net-8.0
-        // https://learn.microsoft.com/en-us/dotnet/api/system.io.memorystream?view=net-8.0
-        // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptostream?view=net-8.0
-
-        /* Like above, we're using Streams once again in the process of encryption and decryption, however
-           we use MemoryStream and CryptoStream.
-           MemoryStreams are simply streams of empty memory initialized with nothing in it, and is expandable.
-
-           CryptoStreams are made by giving the stream, the mode it'll be using, and any overloads
-           (such as CryptoStreamMode.Write).
-
-           When CryptoStream is used inside a MemoryStream, the data inside the MemoryStream can be encrypted
-           or decrypted, depnding on the desired result.
-         */
-
-        /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
-		 * Parameters: password 
-		 * Returns: encrypted password */
-        public static string Encrypt(string password)
-        {
-            // Get bytes from our string password
-            byte[] b = Encoding.Unicode.GetBytes(password);
-
-            // Create Aes object
-            using (Aes encrypt = Aes.Create())
-            {
-                // Derive bytes from Key and Bytes to create a key for encryption
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                encrypt.Key = key.GetBytes(32); // this is our key
-                encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
-                // Create streams for encryption
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encrypt.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(b, 0, b.Length);
-                        cs.Close();
-                    }
-                    // Our data in ms (our password) is encrypted as a Base64 String based on the content from above CryptoStream.
-                    password = Convert.ToBase64String(ms.ToArray());
-                }
-            }
-            return password;
-
-        }
-        /* Decrypt: Decrypts the account password previously encrypted and saved to either an account dictionary or a .wasspord file.
-		 * Parameters: password
-		 * Returns: decrypted password */
-        public static string Decrypt(string password)
-        {
-            // This is in case passwords had a space in them prior to decrypting (so if it was encrypted as "hello world"),
-            // it would error out without this line below.
-            password = password.Replace(" ", "+");
-
-            // Get bytes from our base64 string encrypted password
-            byte[] b = Convert.FromBase64String(password);
-
-            // Create Aes object
-            using (Aes decrypt = Aes.Create())
-            {
-                // Derive bytes from Key and Bytes to create a key for decryption
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                decrypt.Key = key.GetBytes(32); // this is our key
-                decrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
-
-                try // Let's try our current method unless an error occurs
-                {
-                    // Create streams for decryption
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        using (CryptoStream cs = new CryptoStream(ms, decrypt.CreateDecryptor(), CryptoStreamMode.Write))
-                        {
-                            cs.Write(b, 0, b.Length);
-                            cs.Close();
-                        }
-                        // Our data in ms (our password) is converted to a regular Unicode String based on contents from above CryptoStream.
-                        password = Encoding.Unicode.GetString(ms.ToArray());
-                    }
-                }
-                catch
-                {
-                    /* This comes from older code, pre-commit 14ff6c5
-                       This is to keep compability with older files and not cause errors / invalid passwords being loaded.
-                       Because we already get our bytes from our base64 string earlier in our code,
-                       we don't need to redclare all of the code from our old code.
-                       (namely, declaring a new bytes array and calling another Convert.FromBase64String())
-                    */
-                    LogWrite("Caught old password encryption", "WARNING");
-                    string oldpassword; // string container for our decrypted password
-                    oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
-                    return oldpassword;
-                }
-            }
-            return password;
-        }
         /* GeneratePassword: Generates a random password that's 16 characters in length,
            while also trying to prevent duplicates and non-regex following attempts
            by recursively calling itself up to 500 times before going with a duplicate / failed password.
@@ -327,7 +222,7 @@ namespace Wasspord
             if (!Passwords.Contains(GeneratedPass) && regex.IsMatch(GeneratedPass)) 
             {
                 Passwords.Add(GeneratedPass); // add it to the list
-                LogWrite("Generated Password Successfully!");
+                Logger.Write("Generated Password Successfully!");
                 return GeneratedPass;
             }
             // Otherwise we try again
@@ -338,7 +233,7 @@ namespace Wasspord
             }
             else if (attempt == 500) // Unfortunately if recursion goes beyond 500 we'll have to settle for a duplicate. Don't want to slow the program.
             {
-                LogWrite("Failed to give a unique password after predefined attempt limit.","WARNING");
+                Logger.Write("Failed to give a unique password after predefined attempt limit.","WARNING");
                 return GeneratedPass; 
             }
             return "";
@@ -360,12 +255,12 @@ namespace Wasspord
             string json = File.ReadAllText(Settings);
             JsonDocument settings = JsonDocument.Parse(json);
             Folder = settings.RootElement.GetProperty("Folder").GetString();
-            LogWrite("Reset filename / filepath.");
+            Logger.Write("Reset filename / filepath.");
         }
         public static void ClearAccounts()
         {
             Accounts.Clear();
-            LogWrite("Cleared accounts dictionary.");
+            Logger.Write("Cleared accounts dictionary.");
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
@@ -379,7 +274,7 @@ namespace Wasspord
 
                 SaveSettings();
 
-                LogWrite("Created settings file.");
+                Logger.Write("Created settings file.");
             }
             else // else load the settings from the config
             {
@@ -393,19 +288,19 @@ namespace Wasspord
                 {
                     Directory.CreateDirectory(Folder);
 
-                    LogWrite("Custom accounts folder was missing; creating it.");
+                    Logger.Write("Custom accounts folder was missing; creating it.");
                 }
 
                 settings.Dispose();
 
-                LogWrite("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
+                Logger.Write("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
             }
 
             if (!Directory.Exists("Accounts"))
             {
                 Directory.CreateDirectory("Accounts");
 
-                LogWrite("Created Accounts folder.");
+                Logger.Write("Created Accounts folder.");
             }
         }
         /* UpdateSettings: Updates a specified setting.
@@ -423,11 +318,11 @@ namespace Wasspord
                     Display = !Display;
                     break;
                 default:
-                    LogWrite("Invalid setting was specified for UpdateSettings without value parameter", "ERROR");
+                    Logger.Write("Invalid setting was specified for UpdateSettings without value parameter", "ERROR");
                     break;
             }
 
-            LogWrite("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
+            Logger.Write("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
             // And we save our settings.
             SaveSettings();
         }
@@ -439,11 +334,11 @@ namespace Wasspord
                     Folder = value;
                     break;
                 default:
-                    LogWrite("Invalid setting was specified for UpdateSettings with value parameter", "ERROR");
+                    Logger.Write("Invalid setting was specified for UpdateSettings with value parameter", "ERROR");
                     break;
             }
 
-            LogWrite("Updated Settings: Folder Value = " + Folder + ".");
+            Logger.Write("Updated Settings: Folder Value = " + Folder + ".");
             
             SaveSettings();
         }
@@ -464,18 +359,7 @@ namespace Wasspord
                 writer.WriteLine("}");
                 writer.Close();
             }
-            LogWrite("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
-        }
-
-        /* LogWrite: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate. */
-        public static void LogWrite(string message, string messagetype = "LOG")
-        {
-            string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
-            using (StreamWriter writer = new StreamWriter(Log, true))
-            {
-                writer.WriteLine(Time+" "+messagetype+": "+message);
-                writer.Close();
-            }
+            Logger.Write("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
         }
     }
 }

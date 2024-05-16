@@ -272,7 +272,6 @@ namespace Wasspord
         /* Account: Sends adding/deleting/updating requests to Wasspord via GUI */
         private void Account(string type)
         {
-            Wasspord.LogWrite("testing void Account in WasspordGUI");
             Form AccountForm = new Form();
             AccountForm.Text = type.Substring(0, 1).ToUpper() + type.Substring(1, type.Length-1) + " Account";
             AccountForm.Width = 300;
