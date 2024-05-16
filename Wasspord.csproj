@@ -109,6 +109,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WasspordExtras.cs" />
     <Compile Include="EncryptDecrypt.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Wasspord.cs" />

@@ -210,7 +210,7 @@ namespace Wasspord
 			PassFormOKButton.Height = 23;
             PassFormOKButton.Location = new Point(100, 75);
             TextBox PassFormTextBox = new TextBox();
-            PassFormTextBox.Text = Wasspord.GeneratePassword();
+            PassFormTextBox.Text = WasspordExtras.GeneratePassword();
             PassFormTextBox.Location = new Point(80, 50);
             PassFormTextBox.Height = 23;
             PassFormTextBox.Width = 120;
@@ -261,7 +261,7 @@ namespace Wasspord
         }
         private void ValidateFormOKButton_Click(string password)
         {
-			MessageBox.Show(Wasspord.ValidatePassword(password));
+			MessageBox.Show(WasspordExtras.ValidatePassword(password));
         }
 
         private void accountsFolderToolStripMenuItem_Click(object sender, EventArgs e)

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Wasspord
 {
-    public static class Logger
+    internal class Logger
     {
         /* Our log file is located in the program's folder */
         public static string Log = "./Wasspord.log";
