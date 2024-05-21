@@ -8,15 +8,16 @@ namespace Wasspord
 {
 	public partial class WasspordGUI : Form
 	{
-		public bool loaded = false;
+        private int WX = 0;
+        private int WY = 0;
 
         public WasspordGUI()
 		{
 			InitializeComponent();
-			loaded = true;
+            Logger.Write("Wasspord GUI running.");
             showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
             autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
-		}
+        }
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
             Account("add");
@@ -49,22 +50,13 @@ namespace Wasspord
 
 		private void WasspordGUI_Load(object sender, EventArgs e)
 		{
+            Location = new Point((Screen.PrimaryScreen.Bounds.Width - Width) / 2, (Screen.PrimaryScreen.Bounds.Height - Height) / 2);
             LocationTextbox.Text = Wasspord.Print("Location");
             UsernameTextbox.Text = Wasspord.Print("Username");
             PasswordTextbox.Text = Wasspord.Print("Password");
 			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
             if (Wasspord.Display == false)
                 PasswordTextbox.ForeColor = Color.FromName("Black");
-        }
-
-		private void AutosaveCheckbox_CheckedChanged(object sender, EventArgs e)
-		{
-			if (loaded == true)
-			{
-				Wasspord.UpdateSettings("Autosave");
-			}
-            
-            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -116,6 +108,10 @@ namespace Wasspord
 			AboutForm.Controls.Add(AboutFormLabel);
 			AboutForm.Controls.Add(AboutFormLinkLabel);
 			AboutForm.Controls.Add(AboutFormLinkLabel2);
+            AboutForm.Load += (s, ev) =>
+            {
+                AboutForm.Location = new Point((WX + (Width - AboutForm.Width) / 2), (WY + (Height - AboutForm.Height) / 2));
+            };
 			AboutForm.ShowDialog();
 		}
 
@@ -146,7 +142,11 @@ namespace Wasspord
 			HelpFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(IssuesLinkClicked);
 			HelpForm.Controls.Add(HelpFormLabel);
 			HelpForm.Controls.Add(HelpFormLinkLabel);
-			HelpForm.ShowDialog();
+            HelpForm.Load += (s, ev) =>
+            {
+                HelpForm.Location = new Point((WX + (Width - HelpForm.Width) / 2), (WY + (Height - HelpForm.Height) / 2));
+            };
+            HelpForm.ShowDialog();
 		}
 
         private void GitHubLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -225,6 +225,10 @@ namespace Wasspord
             {
 				PassForm.Close();
             };
+            PassForm.Load += (s, ev) =>
+            {
+                PassForm.Location = new Point((WX + (Width - PassForm.Width) / 2), (WY + (Height - PassForm.Height) / 2));
+            };
             PassForm.ShowDialog();
         }
 
@@ -257,11 +261,39 @@ namespace Wasspord
             ValidateForm.Controls.Add(ValidateFormTextBox);
             ValidateForm.Controls.Add(ValidateFormLabel);
             ValidateForm.Controls.Add(ValidateFormOKButton);
+            ValidateForm.Load += (s, ev) =>
+            {
+                ValidateForm.Location = new Point((WX + (Width - ValidateForm.Width) / 2), (WY + (Height - ValidateForm.Height) / 2));
+            };
             ValidateForm.ShowDialog();
         }
         private void ValidateFormOKButton_Click(string password)
         {
-			MessageBox.Show(WasspordExtras.ValidatePassword(password));
+            Form ValidateForm = new Form();
+            ValidateForm.Text = "Validate Password";
+            ValidateForm.Width = 350;
+            ValidateForm.Height = 175;
+            Label ValidateFormLabel = new Label();
+            ValidateFormLabel.Text = WasspordExtras.ValidatePassword(password);
+            ValidateFormLabel.Location = new Point(0, 20);
+            ValidateFormLabel.Width = 335;
+            ValidateFormLabel.Height = 75;
+            Button ValidateFormOKButton = new Button();
+            ValidateFormOKButton.Text = "OK";
+            ValidateFormOKButton.Width = 75;
+            ValidateFormOKButton.Height = 23;
+            ValidateFormOKButton.Location = new Point(125, 100);
+            ValidateFormOKButton.Click += (s, ev) =>
+            {
+                ValidateForm.Close();
+            };
+            ValidateForm.Controls.Add(ValidateFormLabel);
+            ValidateForm.Controls.Add(ValidateFormOKButton);
+            ValidateForm.Load += (s, ev) =>
+            {
+                ValidateForm.Location = new Point((WX + (Width - ValidateForm.Width) / 2), (WY + (Height - ValidateForm.Height) / 2));
+            };
+            ValidateForm.ShowDialog();
         }
 
         private void accountsFolderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -269,7 +301,21 @@ namespace Wasspord
             AccountsFolderDialog();
         }
 
-        /* Account: Sends adding/deleting/updating requests to Wasspord via GUI */
+        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            LocationTextbox.Top = -ScrollBar.Value;
+            UsernameTextbox.Top = -ScrollBar.Value;
+            PasswordTextbox.Top = -ScrollBar.Value;
+        }
+        private void WasspordGUI_LocationChanged(object sender, EventArgs e)
+        {
+            WX = Location.X;
+            WY = Location.Y;
+            //Logger.Write("Locations: X: " + WX + " Y: " + WY + ".","DEBUG");
+        }
+
+        /* Account: Sends adding/deleting/updating requests to Wasspord via GUI depending on type.
+         * Parameters: type (determines request being made and GUI displayed */
         private void Account(string type)
         {
             Form AccountForm = new Form();
@@ -334,6 +380,10 @@ namespace Wasspord
                 AccountForm.Controls.Add(PasswordTextbox);
             }
             AccountForm.Controls.Add(OKButton);
+            AccountForm.Load += (s, ev) =>
+            {
+                AccountForm.Location = new Point((WX + (Width - AccountForm.Width) / 2), (WY + (Height - AccountForm.Height) / 2));
+            };
             AccountForm.ShowDialog();
 
         }
@@ -383,13 +433,6 @@ namespace Wasspord
                 path = fd.SelectedPath.Replace(@"\", @"\\"); // replace \'s with \\ to avoid a JSON error using escape characters
                 Wasspord.UpdateSettings("Folder", path);
             }
-        }
-
-        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            LocationTextbox.Top = -ScrollBar.Value;
-            UsernameTextbox.Top = -ScrollBar.Value;
-            PasswordTextbox.Top = -ScrollBar.Value;
         }
     }
 }

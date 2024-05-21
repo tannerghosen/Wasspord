@@ -17,7 +17,7 @@ namespace Wasspord
         /* Wasspord Program Settings:
            This includes our program's settings (located at ./settings.json), Autosave and Display settings,
            and the file path and file name of our loaded .wasspord file
-         */
+        */
         public static string Settings = "./settings.json";
         public static bool Autosave { get; set; }
         public static bool Display { get; set; }
@@ -25,9 +25,9 @@ namespace Wasspord
         public static string Folder { get; set; } // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
 
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
-   where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
-   under the same username/email at multiple websites.
-*/
+           where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
+           under the same username/email at multiple websites.
+        */
         private static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
         /* Account Struct: This is our key when we insert entries into the Account dictionary,
            which is also the same key used to find entries in other functions. where is where 
@@ -58,6 +58,7 @@ namespace Wasspord
                 Accounts.Add(acc, password);
             }
         }
+
         /* UpdatePassword: Updates a password for a defined location and username in the account dictionary.
 		 * Parameters: location, username, password. */
         public static void UpdatePassword(string location, string username, string password)
@@ -76,6 +77,7 @@ namespace Wasspord
                 Accounts[acc] = password;
             }
         }
+
         /* DeleteAccount: Deletes an account specified for a location and username from the account dictionary.
          * Parameters: location, username. */
         public static void DeleteAccount(string location, string username)
@@ -136,6 +138,7 @@ namespace Wasspord
                 Logger.Write("Error saving to file " + file, "ERROR");
             }
         }
+
 		/* Load: Loads previously saved account information from a .wasspord file to the account dictionary for current use. 
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
@@ -170,7 +173,6 @@ namespace Wasspord
 
         /* Print: Prints out specific account information depending on the value of parameter item.
          * Parameters: item (the item we want to print out a list for, i.e. locations, usernames, passwords) */
-
         public static string Print(string item)
         {
             string print = "";
@@ -195,28 +197,29 @@ namespace Wasspord
         /* Reset: Clears the dictionary AND resets the opened file name / file path. Used when "Load" is clicked in the GUI, respectively */
         public static void Reset()
         {
-            Wasspord.ClearAccounts();
+            ClearAccounts();
             Filename = "";
-            string json = File.ReadAllText(Settings);
-            JsonDocument settings = JsonDocument.Parse(json);
-            Folder = settings.RootElement.GetProperty("Folder").GetString();
+            string json = File.ReadAllText(Settings); // read the file as a string
+            JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
+            Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
             Logger.Write("Reset filename / filepath.");
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
         public static void Init()
         {
-            if (!File.Exists(Settings)) // if config file doesn't exist
+            if (!File.Exists(Settings)) // if settings.json file doesn't exist
             {
+                // We initialize it with default settings
                 Autosave = false;
                 Display = true;
                 Folder = Path.Combine(Directory.GetCurrentDirectory() + "\\Accounts\\");
 
-                SaveSettings();
+                SaveSettings(); // Save the settings
 
                 Logger.Write("Created settings file.");
             }
-            else // else load the settings from the config
+            else // else load the settings from settings.json
             {
                 string json = File.ReadAllText(Settings); // read the file as a string
                 JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
@@ -224,23 +227,26 @@ namespace Wasspord
                 Autosave = settings.RootElement.GetProperty("Autosave").GetBoolean(); // we get the properties' value for both Autosave, Display and Folder
                 Display = settings.RootElement.GetProperty("Display").GetBoolean(); // and we set our class variables to it.
                 Folder = settings.RootElement.GetProperty("Folder").GetString();
-                if (!Directory.Exists(Folder))
+
+                settings.Dispose(); // end the Parse
+
+                Logger.Write("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
+
+                // If our custom folder is deleted and it was changed from the autogenerated Accounts, we need to create it again
+                if (!Directory.Exists(Folder) && Folder != Path.Combine(Directory.GetCurrentDirectory() + "\\Accounts\\"))
                 {
                     Directory.CreateDirectory(Folder);
 
-                    Logger.Write("Custom accounts folder was missing; creating it.");
+                    Logger.Write("Custom accounts folder \"" + Folder + "\" was missing; creating it.", "WARNING");
                 }
-
-                settings.Dispose();
-
-                Logger.Write("Loaded settings file. Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
             }
 
+            // If our default Accounts folder is deleted, we'll need to make it again
             if (!Directory.Exists("Accounts"))
             {
                 Directory.CreateDirectory("Accounts");
 
-                Logger.Write("Created Accounts folder.");
+                Logger.Write("Created Accounts folder in \"" + Directory.GetCurrentDirectory() + "\".");
             }
         }
         /* UpdateSettings: Updates a specified setting.
@@ -266,6 +272,9 @@ namespace Wasspord
             // And we save our settings.
             SaveSettings();
         }
+        /* UpdateSettings: Updates a specified setting with a value.
+         * Parameters: setting, value
+         */
         public static void UpdateSettings(string setting, string value)
         {
             switch (setting)
@@ -295,7 +304,7 @@ namespace Wasspord
                 writer.WriteLine("{");
                 writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
                 writer.WriteLine("\"Display\":" + Display.ToString().ToLower() + ",");
-                writer.WriteLine("\"Folder\": " + JsonSerializer.Serialize(Folder));
+                writer.WriteLine("\"Folder\": " + JsonSerializer.Serialize(Folder)); // we need to make our Folder string into a JSON string that won't cause errors.
                 writer.WriteLine("}");
                 writer.Close();
             }

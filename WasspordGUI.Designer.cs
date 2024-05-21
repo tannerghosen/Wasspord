@@ -1,6 +1,9 @@
 ﻿namespace Wasspord
 {
     using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+
     partial class WasspordGUI
     {
         /// <summary>
@@ -43,6 +46,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showHideAccountsPasswordsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autosaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.accountsFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miscToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.validatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +60,6 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.ScrollBar = new System.Windows.Forms.VScrollBar();
-            this.accountsFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -140,21 +143,21 @@
             // addAccountToolStripMenuItem
             // 
             this.addAccountToolStripMenuItem.Name = "addAccountToolStripMenuItem";
-            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addAccountToolStripMenuItem.Text = "Add Account";
             this.addAccountToolStripMenuItem.Click += new System.EventHandler(this.addAccountToolStripMenuItem_Click);
             // 
             // updatePasswordToolStripMenuItem
             // 
             this.updatePasswordToolStripMenuItem.Name = "updatePasswordToolStripMenuItem";
-            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.updatePasswordToolStripMenuItem.Text = "Update Password";
             this.updatePasswordToolStripMenuItem.Click += new System.EventHandler(this.updatePasswordToolStripMenuItem_Click);
             // 
             // deleteAccountToolStripMenuItem
             // 
             this.deleteAccountToolStripMenuItem.Name = "deleteAccountToolStripMenuItem";
-            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.deleteAccountToolStripMenuItem.Text = "Delete Account";
             this.deleteAccountToolStripMenuItem.Click += new System.EventHandler(this.deleteAccountToolStripMenuItem_Click);
             // 
@@ -171,16 +174,23 @@
             // showHideAccountsPasswordsToolStripMenuItem
             // 
             this.showHideAccountsPasswordsToolStripMenuItem.Name = "showHideAccountsPasswordsToolStripMenuItem";
-            this.showHideAccountsPasswordsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showHideAccountsPasswordsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.showHideAccountsPasswordsToolStripMenuItem.Text = "Show / Hide";
             this.showHideAccountsPasswordsToolStripMenuItem.Click += new System.EventHandler(this.showHideAccountsPasswordsToolStripMenuItem_Click);
             // 
             // autosaveToolStripMenuItem
             // 
             this.autosaveToolStripMenuItem.Name = "autosaveToolStripMenuItem";
-            this.autosaveToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.autosaveToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.autosaveToolStripMenuItem.Text = "Autosave";
             this.autosaveToolStripMenuItem.Click += new System.EventHandler(this.autosaveToolStripMenuItem_Click);
+            // 
+            // accountsFolderToolStripMenuItem
+            // 
+            this.accountsFolderToolStripMenuItem.Name = "accountsFolderToolStripMenuItem";
+            this.accountsFolderToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.accountsFolderToolStripMenuItem.Text = "Custom Accounts Folder";
+            this.accountsFolderToolStripMenuItem.Click += new System.EventHandler(this.accountsFolderToolStripMenuItem_Click);
             // 
             // miscToolStripMenuItem
             // 
@@ -303,13 +313,6 @@
             this.ScrollBar.TabIndex = 12;
             this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
-            // accountsFolderToolStripMenuItem
-            // 
-            this.accountsFolderToolStripMenuItem.Name = "accountsFolderToolStripMenuItem";
-            this.accountsFolderToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.accountsFolderToolStripMenuItem.Text = "Custom Accounts Folder";
-            this.accountsFolderToolStripMenuItem.Click += new System.EventHandler(this.accountsFolderToolStripMenuItem_Click);
-            // 
             // WasspordGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,6 +333,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Wasspord";
             this.Load += new System.EventHandler(this.WasspordGUI_Load);
+            this.LocationChanged += new System.EventHandler(this.WasspordGUI_LocationChanged);
             this.WasspordMenustrip.ResumeLayout(false);
             this.WasspordMenustrip.PerformLayout();
             this.panel1.ResumeLayout(false);
