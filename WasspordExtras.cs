@@ -51,7 +51,7 @@ namespace Wasspord
                 attempt++;
                 return GeneratePassword(attempt);
             }
-            else if (attempt == 1000) // Unfortunately if recursion goes beyond 500 we'll have to settle for a duplicate. Don't want to slow the program.
+            else if (attempt == 1000) // Unfortunately if recursion goes beyond 1000 we'll have to settle for a duplicate. Don't want to slow the program.
             {
                 Logger.Write("Failed to give a unique / regex matching password after predefined attempt limit.", "WARNING");
                 return GeneratedPass;

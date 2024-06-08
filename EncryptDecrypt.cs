@@ -12,7 +12,7 @@ namespace Wasspord
            our IV (initialization vector, or initial state). 
         */
         private static string Key = "p055w4rd";
-        private static byte[] Bytes = { 0x31, 0xab, 0xa7, 0x91, 0x93, 0x9b, 0x7d, 0x1f, 0x3b, 0xf7, 0x8d, 0x3f, 0x9a };
+        private static byte[] Bytes = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
 
         // Reference on Encryption / Decryption being done here:
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
@@ -20,13 +20,13 @@ namespace Wasspord
         // https://learn.microsoft.com/en-us/dotnet/api/system.io.memorystream?view=net-8.0
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptostream?view=net-8.0
 
-        /* MemoryStreams are simply streams of empty memory initialized with nothing in it, and is expandable.
+        /* MemoryStreams are simply containers of empty memory initialized with nothing in it, and is expandable.
 
            CryptoStreams are made by giving the stream, the mode it'll be using, and any overloads
            (such as CryptoStreamMode.Write).
 
            When CryptoStream is used inside a MemoryStream, the data inside the MemoryStream can be encrypted
-           or decrypted, depnding on the desired result.
+           or decrypted, depending on the desired result.
          */
 
         /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
@@ -38,26 +38,25 @@ namespace Wasspord
             byte[] b = Encoding.Unicode.GetBytes(password);
 
             // Create Aes object
-            using (Aes encrypt = Aes.Create())
+            using (Aes aes = Aes.Create())
             {
                 // Derive bytes from Key and Bytes to create a key for encryption
                 Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                encrypt.Key = key.GetBytes(32); // this is our key
-                encrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
+                aes.Key = key.GetBytes(32); // this is our key
+                aes.IV = key.GetBytes(16); // this is our IV (initialization vector)
                 // Create streams for encryption
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encrypt.CreateEncryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        cs.Write(b, 0, b.Length);
-                        cs.Close();
+                        cs.Write(b, 0, b.Length); // write bytes to cryptostream
+                        cs.Close(); // close the cryptostream
                     }
                     // Our data in ms (our password) is encrypted as a Base64 String based on the content from above CryptoStream.
                     password = Convert.ToBase64String(ms.ToArray());
                 }
             }
             return password;
-
         }
         /* Decrypt: Decrypts the account password previously encrypted and saved to either an account dictionary or a .wasspord file.
 		 * Parameters: password
@@ -72,22 +71,22 @@ namespace Wasspord
             byte[] b = Convert.FromBase64String(password);
 
             // Create Aes object
-            using (Aes decrypt = Aes.Create())
+            using (Aes aes = Aes.Create())
             {
                 // Derive bytes from Key and Bytes to create a key for decryption
                 Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                decrypt.Key = key.GetBytes(32); // this is our key
-                decrypt.IV = key.GetBytes(16); // this is our IV (initialization vector)
+                aes.Key = key.GetBytes(32); // this is our key
+                aes.IV = key.GetBytes(16); // this is our IV (initialization vector)
 
                 try // Let's try our current method unless an error occurs
                 {
                     // Create streams for decryption
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        using (CryptoStream cs = new CryptoStream(ms, decrypt.CreateDecryptor(), CryptoStreamMode.Write))
+                        using (CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write))
                         {
-                            cs.Write(b, 0, b.Length);
-                            cs.Close();
+                            cs.Write(b, 0, b.Length); // write bytes to cryptostream
+                            cs.Close(); // close the cryptostream
                         }
                         // Our data in ms (our password) is converted to a regular Unicode String based on contents from above CryptoStream.
                         password = Encoding.Unicode.GetString(ms.ToArray());

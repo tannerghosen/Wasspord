@@ -49,7 +49,7 @@ namespace Wasspord
             acc.username = username;
             if (Accounts.ContainsKey(acc))
             {
-                Logger.Write("Duplicate Account '" + acc.username + "'", "ERROR");
+                Logger.Write("Duplicate Account \"" + acc.username + "\"", "ERROR");
             }
             else
             {
@@ -68,7 +68,7 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                Logger.Write("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
+                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid", "ERROR");
             }
             else
             {
@@ -87,7 +87,7 @@ namespace Wasspord
             acc.username = username;
             if (!Accounts.ContainsKey(acc))
             {
-                Logger.Write("Account '" + acc.username + "' doesn't exist / is invalid", "ERROR");
+                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid", "ERROR");
             }
             else
             {
@@ -135,7 +135,7 @@ namespace Wasspord
             }
             catch
             {
-                Logger.Write("Error saving to file " + file, "ERROR");
+                Logger.Write("Error saving to file \"" + file + "\".", "ERROR");
             }
         }
 
@@ -161,10 +161,10 @@ namespace Wasspord
                     var acc = line.Split('|');
                     // Below is in case we have duplicate keys, which can happen if you try to load the same file again.
                     // If the dictionary doesn't already have this key, add it.
-                    if (!Accounts.ContainsKey(new Account { location = acc[0], username = acc[1] }))
-                    {
+                    //if (!Accounts.ContainsKey(new Account { location = acc[0], username = acc[1] }))
+                    //{
                         Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
-                    }
+                    //}
                 }
             }
             Logger.Write("File loaded: " + file);
@@ -188,6 +188,9 @@ namespace Wasspord
                         break;
                     case "Password":
                         print += EncryptDecrypt.Decrypt(pair.Value) + "\r\n";
+                        break;
+                    default:
+                        Logger.Write("Invalid item was specified for Print in the item parameter.", "ERROR");
                         break;
                 }
             }
@@ -264,7 +267,7 @@ namespace Wasspord
                     Display = !Display;
                     break;
                 default:
-                    Logger.Write("Invalid setting was specified for UpdateSettings without value parameter", "ERROR");
+                    Logger.Write("Invalid setting was specified for UpdateSettings without value parameter.", "ERROR");
                     break;
             }
 
@@ -283,7 +286,7 @@ namespace Wasspord
                     Folder = value;
                     break;
                 default:
-                    Logger.Write("Invalid setting was specified for UpdateSettings with value parameter", "ERROR");
+                    Logger.Write("Invalid setting was specified for UpdateSettings with value parameter.", "ERROR");
                     break;
             }
 

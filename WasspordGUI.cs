@@ -14,7 +14,7 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-            Logger.Write("Wasspord GUI running.");
+            Logger.Write("Wasspord GUI Running!");
             showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
             autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
