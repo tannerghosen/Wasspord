@@ -39,62 +39,52 @@ namespace Wasspord
             public string username;
         }
 
-        /* AddAccount: Adds an account with a location *where* it's used, the username and the encrypted password, to above mentioned
-		   account dictionary, which can be saved to a .wasspord file down the line.
-         * Parameters: location, username, password. */
-        public static void AddAccount(string location, string username, string password)
+        /* ManageAccount: Adds, updates, and deletes accounts to/from the account dictionary.
+         * Parameters: operation (add/update/delete), location, username, password (optional) */
+        public static void ManageAccount(string operation, string location, string username, string password)
         {
             Account acc;
             acc.location = location;
             acc.username = username;
-            if (Accounts.ContainsKey(acc))
+
+            if (operation == "add" && Accounts.ContainsKey(acc))
             {
-                Logger.Write("Duplicate Account \"" + acc.username + "\"", "ERROR");
+                Logger.Write("Duplicate Account \"" + acc.username + "\".", "ERROR");
+            }
+            else if ((operation == "update" || operation == "delete") && !Accounts.ContainsKey(acc))
+            {
+                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid.", "ERROR");
             }
             else
             {
-                password = EncryptDecrypt.Encrypt(password);
-                Logger.Write("Added Account '" + acc.username + "'.");
-                Accounts.Add(acc, password);
+                switch (operation)
+                {
+                    case "add":
+                            password = EncryptDecrypt.Encrypt(password);
+                            Logger.Write("Added Account '" + acc.username + "'.");
+                            Accounts.Add(acc, password);
+                        break;
+                    case "update":
+                            password = EncryptDecrypt.Encrypt(password);
+                            Logger.Write("Updated Password of Account '" + acc.username + "'.");
+                            Accounts[acc] = password;
+                        break;
+                    case "delete":
+                            Logger.Write("Deleted Account '" + acc.username + "'.");
+                            Accounts.Remove(acc);
+                        break;
+                    default:
+                        Logger.Write("Invalid operation was specified for ManageAccount in the operation parameter.", "ERROR");
+                        break;
+                }
             }
         }
 
-        /* UpdatePassword: Updates a password for a defined location and username in the account dictionary.
-		 * Parameters: location, username, password. */
-        public static void UpdatePassword(string location, string username, string password)
+        public static void ManageAccount(string operation, string location, string username)
         {
-            Account acc;
-            acc.location = location;
-            acc.username = username;
-            if (!Accounts.ContainsKey(acc))
-            {
-                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid", "ERROR");
-            }
-            else
-            {
-                password = EncryptDecrypt.Encrypt(password);
-                Logger.Write("Updated Password of Account '" + acc.username + "'.");
-                Accounts[acc] = password;
-            }
+            ManageAccount(operation, location, username, "");
         }
 
-        /* DeleteAccount: Deletes an account specified for a location and username from the account dictionary.
-         * Parameters: location, username. */
-        public static void DeleteAccount(string location, string username)
-        {
-            Account acc;
-            acc.location = location;
-            acc.username = username;
-            if (!Accounts.ContainsKey(acc))
-            {
-                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid", "ERROR");
-            }
-            else
-            {
-                Logger.Write("Deleted Account '" + acc.username + "'.");
-                Accounts.Remove(acc);
-            }
-        }
         /* ClearAccounts: Clears the accounts dictionary. */
         public static void ClearAccounts()
         {

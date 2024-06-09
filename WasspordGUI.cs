@@ -14,7 +14,6 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-            Logger.Write("Wasspord GUI Running!");
             showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
             autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
@@ -359,13 +358,13 @@ namespace Wasspord
                 switch (type)
                 {
                     case "add":
-                        Wasspord.AddAccount(LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        Wasspord.ManageAccount("add", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
                         break;
                     case "update":
-                        Wasspord.UpdatePassword(LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        Wasspord.ManageAccount("update", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
                         break;
                     case "delete":
-                        Wasspord.DeleteAccount(LocationTextbox.Text, UsernameTextbox.Text);
+                        Wasspord.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
                         break;
                 }
                 AccountForm.Close();
