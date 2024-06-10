@@ -3,6 +3,10 @@ using System.IO;
 
 namespace Wasspord
 {
+    /*
+     * Methods: Write
+     * Properties/Misc: Log
+     */
     internal class Logger
     {
         /* Our log file is located in the program's folder */

@@ -5,15 +5,20 @@ using System.Text.RegularExpressions;
 
 namespace Wasspord
 {
+    /*
+     * Methods: GeneratePassword, ValidatePassword
+     * Properties/Misc: Passwords, Characters, RegexPattern, Regex
+     */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
+
     internal class WasspordExtras
     {
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
 
         /* Other Misc Things: characters, regexpattern, regex */
-        private static string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
-        private static string regexpattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
+        private static string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+        private static string RegexPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
         /* It checks for:
         1 uppercase letter
         1 lowercase letter
@@ -22,7 +27,7 @@ namespace Wasspord
         should not repeat characters more than 5 times consecutively
         8-32 characters in width
         */
-        private static Regex regex = new Regex(regexpattern);
+        private static Regex Regex = new Regex(RegexPattern);
 
         /* GeneratePassword: Generates a random password that's 16 characters in length,
           while also trying to prevent duplicates and non-regex following attempts
@@ -35,11 +40,11 @@ namespace Wasspord
             for (int i = 0; i < 16; i++)
             {
                 // characters[Random([0, characters' length])];
-                password.Append(characters[r.Next(characters.Length)]);
+                password.Append(Characters[r.Next(Characters.Length)]);
             }
             string GeneratedPass = password.ToString();
             // if Passwords doesn't contain GeneratedPass and it's good according to our regex
-            if (!Passwords.Contains(GeneratedPass) && regex.IsMatch(GeneratedPass))
+            if (!Passwords.Contains(GeneratedPass) && Regex.IsMatch(GeneratedPass))
             {
                 Passwords.Add(GeneratedPass); // add it to the list
                 Logger.Write("Generated Password Successfully!");
@@ -64,7 +69,7 @@ namespace Wasspord
          * Returns: Regex result (either positive or negative) */
         public static string ValidatePassword(string password)
         {
-            return !regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
+            return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
     }
 }

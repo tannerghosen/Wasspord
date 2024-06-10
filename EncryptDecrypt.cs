@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Wasspord
 {
+    /*
+     * Methods: Encrypt, Decrypt
+     * Properties/Misc: Key, Bytes
+     */
     internal class EncryptDecrypt
     {
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key

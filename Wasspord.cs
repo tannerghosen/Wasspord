@@ -6,11 +6,9 @@ using System.Text.Json;
 namespace Wasspord
 {
     /*
-     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, ClearAccounts,
-     * Print, Init, UpdateSettings, SaveSettings
-     * Important Variables/Misc: Account Dictionary, Account Struct
-     * Variables/Misc: Settings, Autosave, Display, Filename, Folder
-    */
+     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
+     * Properties/Misc: Account Dictionary, Account Struct, Settings, Autosave, Display, Filename, Folder
+     */
 
     public static class Wasspord
     {
@@ -83,13 +81,6 @@ namespace Wasspord
         public static void ManageAccount(string operation, string location, string username)
         {
             ManageAccount(operation, location, username, "");
-        }
-
-        /* ClearAccounts: Clears the accounts dictionary. */
-        public static void ClearAccounts()
-        {
-            Accounts.Clear();
-            Logger.Write("Cleared accounts dictionary.");
         }
 
         /* 
@@ -187,15 +178,19 @@ namespace Wasspord
             return print;
         }
 
-        /* Reset: Clears the dictionary AND resets the opened file name / file path. Used when "Load" is clicked in the GUI, respectively */
-        public static void Reset()
+        /* Reset: Clears the dictionary, AND (if everything is true) resets the opened file name / file path. */
+        public static void Reset(bool everything)
         {
-            ClearAccounts();
-            Filename = "";
-            string json = File.ReadAllText(Settings); // read the file as a string
-            JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
-            Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
-            Logger.Write("Reset filename / filepath.");
+            Accounts.Clear();
+            Logger.Write("Cleared accounts dictionary.");
+            if (everything == true)
+            {
+                Filename = ""; // reset the filename to nothing
+                string json = File.ReadAllText(Settings); // read the file as a string
+                JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
+                Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
+                Logger.Write("Reset filename / filepath.");
+            }
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */

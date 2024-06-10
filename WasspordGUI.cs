@@ -191,7 +191,7 @@ namespace Wasspord
 		}
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-			Wasspord.Reset();
+			Wasspord.Reset(true);
 			LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
         }
 
@@ -397,7 +397,7 @@ namespace Wasspord
             //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
             if (of.ShowDialog() == DialogResult.OK)
             {
-                Wasspord.ClearAccounts();
+                Wasspord.Reset(false);
                 Wasspord.Filename = Path.GetFileName(of.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(of.FileName);
                 Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
