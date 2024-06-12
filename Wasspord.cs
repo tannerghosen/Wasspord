@@ -107,7 +107,7 @@ namespace Wasspord
                 }
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
-                    foreach (var acc in Wasspord.Accounts) // for each acc in Accounts, writeline into the file the location, username, value.
+                    foreach (var acc in Accounts) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
                     }
@@ -137,15 +137,11 @@ namespace Wasspord
                 string line; // our current line
                 while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                 {
-                    // Split the details we need (where, username, password) by the |'s into arrays
-                    // acc[0] = where, acc[1] = username, acc[2] = password
+                    // Split the details we need (location, username, password) by the |'s into arrays
+                    // acc[0] = location, acc[1] = username, acc[2] = password
                     var acc = line.Split('|');
-                    // Below is in case we have duplicate keys, which can happen if you try to load the same file again.
-                    // If the dictionary doesn't already have this key, add it.
-                    //if (!Accounts.ContainsKey(new Account { location = acc[0], username = acc[1] }))
-                    //{
-                        Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
-                    //}
+                    // Because our Key is bother location and username, we create an Account struct with location and username
+                    Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
                 }
             }
             Logger.Write("File loaded: " + file);
@@ -225,7 +221,7 @@ namespace Wasspord
                 {
                     Directory.CreateDirectory(Folder);
 
-                    Logger.Write("Custom accounts folder \"" + Folder + "\" was missing; creating it.", "WARNING");
+                    Logger.Write("Custom accounts folder \"" + Folder + "\" is missing; recreating it.", "WARNING");
                 }
             }
 
@@ -236,7 +232,10 @@ namespace Wasspord
 
                 Logger.Write("Created Accounts folder in \"" + Directory.GetCurrentDirectory() + "\".");
             }
+
+            WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
         }
+
         /* UpdateSettings: Updates a specified setting.
          * Parameters: setting
          */

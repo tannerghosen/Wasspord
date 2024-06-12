@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using System.Windows.Forms;
 
 namespace Wasspord
 {
     /*
-     * Methods: GeneratePassword, ValidatePassword
-     * Properties/Misc: Passwords, Characters, RegexPattern, Regex
+     * Methods: GeneratePassword, ValidatePassword, Init, AddPassword
+     * Properties/Misc: PasswordsFile, Passwords, Characters, RegexPattern, Regex
      */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
 
     internal class WasspordExtras
     {
+        /* PasswordsFile: Contains our encrypted generated passwords */
+        public static string PasswordsFile = "./GeneratePasswords.wasspord";
+
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
 
@@ -31,7 +37,8 @@ namespace Wasspord
 
         /* GeneratePassword: Generates a random password that's 16 characters in length,
           while also trying to prevent duplicates and non-regex following attempts
-          by recursively calling itself up to 500 times before going with a duplicate / failed password.
+          by recursively calling itself up to a predefined amount of times before going with 
+          a duplicate / failed password.
         * Returns: Generated Password */
         public static string GeneratePassword(int attempt = 0)
         {
@@ -46,7 +53,7 @@ namespace Wasspord
             // if Passwords doesn't contain GeneratedPass and it's good according to our regex
             if (!Passwords.Contains(GeneratedPass) && Regex.IsMatch(GeneratedPass))
             {
-                Passwords.Add(GeneratedPass); // add it to the list
+                AddPassword(GeneratedPass); // add it to the list
                 Logger.Write("Generated Password Successfully!");
                 return GeneratedPass;
             }
@@ -70,6 +77,39 @@ namespace Wasspord
         public static string ValidatePassword(string password)
         {
             return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
+        }
+
+        /* Init: Initializes the Passwords HashSet with the contents of PasswordsFile, or creates the file. */
+        public static void Init()
+        {
+            // If this is the first time we're running Wasspord OR the user deleted the GeneratedPasswords file
+            if (!File.Exists(PasswordsFile))
+            {
+                File.Create(PasswordsFile).Dispose();
+            }
+            else // else, we've run this program before, read the content of the file.
+            {
+                var fs = new FileStream(PasswordsFile, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
+                using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
+                {
+                    string line; // our current line
+                    while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
+                    {
+                        Passwords.Add(EncryptDecrypt.Decrypt(line)); // Add passwords from file to our Passwords HashSet
+                    }
+                }
+            }
+        }
+
+        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the PasswordsFile file */
+        public static void AddPassword(string password)
+        {
+            Passwords.Add(password);
+            using (StreamWriter writer = new StreamWriter(PasswordsFile, true))
+            {
+                writer.WriteLine(EncryptDecrypt.Encrypt(password));
+                writer.Close();
+            }
         }
     }
 }
