@@ -72,7 +72,7 @@ namespace Wasspord
                             Accounts.Remove(acc);
                         break;
                     default:
-                        Logger.Write("Invalid operation was specified for ManageAccount in the operation parameter.", "ERROR");
+                            Logger.Write("Invalid operation was specified for ManageAccount in the operation parameter.", "ERROR");
                         break;
                 }
             }
@@ -107,6 +107,7 @@ namespace Wasspord
                 }
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
+                    sw.WriteLine(EncryptDecrypt.GetKey());
                     foreach (var acc in Accounts) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
@@ -135,13 +136,31 @@ namespace Wasspord
             using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
             {
                 string line; // our current line
+                int Line = 1;
                 while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                 {
-                    // Split the details we need (location, username, password) by the |'s into arrays
-                    // acc[0] = location, acc[1] = username, acc[2] = password
-                    var acc = line.Split('|');
-                    // Because our Key is bother location and username, we create an Account struct with location and username
-                    Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
+                    if (Line == 1 && !line.Contains("|"))
+                    {
+                        Logger.Write("Setting Key to " + line);
+                        EncryptDecrypt.SetKey(line);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            // Split the details we need (location, username, password) by the |'s into arrays
+                            // acc[0] = location, acc[1] = username, acc[2] = password
+                            var acc = line.Split('|');
+                            // Because our Key is both location and username, we create an Account struct with location and username
+                            Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
+                        }
+                        catch // if we get a bad egg or someone tries to load the GeneratePasswords.wasspord file
+                        {
+                            Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
+                            break;
+                        }
+                    }
+                    Line++;
                 }
             }
             Logger.Write("File loaded: " + file);
@@ -174,7 +193,7 @@ namespace Wasspord
             return print;
         }
 
-        /* Reset: Clears the dictionary, AND (if everything is true) resets the opened file name / file path. */
+        /* Reset: Clears the dictionary, AND (if everything is true) resets the opened file name / file path. Functionalities used for Load / New respectively. */
         public static void Reset(bool everything)
         {
             Accounts.Clear();
@@ -182,6 +201,7 @@ namespace Wasspord
             if (everything == true)
             {
                 Filename = ""; // reset the filename to nothing
+                EncryptDecrypt.Init(); // Make a new key.
                 string json = File.ReadAllText(Settings); // read the file as a string
                 JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
                 Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
@@ -234,6 +254,7 @@ namespace Wasspord
             }
 
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
+            EncryptDecrypt.Init(); // Initialize a random Key
         }
 
         /* UpdateSettings: Updates a specified setting.

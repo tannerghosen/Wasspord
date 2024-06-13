@@ -6,7 +6,7 @@ using System.Text;
 namespace Wasspord
 {
     /*
-     * Methods: Encrypt, Decrypt
+     * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey
      * Properties/Misc: Key, Bytes
      */
     internal class EncryptDecrypt
@@ -15,6 +15,7 @@ namespace Wasspord
            is an encryption key used in the encryption/decryption and our bytes is 
            our IV (initialization vector, or initial state). 
         */
+
         private static string Key = "p055w4rd";
         private static byte[] Bytes = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
 
@@ -111,6 +112,27 @@ namespace Wasspord
                 }
             }
             return password;
+        }
+        public static void Init()
+        {
+            Key = GenerateKey(); // Generate a Key
+        }
+
+        public static string GetKey()
+        {
+            return Key;
+        }
+
+        public static void SetKey(string key)
+        {
+            Key = key;
+        }
+        public static string GenerateKey()
+        {
+            var rng = new RNGCryptoServiceProvider();
+            var bytes = new byte[16];
+            rng.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
         }
     }
 }

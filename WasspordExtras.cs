@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using System.Windows.Forms;
 
 namespace Wasspord
 {
@@ -39,6 +37,7 @@ namespace Wasspord
           while also trying to prevent duplicates and non-regex following attempts
           by recursively calling itself up to a predefined amount of times before going with 
           a duplicate / failed password.
+          Parameter: attempt (autoincrements on every recursion call, optional parameter)
         * Returns: Generated Password */
         public static string GeneratePassword(int attempt = 0)
         {
@@ -101,15 +100,20 @@ namespace Wasspord
             }
         }
 
-        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the PasswordsFile file */
+        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the PasswordsFile file 
+         * Parameters: password
+         */
         public static void AddPassword(string password)
         {
+            string OldKey = EncryptDecrypt.GetKey();
+            EncryptDecrypt.SetKey("p055w4rd");
             Passwords.Add(password);
             using (StreamWriter writer = new StreamWriter(PasswordsFile, true))
             {
                 writer.WriteLine(EncryptDecrypt.Encrypt(password));
                 writer.Close();
             }
+            EncryptDecrypt.SetKey(OldKey);
         }
     }
 }
