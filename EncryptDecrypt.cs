@@ -113,9 +113,12 @@ namespace Wasspord
             }
             return password;
         }
-        public static void Init()
+        public static void GenerateKey()
         {
-            Key = GenerateKey(); // Generate a Key
+            var rng = new RNGCryptoServiceProvider();
+            var bytes = new byte[16];
+            rng.GetBytes(bytes);
+            Key = Convert.ToBase64String(bytes);
         }
 
         public static string GetKey()
@@ -126,13 +129,6 @@ namespace Wasspord
         public static void SetKey(string key)
         {
             Key = key;
-        }
-        public static string GenerateKey()
-        {
-            var rng = new RNGCryptoServiceProvider();
-            var bytes = new byte[16];
-            rng.GetBytes(bytes);
-            return Convert.ToBase64String(bytes);
         }
     }
 }

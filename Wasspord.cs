@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace Wasspord
 {
     /*
-     * Methods: AddAccount, UpdatePassword, DeleteAccount, Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
+     * Methods: ManageAccount, Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
      * Properties/Misc: Account Dictionary, Account Struct, Settings, Autosave, Display, Filename, Folder
      */
 
@@ -201,7 +201,7 @@ namespace Wasspord
             if (everything == true)
             {
                 Filename = ""; // reset the filename to nothing
-                EncryptDecrypt.Init(); // Make a new key.
+                EncryptDecrypt.GenerateKey(); // Generate a new key
                 string json = File.ReadAllText(Settings); // read the file as a string
                 JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
                 Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
@@ -254,7 +254,7 @@ namespace Wasspord
             }
 
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
-            EncryptDecrypt.Init(); // Initialize a random Key
+            EncryptDecrypt.GenerateKey(); // Create a random Key
         }
 
         /* UpdateSettings: Updates a specified setting.

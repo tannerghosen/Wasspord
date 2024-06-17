@@ -8,7 +8,7 @@ namespace Wasspord
 {
     /*
      * Methods: GeneratePassword, ValidatePassword, Init, AddPassword
-     * Properties/Misc: PasswordsFile, Passwords, Characters, RegexPattern, Regex
+     * Properties/Misc: PasswordsFile, Passwords, Characters, RegexPattern, Regex, MaxAttempts
      */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
 
@@ -20,9 +20,9 @@ namespace Wasspord
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
 
-        /* Other Misc Things: characters, regexpattern, regex */
+        /* Other Misc Things: Characters, RegexPattern, Regex, MaxAttempts */
         private static string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
-        private static string RegexPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
+
         /* It checks for:
         1 uppercase letter
         1 lowercase letter
@@ -31,7 +31,11 @@ namespace Wasspord
         should not repeat characters more than 5 times consecutively
         8-32 characters in width
         */
+        private static string RegexPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
+
         private static Regex Regex = new Regex(RegexPattern);
+
+        private static int MaxAttempts = 5000;
 
         /* GeneratePassword: Generates a random password that's 16 characters in length,
           while also trying to prevent duplicates and non-regex following attempts
@@ -57,12 +61,12 @@ namespace Wasspord
                 return GeneratedPass;
             }
             // Otherwise we try again
-            else if (attempt < 1000)
+            else if (attempt < MaxAttempts)
             {
                 attempt++;
                 return GeneratePassword(attempt);
             }
-            else if (attempt == 1000) // Unfortunately if recursion goes beyond 1000 we'll have to settle for a duplicate. Don't want to slow the program.
+            else if (attempt == MaxAttempts) // Unfortunately if recursion goes beyond 1000 we'll have to settle for a duplicate. Don't want to slow the program.
             {
                 Logger.Write("Failed to give a unique / regex matching password after predefined attempt limit.", "WARNING");
                 return GeneratedPass;
@@ -100,20 +104,20 @@ namespace Wasspord
             }
         }
 
-        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the PasswordsFile file 
+        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the GeneratedPasswords file 
          * Parameters: password
          */
         public static void AddPassword(string password)
         {
-            string OldKey = EncryptDecrypt.GetKey();
-            EncryptDecrypt.SetKey("p055w4rd");
-            Passwords.Add(password);
+            Passwords.Add(password); // Add the generated password to the Passwords hashset
+            string OldKey = EncryptDecrypt.GetKey(); // Store our current encryption key
+            EncryptDecrypt.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
             using (StreamWriter writer = new StreamWriter(PasswordsFile, true))
             {
                 writer.WriteLine(EncryptDecrypt.Encrypt(password));
                 writer.Close();
             }
-            EncryptDecrypt.SetKey(OldKey);
+            EncryptDecrypt.SetKey(OldKey); // We set the encryption key back to the current one now that AddPassword's job is done
         }
     }
 }
