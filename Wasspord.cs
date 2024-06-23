@@ -2,6 +2,7 @@
 using System.Text;
 using System.IO;
 using System.Text.Json;
+using System;
 
 namespace Wasspord
 {
@@ -125,8 +126,9 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
-            //Reset(); // Reset ahead of time so we don't have errors down the line.
-			string file = location + @"\" + filename;
+            Reset(); // Reset ahead of time so we don't have errors down the line.
+            EncryptDecrypt.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
+            string file = location + @"\" + filename;
 			// This should never happen, but if it does create a blank file.
 			if (!File.Exists(file))
             {
@@ -139,10 +141,19 @@ namespace Wasspord
                 int Line = 1;
                 while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                 {
-                    if (Line == 1 && !line.Contains("|"))
+                    if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
                     {
-                        Logger.Write("Setting Key to " + line);
-                        EncryptDecrypt.SetKey(line);
+                        bool IsValid = EncryptDecrypt.ValidateKey(line);
+                        if (IsValid) // Is this a Valid Key?
+                        {
+                            Logger.Write("Setting Key to " + line);
+                            EncryptDecrypt.SetKey(line);
+                        }
+                        else // If it isn't, don't bother loading the file.
+                        {
+                            Logger.Write("Invalid key was saved into the .wasspord file.","ERROR");
+                            break;
+                        }
                     }
                     else
                     {
@@ -157,13 +168,13 @@ namespace Wasspord
                         catch // if we get a bad egg or someone tries to load the GeneratePasswords.wasspord file
                         {
                             Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
-                            break;
+                            break; // Break the while loop, no point in trying to load any further
                         }
                     }
                     Line++;
                 }
             }
-            Logger.Write("File loaded: " + file);
+            Logger.Write("File loaded: " + file); 
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 
@@ -193,20 +204,13 @@ namespace Wasspord
             return print;
         }
 
-        /* Reset: Clears the dictionary, AND (if everything is true) resets the opened file name / file path. Functionalities used for Load / New respectively. */
-        public static void Reset(bool everything)
+        /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */
+        public static void Reset()
         {
-            Accounts.Clear();
-            Logger.Write("Cleared accounts dictionary.");
-            if (everything == true)
-            {
-                Filename = ""; // reset the filename to nothing
-                EncryptDecrypt.GenerateKey(); // Generate a new key
-                string json = File.ReadAllText(Settings); // read the file as a string
-                JsonDocument settings = JsonDocument.Parse(json); // parse it as a json string
-                Folder = settings.RootElement.GetProperty("Folder").GetString(); // get Folder from our settings, in case the user saved a file in a different folder than the default one (which would change it, requiring it to be reset)
-                Logger.Write("Reset filename / filepath.");
-            }
+            Accounts.Clear(); // Clear account dictionary
+            Filename = ""; // reset the filename to nothing
+            EncryptDecrypt.GenerateKey(); // Generate a new key
+            Logger.Write("Resetted / cleared several items.");
         }
 
         /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */

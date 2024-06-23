@@ -6,7 +6,7 @@ using System.Text;
 namespace Wasspord
 {
     /*
-     * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey
+     * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, ValidateKey
      * Properties/Misc: Key, Bytes
      */
     internal class EncryptDecrypt
@@ -105,7 +105,7 @@ namespace Wasspord
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                     */
-                    Logger.Write("Caught old password encryption", "WARNING");
+                    Logger.Write("Caught old password encryption.", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
@@ -129,6 +129,19 @@ namespace Wasspord
         public static void SetKey(string key)
         {
             Key = key;
+        }
+
+        public static bool ValidateKey(string key)
+        {
+            try
+            {
+                Convert.FromBase64String(key);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
