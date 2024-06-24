@@ -45,10 +45,10 @@ namespace Wasspord
             // Create Aes object
             using (Aes aes = Aes.Create())
             {
-                // Derive bytes from Key and Bytes to create a key for encryption
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                aes.Key = key.GetBytes(32); // this is our key
-                aes.IV = key.GetBytes(16); // this is our IV (initialization vector)
+                // Create a deriver to derive bytes from Key and Bytes using PBKDF2 to get our Key and IV for encryption
+                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Bytes);
+                aes.Key = d.GetBytes(32); // this is our key
+                aes.IV = d.GetBytes(16); // this is our IV (initialization vector)
                 // Create streams for encryption
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -57,7 +57,7 @@ namespace Wasspord
                         cs.Write(b, 0, b.Length); // write bytes to cryptostream
                         cs.Close(); // close the cryptostream
                     }
-                    // Our data in ms (our password) is encrypted as a Base64 String based on the content from above CryptoStream.
+                    // Our data in ms (our encrypted password) is encrypted as a Base64 String based on the content from above CryptoStream.
                     password = Convert.ToBase64String(ms.ToArray());
                 }
             }
@@ -78,10 +78,10 @@ namespace Wasspord
             // Create Aes object
             using (Aes aes = Aes.Create())
             {
-                // Derive bytes from Key and Bytes to create a key for decryption
-                Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(Key, Bytes);
-                aes.Key = key.GetBytes(32); // this is our key
-                aes.IV = key.GetBytes(16); // this is our IV (initialization vector)
+                // Create a deriver to derive bytes from Key and Bytes using PBKDF2 to get our Key and IV for decryption
+                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Bytes);
+                aes.Key = d.GetBytes(32); // this is our key
+                aes.IV = d.GetBytes(16); // this is our IV (initialization vector)
 
                 try // Let's try our current method unless an error occurs
                 {
@@ -93,7 +93,7 @@ namespace Wasspord
                             cs.Write(b, 0, b.Length); // write bytes to cryptostream
                             cs.Close(); // close the cryptostream
                         }
-                        // Our data in ms (our password) is converted to a regular Unicode String based on contents from above CryptoStream.
+                        // Our data in ms (our decrypted password) is converted to a regular Unicode String based on contents from above CryptoStream.
                         password = Encoding.Unicode.GetString(ms.ToArray());
                     }
                 }

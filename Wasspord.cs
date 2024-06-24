@@ -60,13 +60,13 @@ namespace Wasspord
                 {
                     case "add":
                             password = EncryptDecrypt.Encrypt(password);
-                            Logger.Write("Added Account '" + acc.username + "'.");
                             Accounts.Add(acc, password);
+                            Logger.Write("Added Account '" + acc.username + "'.");
                         break;
                     case "update":
                             password = EncryptDecrypt.Encrypt(password);
-                            Logger.Write("Updated Password of Account '" + acc.username + "'.");
                             Accounts[acc] = password;
+                            Logger.Write("Updated Password of Account '" + acc.username + "'.");
                         break;
                     case "delete":
                             Logger.Write("Deleted Account '" + acc.username + "'.");
@@ -258,7 +258,7 @@ namespace Wasspord
             }
 
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
-            EncryptDecrypt.GenerateKey(); // Create a random Key
+            EncryptDecrypt.GenerateKey(); // Create a key
         }
 
         /* UpdateSettings: Updates a specified setting.
