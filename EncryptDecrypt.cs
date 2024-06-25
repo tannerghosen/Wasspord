@@ -115,10 +115,10 @@ namespace Wasspord
         }
         public static void GenerateKey()
         {
-            var rng = new RNGCryptoServiceProvider();
-            var bytes = new byte[16];
-            rng.GetBytes(bytes);
-            Key = Convert.ToBase64String(bytes);
+            var rng = new RNGCryptoServiceProvider(); // create secure number generator
+            var bytes = new byte[16]; // create bytes array
+            rng.GetBytes(bytes); // fill bytes array with secure random bytes
+            Key = Convert.ToBase64String(bytes); // convert bytes array to a Base64 string, sets Key to it
         }
 
         public static string GetKey()
@@ -133,13 +133,24 @@ namespace Wasspord
 
         public static bool ValidateKey(string key)
         {
-            try
+            /* ValidateKey uses a try-catch to see if the key causes an exception (i.e. the string is not a base64 encoded string to begin
+               with, therefore it will always cause an exception with FromBase64String), if it doesn't, return true, if the catch occurs,
+               it's a bad key, therefore return false.
+               This does not handle manually altered keys in the .wasspord file itself unless it's turned into an invalid string, 
+               should the user alter the key and it becomes a corrupted wasspord file (i.e. passwords are not correctly decrypted),
+               that is on them.
+            */
+            try 
             {
-                Convert.FromBase64String(key);
+                // Return true if it is able to convert the string as a base64 string into a byte array, by making bytes (our byte array)
+                // equal to the result of the FromBase64String.
+                var bytes = new byte[16];
+                bytes = Convert.FromBase64String(key);
                 return true;
             }
             catch
             {
+                // Return false if it cannot, meaning it's a bad key.
                 return false;
             }
         }

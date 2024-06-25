@@ -143,15 +143,15 @@ namespace Wasspord
                 {
                     if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
                     {
-                        bool IsValid = EncryptDecrypt.ValidateKey(line);
-                        if (IsValid) // Is this a Valid Key?
+                        bool IsValid = EncryptDecrypt.ValidateKey(line); // Validate it, it could be a bad file
+                        if (IsValid) // Is this a Valid Base64 String Key?
                         {
                             Logger.Write("Setting Key to " + line);
                             EncryptDecrypt.SetKey(line);
                         }
                         else // If it isn't, don't bother loading the file.
                         {
-                            Logger.Write("Invalid key was saved into the .wasspord file.","ERROR");
+                            Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").","ERROR");
                             break;
                         }
                     }
@@ -165,7 +165,7 @@ namespace Wasspord
                             // Because our Key is both location and username, we create an Account struct with location and username
                             Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
                         }
-                        catch // if we get a bad egg or someone tries to load the GeneratePasswords.wasspord file
+                        catch // if we get a bad file after the key check
                         {
                             Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
                             break; // Break the while loop, no point in trying to load any further
@@ -245,12 +245,12 @@ namespace Wasspord
                 {
                     Directory.CreateDirectory(Folder);
 
-                    Logger.Write("Custom accounts folder \"" + Folder + "\" is missing; recreating it.", "WARNING");
+                    Logger.Write("Custom Accounts folder \"" + Folder + "\" is missing; recreating it.", "WARNING");
                 }
             }
 
-            // If our default Accounts folder is deleted, we'll need to make it again
-            if (!Directory.Exists("Accounts"))
+            // If our default Accounts folder is deleted and it is still set as the default folder, we'll need to make it again
+            if (!Directory.Exists("Accounts") && Folder == Path.Combine(Directory.GetCurrentDirectory() + "\\Accounts\\"))
             {
                 Directory.CreateDirectory("Accounts");
 
