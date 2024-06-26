@@ -15,7 +15,7 @@ namespace Wasspord
     internal class WasspordExtras
     {
         /* PasswordsFile: Contains our encrypted generated passwords */
-        public static string PasswordsFile = "./GeneratePasswords.wasspord";
+        public static string PasswordsFile = "./GeneratedPasswords.passwords";
 
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
@@ -35,14 +35,12 @@ namespace Wasspord
 
         private static Regex Regex = new Regex(RegexPattern);
 
-        private static int MaxAttempts = 5000;
-
         /* GeneratePassword: Generates a random password that's 16 characters in length,
           while also trying to prevent duplicates and non-regex following attempts
-          by recursively calling itself up to a predefined amount of times before going with 
+          by recursively calling itself up to a specified amount of times before going with 
           a duplicate / failed password.
           Parameter: attempt (autoincrements on every recursion call, optional parameter)
-        * Returns: Generated Password */
+          Returns: Generated Password */
         public static string GeneratePassword(int attempt = 0)
         {
             StringBuilder password = new StringBuilder(string.Empty);
@@ -61,17 +59,15 @@ namespace Wasspord
                 return GeneratedPass;
             }
             // Otherwise we try again
-            else if (attempt < MaxAttempts)
+            else if (attempt != 2000)
             {
                 attempt++;
                 return GeneratePassword(attempt);
             }
-            else if (attempt == MaxAttempts) // Unfortunately if recursion goes beyond 1000 we'll have to settle for a duplicate. Don't want to slow the program.
+            else // Unfortunately if recursion goes beyond predefined limit we'll have to settle for a duplicate or bad regex password. Don't want to slow the program.
             {
-                Logger.Write("Failed to give a unique / regex matching password after predefined attempt limit.", "WARNING");
                 return GeneratedPass;
             }
-            return "";
         }
 
         /* ValidatePassword: Validates a given password against a regex (details on what it checks is above).
