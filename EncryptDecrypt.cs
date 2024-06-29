@@ -9,7 +9,7 @@ namespace Wasspord
      * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, ValidateKey
      * Properties/Misc: Key, Bytes
      */
-    internal class EncryptDecrypt
+    internal static class EncryptDecrypt
     {
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
            is an encryption key used in the encryption/decryption and our bytes is 
@@ -133,8 +133,7 @@ namespace Wasspord
 
         public static bool ValidateKey(string key)
         {
-            /* ValidateKey uses a try-catch to see if the key causes an exception (i.e. the string is not a base64 encoded string to begin
-               with, therefore it will always cause an exception with FromBase64String), if it doesn't, return true, if the catch occurs,
+            /* ValidateKey uses a try-catch to see if the key causes an exception, if it doesn't, return true, if the catch occurs,
                it's a bad key, therefore return false.
                This does not handle manually altered keys in the .wasspord file itself unless it's turned into an invalid string, 
                should the user alter the key and it becomes a corrupted wasspord file (i.e. passwords are not correctly decrypted),
@@ -142,15 +141,12 @@ namespace Wasspord
             */
             try 
             {
-                // Return true if it is able to convert the string as a base64 string into a byte array, by making bytes (our byte array)
-                // equal to the result of the FromBase64String.
-                var bytes = new byte[16];
-                bytes = Convert.FromBase64String(key);
+                // Convert.FromBase64String() will cause an exception if the string is not a valid base 64 string.
+                Convert.FromBase64String(key);
                 return true;
             }
             catch
             {
-                // Return false if it cannot, meaning it's a bad key.
                 return false;
             }
         }

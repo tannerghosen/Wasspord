@@ -358,13 +358,13 @@ namespace Wasspord
                 switch (type)
                 {
                     case "add":
-                        Wasspord.ManageAccount("add", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        WasspordAccounts.ManageAccount("add", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
                         break;
                     case "update":
-                        Wasspord.ManageAccount("update", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        WasspordAccounts.ManageAccount("update", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
                         break;
                     case "delete":
-                        Wasspord.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
+                        WasspordAccounts.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
                         break;
                 }
                 AccountForm.Close();

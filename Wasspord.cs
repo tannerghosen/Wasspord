@@ -7,7 +7,7 @@ using System;
 namespace Wasspord
 {
     /*
-     * Methods: ManageAccount, Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
+     * Methods: Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
      * Properties/Misc: Account Dictionary, Account Struct, Settings, Autosave, Display, Filename, Folder
      */
 
@@ -22,67 +22,6 @@ namespace Wasspord
         public static bool Display { get; set; }
         public static string Filename { get; set; } // Our file's name
         public static string Folder { get; set; } // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
-
-        /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
-           where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
-           under the same username/email at multiple websites.
-        */
-        private static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
-        /* Account Struct: This is our key when we insert entries into the Account dictionary,
-           which is also the same key used to find entries in other functions. where is where 
-           the account is used, username is the username/email used.
-        */
-        private struct Account
-        {
-            public string location;
-            public string username;
-        }
-
-        /* ManageAccount: Adds, updates, and deletes accounts to/from the account dictionary.
-         * Parameters: operation (add/update/delete), location, username, password (optional) */
-        public static void ManageAccount(string operation, string location, string username, string password)
-        {
-            Account acc;
-            acc.location = location;
-            acc.username = username;
-
-            if (operation == "add" && Accounts.ContainsKey(acc))
-            {
-                Logger.Write("Duplicate Account \"" + acc.username + "\".", "ERROR");
-            }
-            else if ((operation == "update" || operation == "delete") && !Accounts.ContainsKey(acc))
-            {
-                Logger.Write("Account \"" + acc.username + "\" doesn't exist / is invalid.", "ERROR");
-            }
-            else
-            {
-                switch (operation)
-                {
-                    case "add":
-                            password = EncryptDecrypt.Encrypt(password);
-                            Accounts.Add(acc, password);
-                            Logger.Write("Added Account '" + acc.username + "'.");
-                        break;
-                    case "update":
-                            password = EncryptDecrypt.Encrypt(password);
-                            Accounts[acc] = password;
-                            Logger.Write("Updated Password of Account '" + acc.username + "'.");
-                        break;
-                    case "delete":
-                            Logger.Write("Deleted Account '" + acc.username + "'.");
-                            Accounts.Remove(acc);
-                        break;
-                    default:
-                            Logger.Write("Invalid operation was specified for ManageAccount in the operation parameter.", "ERROR");
-                        break;
-                }
-            }
-        }
-
-        public static void ManageAccount(string operation, string location, string username)
-        {
-            ManageAccount(operation, location, username, "");
-        }
 
         /* 
            In both Save and Load, we use Streams to write to a file and read a file.
@@ -109,7 +48,7 @@ namespace Wasspord
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
                     sw.WriteLine(EncryptDecrypt.GetKey());
-                    foreach (var acc in Accounts) // for each acc in Accounts, writeline into the file the location, username, value.
+                    foreach (var acc in WasspordAccounts.GetAccounts()) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
                     }
@@ -139,6 +78,7 @@ namespace Wasspord
             {
                 string line; // our current line
                 int Line = 1;
+
                 while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                 {
                     if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
@@ -151,30 +91,32 @@ namespace Wasspord
                         }
                         else // If it isn't, don't bother loading the file.
                         {
-                            Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").","ERROR");
+                            Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
+                            fs.Dispose();
                             break;
                         }
                     }
                     else
                     {
-                        try
+                        try // try-catch in case the acc cannot be split by |
                         {
                             // Split the details we need (location, username, password) by the |'s into arrays
                             // acc[0] = location, acc[1] = username, acc[2] = password
                             var acc = line.Split('|');
                             // Because our Key is both location and username, we create an Account struct with location and username
-                            Accounts.Add(new Account { location = acc[0], username = acc[1] }, acc[2]);
+                            WasspordAccounts.AddAccount(acc[0], acc[1], acc[2]);
                         }
                         catch // if we get a bad file after the key check
                         {
                             Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
+                            fs.Dispose();
                             break; // Break the while loop, no point in trying to load any further
                         }
                     }
                     Line++;
                 }
             }
-            Logger.Write("File loaded: " + file); 
+            Logger.Write("File loaded: " + file);
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 
@@ -183,7 +125,7 @@ namespace Wasspord
         public static string Print(string item)
         {
             string print = "";
-            foreach (var pair in Accounts)
+            foreach (var pair in WasspordAccounts.GetAccounts())
             {
                 switch (item)
                 {
@@ -207,7 +149,7 @@ namespace Wasspord
         /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */
         public static void Reset()
         {
-            Accounts.Clear(); // Clear account dictionary
+            WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // Clear account dictionary
             Filename = ""; // reset the filename to nothing
             EncryptDecrypt.GenerateKey(); // Generate a new key
             Logger.Write("Resetted / cleared several items.");
@@ -259,6 +201,7 @@ namespace Wasspord
 
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
             EncryptDecrypt.GenerateKey(); // Create a key
+            WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
         }
 
         /* UpdateSettings: Updates a specified setting.

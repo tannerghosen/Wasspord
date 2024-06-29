@@ -7,7 +7,7 @@ namespace Wasspord
      * Methods: Write
      * Properties/Misc: Log
      */
-    internal class Logger
+    internal static class Logger
     {
         /* Our log file is located in the program's folder */
         public static string Log = "./Wasspord.log";
