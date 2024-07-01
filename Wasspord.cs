@@ -7,8 +7,8 @@ using System;
 namespace Wasspord
 {
     /*
-     * Methods: Save, Load, Reset, Print, Init, UpdateSettings, SaveSettings
-     * Properties/Misc: Account Dictionary, Account Struct, Settings, Autosave, Display, Filename, Folder
+     * Methods: Save, Load, Reset, Init, UpdateSettings, SaveSettings
+     * Properties/Misc: Settings, Autosave, Display, Filename, Folder
      */
 
     public static class Wasspord
@@ -118,32 +118,6 @@ namespace Wasspord
             }
             Logger.Write("File loaded: " + file);
             fs.Dispose(); // Dispose of FileStream once we're done.
-        }
-
-        /* Print: Prints out specific account information depending on the value of parameter item.
-         * Parameters: item (the item we want to print out a list for, i.e. locations, usernames, passwords) */
-        public static string Print(string item)
-        {
-            string print = "";
-            foreach (var pair in WasspordAccounts.GetAccounts())
-            {
-                switch (item)
-                {
-                    case "Location":
-                        print += pair.Key.location + "\r\n";
-                        break;
-                    case "Username":
-                        print += pair.Key.username + "\r\n";
-                        break;
-                    case "Password":
-                        print += EncryptDecrypt.Decrypt(pair.Value) + "\r\n";
-                        break;
-                    default:
-                        Logger.Write("Invalid item was specified for Print in the item parameter.", "ERROR");
-                        break;
-                }
-            }
-            return print;
         }
 
         /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */

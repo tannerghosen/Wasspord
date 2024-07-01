@@ -71,7 +71,7 @@ namespace Wasspord
             ManageAccount(operation, location, username, "");
         }
 
-        // This method is not used the same ManageAccount is; this simply adds pre-made accounts to the dictionary
+        // This method is not used the same way ManageAccount is; this simply adds pre-made accounts to the dictionary
         public static void AddAccount(string loc, string user, string pass)
         {
             Accounts.Add(new Account { location = loc, username = user }, pass);
