@@ -422,9 +422,11 @@ namespace Wasspord
             }
         }
 
-        /* PrintRows: Does exactly what it says, it prints row out of the dictionary. */
+        /* PrintRows: Does exactly what it says, it prints rows out of the dictionary. */
         private void PrintRows()
         {
+            // Maybe should look for a better way to do this that wouldn't cause us to empty the textboxes everytime this is called.
+            LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
             for (int i = 0; i < WasspordAccounts.Accounts.Count; i++)
             {
                 var item = WasspordAccounts.GetRow(i);
