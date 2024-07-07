@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Wasspord
 {
@@ -74,28 +72,35 @@ namespace Wasspord
             ManageAccount(operation, location, username, "");
         }
 
-        // This method is not used the same way ManageAccount is; this simply adds pre-made accounts to the dictionary
+        /* AddAccount: Adds a premade account to the dictionary.
+         * Parameters: loc (location), user (username), pass (password)
+         */
         public static void AddAccount(string loc, string user, string pass)
         {
             Accounts.Add(new Account { location = loc, username = user }, pass);
         }
 
+        /* GetAccounts: Gets the contents of the Accounts Dictionary
+         * Returns: Accounts Dictionary */
         public static Dictionary<Account, string> GetAccounts()
         {
             return Accounts;
         }
-
+        /* SetAccounts: Sets account dictionary
+         * Parameters: accs (Accounts Dictionary)
+         */
         public static void SetAccounts(Dictionary<Account, string> accs)
         {
             Accounts = accs;
         }
 
-        // This is used by the GUI when we print out individual rows.
-        // It returns an array that of 3 (our 2 part Pair and Value).
+        /* GetRow: Returns a specified row in the Accounts Dictionary, including the location, username, and password.
+         * Parameters: row (row you want to access)
+         * Returns: 3 string array containing the location, username, and password for that row. */
         public static string[] GetRow(int row)
         {
-            var item = Accounts.ElementAt(row);
-            return new string[3] { item.Key.location, item.Key.username, item.Value };
+            var acc = Accounts.ElementAt(row);
+            return new string[3] { acc.Key.location, acc.Key.username, acc.Value };
         }
     }
 }
