@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Wasspord
 {
     /*
-     * Methods: ManageAccount, AddAccount, GetAccounts, SetAccounts
+     * Methods: ManageAccount, AddAccount, GetAccounts, SetAccounts, GetRow
      * Properties/Misc: Account Dictionary, Account Struct
      */
 
@@ -85,6 +88,14 @@ namespace Wasspord
         public static void SetAccounts(Dictionary<Account, string> accs)
         {
             Accounts = accs;
+        }
+
+        // This is used by the GUI when we print out individual rows.
+        // It returns an array that of 3 (our 2 part Pair and Value).
+        public static string[] GetRow(int row)
+        {
+            var item = Accounts.ElementAt(row);
+            return new string[3] { item.Key.location, item.Key.username, item.Value };
         }
     }
 }

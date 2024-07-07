@@ -22,9 +22,7 @@ namespace Wasspord
             Account("add");
 			if (Wasspord.Autosave == true)
 				Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
-			LocationTextbox.Text = Printer.Print("Location");
-            UsernameTextbox.Text = Printer.Print("Username");
-            PasswordTextbox.Text = Printer.Print("Password");
+            PrintRows();
         }
 
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
@@ -32,9 +30,7 @@ namespace Wasspord
             Account("delete");
             if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
-            LocationTextbox.Text = Printer.Print("Location");
-            UsernameTextbox.Text = Printer.Print("Username");
-            PasswordTextbox.Text = Printer.Print("Password");
+            PrintRows();
         }
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
@@ -42,17 +38,12 @@ namespace Wasspord
             Account("update");
             if (Wasspord.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
-            LocationTextbox.Text = Printer.Print("Location");
-            UsernameTextbox.Text = Printer.Print("Username");
-            PasswordTextbox.Text = Printer.Print("Password");
+            PrintRows();
         }
 
 		private void WasspordGUI_Load(object sender, EventArgs e)
 		{
             Location = new Point((Screen.PrimaryScreen.Bounds.Width - Width) / 2, (Screen.PrimaryScreen.Bounds.Height - Height) / 2);
-            LocationTextbox.Text = Printer.Print("Location");
-            UsernameTextbox.Text = Printer.Print("Username");
-            PasswordTextbox.Text = Printer.Print("Password");
 			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
             if (Wasspord.Display == false)
                 PasswordTextbox.ForeColor = Color.FromName("Black");
@@ -78,9 +69,7 @@ namespace Wasspord
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog();
-            LocationTextbox.Text = Printer.Print("Location");
-            UsernameTextbox.Text = Printer.Print("Username");
-            PasswordTextbox.Text = Printer.Print("Password");
+            PrintRows();
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -430,6 +419,18 @@ namespace Wasspord
                 string path = fd.SelectedPath;
                 path = fd.SelectedPath.Replace(@"\", @"\\"); // replace \'s with \\ to avoid a JSON error using escape characters
                 Wasspord.UpdateSettings("Folder", path);
+            }
+        }
+
+        /* PrintRows: Does exactly what it says, it prints row out of the dictionary. */
+        private void PrintRows()
+        {
+            for (int i = 0; i < WasspordAccounts.Accounts.Count; i++)
+            {
+                var item = WasspordAccounts.GetRow(i);
+                LocationTextbox.Text += item[0] + Environment.NewLine;
+                UsernameTextbox.Text += item[1] + Environment.NewLine;
+                PasswordTextbox.Text += EncryptDecrypt.Decrypt(item[2]) + Environment.NewLine;
             }
         }
     }
