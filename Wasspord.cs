@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace Wasspord
 {
     /*
-     * Methods: Save, Load, Reset, Init, UpdateSettings, SaveSettings
+     * Methods: Save, Load, Reset, Init, UpdateSettings, SaveSettings, GetWasspordPassword, SetWasspordPassword
      * Properties/Misc: Settings, Autosave, Display, Filename, Folder
      */
 
@@ -21,7 +21,7 @@ namespace Wasspord
         public static bool Display { get; set; }
         public static string Filename { get; set; } // Our file's name
         public static string Folder { get; set; } // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
-
+        public static string WasspordPassword { get; set; } // Our .wasspord's password, if it exists
         /* 
            In both Save and Load, we use Streams to write to a file and read a file.
            In .NET, Streams are an abstraction of a sequence of bytes (a file in this case)
@@ -37,6 +37,11 @@ namespace Wasspord
         public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
+            Logger.Write(WasspordPassword);
+            if (WasspordPassword == null)
+            {
+                WasspordPassword = "";
+            }
             try
             {
 				// This should only ever happen if the file being saved is deleted (via the Save option, Save As should be fine.)
@@ -47,6 +52,10 @@ namespace Wasspord
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
                     sw.WriteLine(EncryptDecrypt.GetKey());
+                    if (WasspordPassword != "")
+                    {
+                        sw.WriteLine(EncryptDecrypt.Encrypt(WasspordPassword)); // Pre-planning Password Support for .wasspord files
+                    }
                     foreach (var acc in WasspordAccounts.GetAccounts()) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
                         sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
@@ -95,14 +104,20 @@ namespace Wasspord
                             break;
                         }
                     }
+                    else if (Line == 2 && !line.Contains("|"))
+                    {
+                        // Pre-planning Password Support for .wasspord files
+                        // For now, if line 2 contains anything we just set WasspordPassword to it
+                        //WasspordPassword = line;
+                        WasspordPassword = EncryptDecrypt.Decrypt(line);
+                    }
                     else
                     {
                         try // try-catch in case the acc cannot be split by |
                         {
-                            // Split the details we need (location, username, password) by the |'s into arrays
+                            // Split the details we need (location, username, password) by the |'s into an array
                             // acc[0] = location, acc[1] = username, acc[2] = password
                             var acc = line.Split('|');
-                            // Because our Key is both location and username, we create an Account struct with location and username
                             WasspordAccounts.AddAccount(acc[0], acc[1], acc[2]);
                         }
                         catch // if we get a bad file after the key check
@@ -122,6 +137,7 @@ namespace Wasspord
         /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */
         public static void Reset()
         {
+            WasspordPassword = "";
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // Clear account dictionary
             Filename = ""; // reset the filename to nothing
             EncryptDecrypt.GenerateKey(); // Generate a new key
@@ -172,6 +188,7 @@ namespace Wasspord
                 Logger.Write("Created Accounts folder in \"" + Directory.GetCurrentDirectory() + "\".");
             }
 
+            SetWasspordPassword("");
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
             EncryptDecrypt.GenerateKey(); // Create a key
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
@@ -237,6 +254,18 @@ namespace Wasspord
                 writer.Close();
             }
             Logger.Write("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
+        }
+
+        /* GetWasspordPassword: Returns the .wasspord file's current password. */
+        public static string GetWasspordPassword()
+        {
+            return WasspordPassword;
+        }
+
+        /* SetWasspordPassword: Sets the .wasspord file's password. */
+        public static void SetWasspordPassword(string pass)
+        {
+            WasspordPassword = pass;
         }
     }
 }

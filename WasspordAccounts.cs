@@ -86,6 +86,7 @@ namespace Wasspord
         {
             return Accounts;
         }
+
         /* SetAccounts: Sets account dictionary
          * Parameters: accs (Accounts Dictionary)
          */

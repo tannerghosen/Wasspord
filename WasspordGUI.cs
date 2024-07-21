@@ -68,8 +68,26 @@ namespace Wasspord
 
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog();
-            PrintRows();
+            Wasspord.SetWasspordPassword("");
+            OpenFileDialog();
+            string pass = Wasspord.GetWasspordPassword();
+            if (pass != "") // if password is not null
+            {
+                bool passwordprompt = PasswordPrompt();
+                if (passwordprompt == true) // if password check passes
+                {
+                    PrintRows(); // print rows
+                }
+                else if (passwordprompt == false) // if password check fails
+                {
+                    Error("Invalid password given.");
+                    newToolStripMenuItem_Click(sender, e); // We just reset and blank the thing.
+                }
+            }
+            else
+            {
+                PrintRows(); // print rows
+            }
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
@@ -299,7 +317,6 @@ namespace Wasspord
         {
             WX = Location.X;
             WY = Location.Y;
-            //Logger.Write("Locations: X: " + WX + " Y: " + WY + ".","DEBUG");
         }
 
         /* Account: Sends adding/deleting/updating requests to Wasspord via GUI depending on type.
@@ -373,17 +390,15 @@ namespace Wasspord
                 AccountForm.Location = new Point((WX + (Width - AccountForm.Width) / 2), (WY + (Height - AccountForm.Height) / 2));
             };
             AccountForm.ShowDialog();
-
         }
         /* OpenFileDialog: Used to load .wasspord files. */
-        private static void OpenFileDialog()
+        private void OpenFileDialog()
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Open";
             of.Filter = "Wasspord Text File|*.wasspord";
             of.InitialDirectory = Wasspord.Folder;
             of.RestoreDirectory = true;
-            //Debug.WriteLine("DEBUG: Load Directory: " + of.InitialDirectory);
             if (of.ShowDialog() == DialogResult.OK)
             {
                 Wasspord.Filename = Path.GetFileName(of.FileName);
@@ -393,16 +408,16 @@ namespace Wasspord
         }
 
         /* SaveFileDialog: Used to save .wasspord files. */
-        private static void SaveFileDialog()
+        private void SaveFileDialog()
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Save";
             sf.Filter = "Wasspord Text File|*.wasspord";
             sf.InitialDirectory = Wasspord.Folder;
-            //Debug.WriteLine("DEBUG: Save Directory: " + sf.InitialDirectory);
             sf.RestoreDirectory = true;
             if (sf.ShowDialog() == DialogResult.OK)
             {
+                SavePasswordPrompt();
                 Wasspord.Filename = Path.GetFileName(sf.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(sf.FileName);
                 Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
@@ -410,7 +425,7 @@ namespace Wasspord
         }
 
         /* AccountsFolderDialog: Used to select the default Accounts folder to save/open files from by default. */
-        private static void AccountsFolderDialog()
+        private void AccountsFolderDialog()
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
 
@@ -434,6 +449,129 @@ namespace Wasspord
                 UsernameTextbox.Text += item[1] + Environment.NewLine;
                 PasswordTextbox.Text += EncryptDecrypt.Decrypt(item[2]) + Environment.NewLine;
             }
+        }
+
+        /* PasswordPrompt: Prompts for password */
+        private bool PasswordPrompt()
+        {
+            string pass = EncryptDecrypt.Decrypt(Wasspord.GetWasspordPassword());
+            bool success = false;
+            Form PassForm = new Form();
+            PassForm.Text = "Input Password";
+            PassForm.Width = 300;
+            PassForm.Height = 200;
+            Label PassLabel = new Label();
+            PassLabel.Text = "Password:";
+            PassLabel.Location = new Point(12, 38);
+            PassLabel.Width = 110;
+            PassLabel.Height = 13;
+            TextBox PassTextbox = new TextBox();
+            PassTextbox.Location = new Point(128, 35);
+            PassTextbox.Width = 144;
+            PassTextbox.Height = 20;
+            Button OKButton = new Button();
+            OKButton.Width = 75;
+            OKButton.Height = 23;
+            OKButton.Text = "OK";
+            OKButton.Location = new Point(100, 125);
+            OKButton.Click += (s, ev) =>
+            {
+                if (PassTextbox.Text == pass)
+                {
+                    success = true;
+                    PassForm.Close();
+                }
+                else
+                {
+                    success = false;
+                    PassForm.Close();
+                }
+            };
+            PassForm.Controls.Add(PassLabel);
+            PassForm.Controls.Add(PassTextbox);
+            PassForm.Controls.Add(OKButton);
+            PassForm.Load += (s, ev) =>
+            {
+                PassForm.Location = new Point((WX + (Width - PassForm.Width) / 2), (WY + (Height - PassForm.Height) / 2));
+            };
+            PassForm.ShowDialog();
+
+            return success;
+        }
+
+        /* SavePasswordPrompt: Save a password to a .wasspord file to protect it */
+        private void SavePasswordPrompt()
+        {
+            Form PassForm = new Form();
+            PassForm.Text = "Input Password";
+            PassForm.Width = 300;
+            PassForm.Height = 200;
+            Label PassLabel = new Label();
+            PassLabel.Text = "Password:";
+            PassLabel.Location = new Point(12, 38);
+            PassLabel.Width = 110;
+            PassLabel.Height = 13;
+            TextBox PassTextbox = new TextBox();
+            PassTextbox.Location = new Point(128, 35);
+            PassTextbox.Width = 144;
+            PassTextbox.Height = 20;
+            Button OKButton = new Button();
+            OKButton.Width = 75;
+            OKButton.Height = 23;
+            OKButton.Text = "OK";
+            OKButton.Location = new Point(100, 125);
+            OKButton.Click += (s, ev) =>
+            {
+                if (PassTextbox.Text != "")
+                {
+                    Wasspord.SetWasspordPassword(PassTextbox.Text);
+                    PassForm.Close();
+                }
+                else
+                {
+                    Wasspord.SetWasspordPassword("");
+                    PassForm.Close();
+                }
+            };
+            PassForm.Controls.Add(PassLabel);
+            PassForm.Controls.Add(PassTextbox);
+            PassForm.Controls.Add(OKButton);
+            PassForm.Load += (s, ev) =>
+            {
+                PassForm.Location = new Point((WX + (Width - PassForm.Width) / 2), (WY + (Height - PassForm.Height) / 2));
+            };
+            PassForm.ShowDialog();
+        }
+
+        /* Error: Error window, takes message as a parameter */
+        private void Error(string message)
+        {
+            Form ErrorForm = new Form();
+            ErrorForm.Text = "ERROR";
+            ErrorForm.Width = 300;
+            ErrorForm.Height = 150;
+            ErrorForm.MaximizeBox = false;
+            ErrorForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+            Button ErrorFormOKButton = new Button();
+            ErrorFormOKButton.Text = "OK";
+            ErrorFormOKButton.Width = 75;
+            ErrorFormOKButton.Height = 23;
+            ErrorFormOKButton.Location = new Point(100, 75);
+            Label ErrorFormLabel = new Label();
+            ErrorFormLabel.Text = message;
+            ErrorFormLabel.Location = new Point(60, 30);
+            ErrorFormLabel.Width = 200;
+            ErrorForm.Controls.Add(ErrorFormOKButton);
+            ErrorForm.Controls.Add(ErrorFormLabel);
+            ErrorFormOKButton.Click += (s, ev) =>
+            {
+                ErrorForm.Close();
+            };
+            ErrorForm.Load += (s, ev) =>
+            {
+                ErrorForm.Location = new Point((WX + (Width - ErrorForm.Width) / 2), (WY + (Height - ErrorForm.Height) / 2));
+            };
+            ErrorForm.ShowDialog();
         }
     }
 }
