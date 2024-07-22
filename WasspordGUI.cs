@@ -63,30 +63,42 @@ namespace Wasspord
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-            SaveFileDialog();
+            bool save = SaveFileDialog();
+            if (save == true)
+            {
+                SavePasswordPrompt();
+            }
         }
 
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+            string wppw = Wasspord.GetWasspordPassword();
             Wasspord.SetWasspordPassword("");
-            OpenFileDialog();
-            string pass = Wasspord.GetWasspordPassword();
-            if (pass != "") // if password is not null
+            bool load = OpenFileDialog();
+            if (load == true)
             {
-                bool passwordprompt = PasswordPrompt();
-                if (passwordprompt == true) // if password check passes
+                string pass = Wasspord.GetWasspordPassword();
+                if (pass != "") // if password is not null
+                {
+                    bool passwordprompt = PasswordPrompt();
+                    if (passwordprompt == true) // if password check passes
+                    {
+                        PrintRows(); // print rows
+                    }
+                    else if (passwordprompt == false) // if password check fails
+                    {
+                        Error("Invalid password given.");
+                        newToolStripMenuItem_Click(sender, e); // We just reset and blank the thing.
+                    }
+                }
+                else
                 {
                     PrintRows(); // print rows
-                }
-                else if (passwordprompt == false) // if password check fails
-                {
-                    Error("Invalid password given.");
-                    newToolStripMenuItem_Click(sender, e); // We just reset and blank the thing.
                 }
             }
             else
             {
-                PrintRows(); // print rows
+                Wasspord.SetWasspordPassword(wppw);
             }
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -392,7 +404,7 @@ namespace Wasspord
             AccountForm.ShowDialog();
         }
         /* OpenFileDialog: Used to load .wasspord files. */
-        private void OpenFileDialog()
+        private bool OpenFileDialog()
         {
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Open";
@@ -404,11 +416,16 @@ namespace Wasspord
                 Wasspord.Filename = Path.GetFileName(of.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(of.FileName);
                 Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
         /* SaveFileDialog: Used to save .wasspord files. */
-        private void SaveFileDialog()
+        private bool SaveFileDialog()
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Save";
@@ -417,10 +434,14 @@ namespace Wasspord
             sf.RestoreDirectory = true;
             if (sf.ShowDialog() == DialogResult.OK)
             {
-                SavePasswordPrompt();
                 Wasspord.Filename = Path.GetFileName(sf.FileName);
                 Wasspord.Folder = Path.GetDirectoryName(sf.FileName);
                 Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -454,7 +475,7 @@ namespace Wasspord
         /* PasswordPrompt: Prompts for password */
         private bool PasswordPrompt()
         {
-            string pass = EncryptDecrypt.Decrypt(Wasspord.GetWasspordPassword());
+            string pass = Wasspord.GetWasspordPassword();
             bool success = false;
             Form PassForm = new Form();
             PassForm.Text = "Input Password";
