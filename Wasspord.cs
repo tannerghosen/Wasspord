@@ -37,7 +37,7 @@ namespace Wasspord
         public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
-            Logger.Write(WasspordPassword);
+            Logger.Write(file);
             if (WasspordPassword == null)
             {
                 WasspordPassword = "";
@@ -63,9 +63,9 @@ namespace Wasspord
                 }
                 Logger.Write("File saved to: " + file);
             }
-            catch
+            catch(System.Exception e)
             {
-                Logger.Write("Error saving to file \"" + file + "\".", "ERROR");
+                Logger.Write("Error saving to file \"" + file + "\". (Error: "+e+")", "ERROR");
             }
         }
 
@@ -73,6 +73,7 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
+            string fn = Filename;
             Reset(); // Reset ahead of time so we don't have errors down the line.
             EncryptDecrypt.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename;
@@ -91,7 +92,7 @@ namespace Wasspord
                 {
                     if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
                     {
-                        bool IsValid = EncryptDecrypt.ValidateKey(line); // Validate it, it could be a bad file
+                        bool IsValid = EncryptDecrypt.Validate(line); // Validate it, it could be a bad file
                         if (IsValid) // Is this a Valid Base64 String Key?
                         {
                             Logger.Write("Setting Key to " + line);
@@ -104,10 +105,9 @@ namespace Wasspord
                             break;
                         }
                     }
-                    else if (Line == 2 && !line.Contains("|"))
+                    else if (Line == 2 && !line.Contains("|")) // Does the .wasspord file have a password to unlock it?
                     {
-                        // Pre-planning Password Support for .wasspord files
-                        // For now, if line 2 contains anything we just set WasspordPassword to it
+                        // If so, set WasspordPassword's value to the decrypted line.
                         //WasspordPassword = line;
                         WasspordPassword = EncryptDecrypt.Decrypt(line);
                     }
@@ -131,6 +131,7 @@ namespace Wasspord
                 }
             }
             Logger.Write("File loaded: " + file);
+            Filename = fn;
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 namespace Wasspord
 {
     /*
-     * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, ValidateKey
+     * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, Validate
      * Properties/Misc: Key, Bytes
      */
     internal static class EncryptDecrypt
@@ -72,6 +72,24 @@ namespace Wasspord
             // it would error out without this line below.
             password = password.Replace(" ", "+");
 
+            /* This try-catch is to validate if we actually have a Base64 string
+               If we do, great, we're fine, if not, to prevent a fatal error from byte[] b being assigned Convert.FromBase64String(password);
+               we send a message in the log that the method is unable to decrypt the string, output what the string was, and return a result
+               of "error". This may cause program problems, but the chances this happens in normal use is slim, as I can only see it happening 
+               if I am working with the program adding new features that interact with Decrypt (in which case I have already seen a few fatal 
+               errors from this method without the try-catch), or if somebody alters their .wasspord file's key / password / account passwords, 
+               in which case as mentioned in Validate below that is on them.
+             */
+            try
+            {
+                Validate(password);
+            }
+            catch
+            {
+                Logger.Write("Decrypt unable to decrypt, most likely the password given isn't a Base64 string! (password: " + password + ")", "ERROR");
+                return "error";
+            }
+
             // Get bytes from our base64 string encrypted password
             byte[] b = Convert.FromBase64String(password);
 
@@ -105,7 +123,7 @@ namespace Wasspord
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                     */
-                    Logger.Write("Caught old password encryption.", "WARNING");
+            Logger.Write("Caught old password encryption.", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
@@ -126,23 +144,32 @@ namespace Wasspord
             return Key;
         }
 
+        /* SetKey: Sets key for encryption
+         * Parameters: key
+         */
         public static void SetKey(string key)
         {
             Key = key;
         }
 
-        public static bool ValidateKey(string key)
+        /* GetKey: Gets key used in encryption
+         */
+
+        /* Validate: Validates the authenticity of a string by trying to convert it from a Base64 String.
+         * Parameters: s (string)
+         */
+        public static bool Validate(string s)
         {
-            /* ValidateKey uses a try-catch to see if the key causes an exception, if it doesn't, return true, if the catch occurs,
-               it's a bad key, therefore return false.
-               This does not handle manually altered keys in the .wasspord file itself unless it's turned into an invalid string, 
-               should the user alter the key and it becomes a corrupted wasspord file (i.e. passwords are not correctly decrypted),
-               that is on them.
+            /* Validate uses a try-catch to see if the string causes an exception, if it doesn't, return true, if the catch occurs,
+               it's a bad string, therefore return false.
+               This does not handle manually altered strings in the .wasspord file itself unless it's turned into an invalid Base64 string, 
+               should the user alter the key and it becomes a corrupted wasspord file (i.e. passwords are not correctly decrypted
+               or the .wasspord's password to unlock it becomes corrupted), that is on them.
             */
             try 
             {
                 // Convert.FromBase64String() will cause an exception if the string is not a valid base 64 string.
-                Convert.FromBase64String(key);
+                Convert.FromBase64String(s);
                 return true;
             }
             catch
