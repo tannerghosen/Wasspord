@@ -57,7 +57,6 @@ namespace Wasspord
 			}
 			else
 			{
-                Logger.Write("Save should be called here: Wasspord.Filename = " + Wasspord.Filename);
 				Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
 			}
 		}
@@ -415,7 +414,6 @@ namespace Wasspord
             if (of.ShowDialog() == DialogResult.OK)
             {
                 Wasspord.Filename = Path.GetFileName(of.FileName);
-                Logger.Write("IN WASSPORDGUI, FILENAME: " + Path.GetFileName(of.FileName) + "IN WASSPORD, FILENAME: "+ Wasspord.Filename);
                 Wasspord.Folder = Path.GetDirectoryName(of.FileName);
                 Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
                 return true;
