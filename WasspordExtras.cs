@@ -12,7 +12,7 @@ namespace Wasspord
      */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
 
-    internal static class WasspordExtras
+    public static class WasspordExtras
     {
         /* PasswordsFile: Contains our encrypted generated passwords */
         public static string PasswordsFile = "./GeneratedPasswords.passwords";

@@ -121,7 +121,7 @@ namespace Wasspord
 			LinkLabel AboutFormLinkLabel2 = new LinkLabel();
 			AboutFormLinkLabel2.Location = new Point(75, 240);
 			AboutFormLinkLabel2.Size = new Size(250, 15);
-			AboutFormLinkLabel2.Text = "Glitches or Bugs? Report them here.";
+			AboutFormLinkLabel2.Text = "Glitches or Bugs? Click here to report them.";
 			AboutFormLinkLabel2.LinkClicked += new LinkLabelLinkClickedEventHandler(IssuesLinkClicked);
 			AboutForm.Controls.Add(AboutFormLabel);
 			AboutForm.Controls.Add(AboutFormLinkLabel);
@@ -145,18 +145,18 @@ namespace Wasspord
 			Form HelpForm = new Form();
 			HelpForm.Text = "How to use Wasspord";
 			HelpForm.Width = 400;
-			HelpForm.Height = 300;
+			HelpForm.Height = 400;
 			HelpForm.MaximizeBox = false;
 			HelpForm.FormBorderStyle = FormBorderStyle.FixedSingle;
 			Label HelpFormLabel = new Label();
 			HelpFormLabel.Location = new Point(75, 50);
 			HelpFormLabel.Size = new Size(250, 300);
-			HelpFormLabel.Text = "Wasspord's features and what they do:\r\n\r\n* Save/Save As/Load: Saves to a loaded file, saves to a new file, and loads an existing account file. These files are .wasspord extension files, and contains the details for your accounts.\r\n* Add Account: Adds an account to the account list.\r\n* Update Password: Updates an account's password.\r\n* Delete Account: Deletes an account.\r\n* Show / Hide: Shows/hides your account details. Hidden by default.\r\n* Autosave: Toggles the ability to automatically save to the loaded account file. Off by default.";
+			HelpFormLabel.Text = "Wasspord's features and what they do:\r\n\r\n* Save/Save As/Load: Saves to a loaded file, saves to a new file, and loads an existing account file. These files are .wasspord extension files, and contains the details for your accounts.\r\n* Add Account: Adds an account to the account list.\r\n* Update Password: Updates an account's password.\r\n* Delete Account: Deletes an account.\r\n* Show / Hide: Shows/hides your account details. Hidden by default.\r\n* Autosave: Toggles the ability to automatically save to the loaded account file. Off by default.\r\n* Custom Accounts Folder: Sets a custom default folder for .wasspord files.\r\n* Generate Password: Generates a randomized password that is secure.\r\n* Validate Password: Validates a password against a standard to ensure it's strong.";
 			HelpFormLabel.BackColor = Color.Transparent;
 			LinkLabel HelpFormLinkLabel = new LinkLabel();
 			HelpFormLinkLabel.Location = new Point(75, 30);
 			HelpFormLinkLabel.Size = new Size(250, 15);
-			HelpFormLinkLabel.Text = "Report bugs and glitches to the repo's issues!";
+			HelpFormLinkLabel.Text = "Report bugs and glitches here!";
 			HelpFormLinkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler(IssuesLinkClicked);
 			HelpForm.Controls.Add(HelpFormLabel);
 			HelpForm.Controls.Add(HelpFormLinkLabel);
@@ -478,7 +478,7 @@ namespace Wasspord
             string pass = Wasspord.GetWasspordPassword();
             bool success = false;
             Form PassForm = new Form();
-            PassForm.Text = "Input Password";
+            PassForm.Text = "Load - Input Password";
             PassForm.Width = 300;
             PassForm.Height = 200;
             Label PassLabel = new Label();
@@ -524,7 +524,7 @@ namespace Wasspord
         private void SavePasswordPrompt()
         {
             Form PassForm = new Form();
-            PassForm.Text = "Input Password";
+            PassForm.Text = "Save As - Input Password";
             PassForm.Width = 300;
             PassForm.Height = 200;
             Label PassLabel = new Label();

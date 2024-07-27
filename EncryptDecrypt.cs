@@ -9,7 +9,7 @@ namespace Wasspord
      * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, Validate
      * Properties/Misc: Key, Bytes
      */
-    internal static class EncryptDecrypt
+    public static class EncryptDecrypt
     {
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
            is an encryption key used in the encryption/decryption and our bytes is 
@@ -123,7 +123,7 @@ namespace Wasspord
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                     */
-            Logger.Write("Caught old password encryption.", "WARNING");
+                    Logger.Write("Caught old password encryption.", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;

@@ -8,7 +8,7 @@ namespace Wasspord
      * Properties/Misc: Account Dictionary, Account Struct
      */
 
-    internal static class WasspordAccounts
+    public static class WasspordAccounts
     {
 
         /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 

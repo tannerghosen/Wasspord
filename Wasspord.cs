@@ -189,7 +189,7 @@ namespace Wasspord
                 Logger.Write("Created Accounts folder in \"" + Directory.GetCurrentDirectory() + "\".");
             }
 
-            SetWasspordPassword("");
+            WasspordPassword = ""; // Set our WasspordPassword to an empty string
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
             EncryptDecrypt.GenerateKey(); // Create a key
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
