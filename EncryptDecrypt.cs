@@ -80,11 +80,8 @@ namespace Wasspord
                errors from this method without the try-catch), or if somebody alters their .wasspord file's key / password / account passwords, 
                in which case as mentioned in Validate below that is on them.
              */
-            try
-            {
-                Validate(password);
-            }
-            catch
+            bool validate = Validate(password);
+            if (validate == false)
             {
                 Logger.Write("Decrypt unable to decrypt, most likely the password given isn't a Base64 string! (password: " + password + ")", "ERROR");
                 return "error";
@@ -139,6 +136,9 @@ namespace Wasspord
             Key = Convert.ToBase64String(bytes); // convert bytes array to a Base64 string, sets Key to it
         }
 
+        /* GetKey: Gets key used in encryption
+         * Returns: Key
+        */
         public static string GetKey()
         {
             return Key;
@@ -151,9 +151,6 @@ namespace Wasspord
         {
             Key = key;
         }
-
-        /* GetKey: Gets key used in encryption
-         */
 
         /* Validate: Validates the authenticity of a string by trying to convert it from a Base64 String.
          * Parameters: s (string)
