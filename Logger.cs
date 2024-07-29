@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Wasspord
@@ -18,6 +19,14 @@ namespace Wasspord
             using (StreamWriter writer = new StreamWriter(Log, true))
             {
                 writer.WriteLine("(" + Time + ") [" + messagetype + "]: " + message);
+                if (messagetype == "ERROR") // if error, let's help out by giving the stack trace
+                {
+                    StackTrace st = new StackTrace(); // Create a stack trace
+                    StackFrame parentsf = st.GetFrame(1); // this is the parent of the method call
+                    StackFrame grandparentsf = st.GetFrame(2); // this is the grandparent (parent's parent) of the method call
+                    string method = grandparentsf.GetMethod().Name + " -> " + parentsf.GetMethod().Name; // this is a string that says Grandparent -> Parent
+                    writer.WriteLine("(" + Time + ") [" + messagetype + "]: The problem probably lies in probably " + method + ".");
+                }
                 writer.Close();
             }
         }

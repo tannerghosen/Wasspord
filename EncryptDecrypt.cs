@@ -81,7 +81,7 @@ namespace Wasspord
                in which case as mentioned in Validate below that is on them.
              */
             bool validate = Validate(password);
-            if (validate != true)
+            if (validate == false)
             {
                 Logger.Write("Decrypt unable to decrypt, most likely the password given isn't a Base64 string! (password: " + password + ")", "ERROR");
                 return "error";
@@ -171,6 +171,7 @@ namespace Wasspord
             }
             catch
             {
+                Logger.Write("Validate has detected an invalid base64 string. (s: " + s + ")", "ERROR");
                 return false;
             }
         }
