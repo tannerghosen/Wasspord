@@ -9,7 +9,7 @@ namespace Wasspord
      * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, Validate
      * Properties/Misc: Key, Bytes
      */
-    public static class EncryptDecrypt
+    public static class Encryption
     {
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
            is an encryption key used in the encryption/decryption and our bytes is 

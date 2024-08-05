@@ -468,7 +468,7 @@ namespace Wasspord
                 var item = WasspordAccounts.GetRow(i);
                 LocationTextbox.Text += item[0] + Environment.NewLine;
                 UsernameTextbox.Text += item[1] + Environment.NewLine;
-                PasswordTextbox.Text += EncryptDecrypt.Decrypt(item[2]) + Environment.NewLine;
+                PasswordTextbox.Text += Encryption.Decrypt(item[2]) + Environment.NewLine;
             }
         }
 

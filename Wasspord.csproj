@@ -111,7 +111,7 @@
   <ItemGroup>
     <Compile Include="WasspordAccounts.cs" />
     <Compile Include="WasspordExtras.cs" />
-    <Compile Include="EncryptDecrypt.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Wasspord.cs" />
     <Compile Include="WasspordGUI.cs">

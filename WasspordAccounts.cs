@@ -45,12 +45,12 @@ namespace Wasspord
                 switch (operation)
                 {
                     case "add":
-                        password = EncryptDecrypt.Encrypt(password);
+                        password = Encryption.Encrypt(password);
                         Accounts.Add(acc, password);
                         Logger.Write("Added Account '" + acc.username + "'.");
                         break;
                     case "update":
-                        password = EncryptDecrypt.Encrypt(password);
+                        password = Encryption.Encrypt(password);
                         Accounts[acc] = password;
                         Logger.Write("Updated Password of Account '" + acc.username + "'.");
                         break;

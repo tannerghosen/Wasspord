@@ -94,7 +94,7 @@ namespace Wasspord
                     string line; // our current line
                     while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                     {
-                        Passwords.Add(EncryptDecrypt.Decrypt(line)); // Add passwords from file to our Passwords HashSet
+                        Passwords.Add(Encryption.Decrypt(line)); // Add passwords from file to our Passwords HashSet
                     }
                 }
             }
@@ -106,14 +106,14 @@ namespace Wasspord
         public static void AddPassword(string password)
         {
             Passwords.Add(password); // Add the generated password to the Passwords hashset
-            string OldKey = EncryptDecrypt.GetKey(); // Store our current encryption key
-            EncryptDecrypt.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
+            string OldKey = Encryption.GetKey(); // Store our current encryption key
+            Encryption.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
             using (StreamWriter writer = new StreamWriter(GenPassesFile, true))
             {
-                writer.WriteLine(EncryptDecrypt.Encrypt(password));
+                writer.WriteLine(Encryption.Encrypt(password));
                 writer.Close();
             }
-            EncryptDecrypt.SetKey(OldKey); // We set the encryption key back to the current one now that AddPassword's job is done
+            Encryption.SetKey(OldKey); // We set the encryption key back to the current one now that AddPassword's job is done
         }
     }
 }

@@ -51,10 +51,10 @@ namespace Wasspord
                 }
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
-                    sw.WriteLine(EncryptDecrypt.GetKey());
+                    sw.WriteLine(Encryption.GetKey());
                     if (WasspordPassword != "")
                     {
-                        sw.WriteLine(EncryptDecrypt.Encrypt(WasspordPassword)); // Pre-planning Password Support for .wasspord files
+                        sw.WriteLine(Encryption.Encrypt(WasspordPassword)); // Pre-planning Password Support for .wasspord files
                     }
                     foreach (var acc in WasspordAccounts.GetAccounts()) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
@@ -75,7 +75,7 @@ namespace Wasspord
         {
             string fn = Filename;
             Reset(); // Reset ahead of time so we don't have errors down the line.
-            EncryptDecrypt.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
+            Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename;
 			// This should never happen, but if it does create a blank file.
 			if (!File.Exists(file))
@@ -92,11 +92,11 @@ namespace Wasspord
                 {
                     if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
                     {
-                        bool IsValid = EncryptDecrypt.Validate(line); // Validate it, it could be a bad file
+                        bool IsValid = Encryption.Validate(line); // Validate it, it could be a bad file
                         if (IsValid) // Is this a Valid Base64 String Key?
                         {
                             Logger.Write("Setting Key to " + line);
-                            EncryptDecrypt.SetKey(line);
+                            Encryption.SetKey(line);
                         }
                         else // If it isn't, don't bother loading the file.
                         {
@@ -109,7 +109,7 @@ namespace Wasspord
                     {
                         // If so, set WasspordPassword's value to the decrypted line.
                         //WasspordPassword = line;
-                        WasspordPassword = EncryptDecrypt.Decrypt(line);
+                        WasspordPassword = Encryption.Decrypt(line);
                     }
                     else
                     {
@@ -141,7 +141,7 @@ namespace Wasspord
             WasspordPassword = "";
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // Clear account dictionary
             Filename = ""; // reset the filename to nothing
-            EncryptDecrypt.GenerateKey(); // Generate a new key
+            Encryption.GenerateKey(); // Generate a new key
             Logger.Write("Resetted / cleared several items.");
         }
 
@@ -191,7 +191,7 @@ namespace Wasspord
 
             WasspordPassword = ""; // Set our WasspordPassword to an empty string
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
-            EncryptDecrypt.GenerateKey(); // Create a key
+            Encryption.GenerateKey(); // Create a key
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
         }
 
