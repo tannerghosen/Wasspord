@@ -25,7 +25,7 @@ namespace Wasspord
                     StackFrame parentsf = st.GetFrame(1); // this is the parent of the method call
                     StackFrame grandparentsf = st.GetFrame(2); // this is the grandparent (parent's parent) of the method call
                     string method = grandparentsf.GetMethod().Name + " -> " + parentsf.GetMethod().Name; // this is a string that says Grandparent -> Parent
-                    writer.WriteLine("(" + Time + ") [" + messagetype + "]: The problem probably lies in probably " + method + ".");
+                    writer.WriteLine("(" + Time + ") [" + messagetype + "]: The problem probably lies in " + method + ".");
                 }
                 writer.Close();
             }

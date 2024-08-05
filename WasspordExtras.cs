@@ -14,8 +14,8 @@ namespace Wasspord
 
     public static class WasspordExtras
     {
-        /* PasswordsFile: Contains our encrypted generated passwords */
-        public static string PasswordsFile = "./GeneratedPasswords.passwords";
+        /* GenPassesFile: Contains our encrypted generated passwords */
+        public static string GenPassesFile = "./GeneratedPasswords.passwords";
 
         /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
         private static HashSet<string> Passwords = new HashSet<string>();
@@ -82,13 +82,13 @@ namespace Wasspord
         public static void Init()
         {
             // If this is the first time we're running Wasspord OR the user deleted the GeneratedPasswords file
-            if (!File.Exists(PasswordsFile))
+            if (!File.Exists(GenPassesFile))
             {
-                File.Create(PasswordsFile).Dispose();
+                File.Create(GenPassesFile).Dispose();
             }
             else // else, we've run this program before, read the content of the file.
             {
-                var fs = new FileStream(PasswordsFile, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
+                var fs = new FileStream(GenPassesFile, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
                 using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
                 {
                     string line; // our current line
@@ -108,7 +108,7 @@ namespace Wasspord
             Passwords.Add(password); // Add the generated password to the Passwords hashset
             string OldKey = EncryptDecrypt.GetKey(); // Store our current encryption key
             EncryptDecrypt.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
-            using (StreamWriter writer = new StreamWriter(PasswordsFile, true))
+            using (StreamWriter writer = new StreamWriter(GenPassesFile, true))
             {
                 writer.WriteLine(EncryptDecrypt.Encrypt(password));
                 writer.Close();

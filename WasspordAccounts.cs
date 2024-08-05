@@ -30,9 +30,7 @@ namespace Wasspord
          * Parameters: operation (add/update/delete), location, username, password (optional) */
         public static void ManageAccount(string operation, string location, string username, string password)
         {
-            Account acc;
-            acc.location = location;
-            acc.username = username;
+            Account acc = new Account { location = location, username = username };
 
             if (operation == "add" && Accounts.ContainsKey(acc))
             {
