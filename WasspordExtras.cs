@@ -11,7 +11,9 @@ namespace Wasspord
      * Properties/Misc: PasswordsFile, Passwords, Characters, RegexPattern, Regex, MaxAttempts
      */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
-
+    /// <summary>
+    /// This class serves extra features to Wasspord, such as password generation and validation.
+    /// </summary>
     public static class WasspordExtras
     {
         /* GenPassesFile: Contains our encrypted generated passwords */

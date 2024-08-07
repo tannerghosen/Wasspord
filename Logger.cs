@@ -8,6 +8,9 @@ namespace Wasspord
      * Methods: Write
      * Properties/Misc: Log
      */
+    /// <summary>
+    /// This class handles logging for various classes throughout the program, including a stacktrace output in case we have an error.
+    /// </summary>
     public static class Logger
     {
         /* Our log file is located in the program's folder */

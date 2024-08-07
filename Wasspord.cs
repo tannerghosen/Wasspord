@@ -9,7 +9,10 @@ namespace Wasspord
      * Methods: Save, Load, Reset, Init, UpdateSettings, SaveSettings, GetWasspordPassword, SetWasspordPassword
      * Properties/Misc: Settings, Autosave, Display, Filename, Folder
      */
-
+    /// <summary>
+    /// This class serves as the main class which handles settings, saving and loading, .wasspord-specific passwords, reseting the program
+    /// and initializing it.
+    /// </summary>
     public static class Wasspord
     {
         /* Wasspord Program Settings:
@@ -65,7 +68,7 @@ namespace Wasspord
             }
             catch(System.Exception e)
             {
-                Logger.Write("Error saving to file \"" + file + "\". (Error: "+e+")", "ERROR");
+                Logger.Write("Error saving to file \"" + file + "\". (Error: " + e + ")", "ERROR");
             }
         }
 

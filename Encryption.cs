@@ -9,6 +9,9 @@ namespace Wasspord
      * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, Validate
      * Properties/Misc: Key, Bytes
      */
+    /// <summary>
+    /// This class handles all encryption and decryption related tasks of the program, including generating a Key to be used for a Key and IV in both tasks as well as validating Base64 strings.
+    /// </summary>
     public static class Encryption
     {
         /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key

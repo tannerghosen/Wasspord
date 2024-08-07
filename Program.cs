@@ -6,7 +6,7 @@ namespace Wasspord
     internal static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// Program class that calls for the initilization of the Wasspord class and Wasspord GUI class.
         /// </summary>
         [STAThread]
         static void Main()

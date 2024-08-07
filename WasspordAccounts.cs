@@ -7,7 +7,9 @@ namespace Wasspord
      * Methods: ManageAccount, AddAccount, GetAccounts, SetAccounts, GetRow
      * Properties/Misc: Account Dictionary, Account Struct
      */
-
+    /// <summary>
+    /// This class handles everything to do with adding, updating, removing, and getting Accounts from individual .wasspord files.
+    /// </summary>
     public static class WasspordAccounts
     {
 
