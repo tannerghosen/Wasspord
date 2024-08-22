@@ -122,6 +122,7 @@ namespace Wasspord
                        Because we already get our bytes from our base64 string earlier in our code,
                        we don't need to redclare all of the code from our old code.
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
+                       This should normally be never called otherwise.
                     */
                     Logger.Write("Caught old password encryption.", "WARNING");
                     string oldpassword; // string container for our decrypted password

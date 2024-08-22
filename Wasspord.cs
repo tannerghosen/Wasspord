@@ -105,7 +105,7 @@ namespace Wasspord
                         {
                             Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
                             fs.Dispose();
-                            break;
+                            break; // Break the while loop, no point in trying to load any further
                         }
                     }
                     else if (Line == 2 && !line.Contains("|")) // Does the .wasspord file have a password to unlock it?
