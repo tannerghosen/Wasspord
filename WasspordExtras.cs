@@ -90,6 +90,8 @@ namespace Wasspord
             }
             else // else, we've run this program before, read the content of the file.
             {
+                string OldKey = Encryption.GetKey(); // Store our current encryption key
+                Encryption.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
                 var fs = new FileStream(GenPassesFile, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
                 using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
                 {
@@ -99,6 +101,7 @@ namespace Wasspord
                         Passwords.Add(Encryption.Decrypt(line)); // Add passwords from file to our Passwords HashSet
                     }
                 }
+                Encryption.SetKey(OldKey); // We set the encryption key back to the current one now that AddPassword's job is done
             }
         }
 
