@@ -51,7 +51,7 @@ namespace Wasspord
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Wasspord.Filename == "" && Wasspord.Folder == Directory.GetCurrentDirectory() + "\\Accounts\\")
+			if (Wasspord.Filename == null)
 			{
 				saveAsToolStripMenuItem_Click(sender, e);
 			}
@@ -67,6 +67,7 @@ namespace Wasspord
             if (save == true)
             {
                 SavePasswordPrompt();
+                Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
             }
         }
 
@@ -466,8 +467,8 @@ namespace Wasspord
             for (int i = 0; i < WasspordAccounts.Accounts.Count; i++)
             {
                 var item = WasspordAccounts.GetRow(i);
-                LocationTextbox.Text += item[0] + Environment.NewLine;
-                UsernameTextbox.Text += item[1] + Environment.NewLine;
+                LocationTextbox.Text += Encryption.Decrypt(item[0]) + Environment.NewLine;
+                UsernameTextbox.Text += Encryption.Decrypt(item[1]) + Environment.NewLine;
                 PasswordTextbox.Text += Encryption.Decrypt(item[2]) + Environment.NewLine;
             }
         }

@@ -32,7 +32,7 @@ namespace Wasspord
          * Parameters: operation (add/update/delete), location, username, password (optional) */
         public static void ManageAccount(string operation, string location, string username, string password)
         {
-            Account acc = new Account { location = location, username = username };
+            Account acc = new Account { location = Encryption.Encrypt(location), username = Encryption.Encrypt(username) };
 
             if (operation == "add" && Accounts.ContainsKey(acc))
             {
@@ -77,7 +77,15 @@ namespace Wasspord
          */
         public static void AddAccount(string loc, string user, string pass)
         {
-            Accounts.Add(new Account { location = loc, username = user }, pass);
+            if (!Encryption.Validate(loc) || !Encryption.Validate(user)) //  if the file is older, it won't have encrypted names / locations
+            {
+                // next time it saves, however, it will
+                Accounts.Add(new Account { location = Encryption.Encrypt(loc), username = Encryption.Encrypt(user) }, pass);
+            }
+            else
+            {
+                Accounts.Add(new Account { location = loc, username = user }, pass);
+            }
         }
 
         /* GetAccounts: Gets the contents of the Accounts Dictionary

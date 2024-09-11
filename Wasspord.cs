@@ -47,8 +47,8 @@ namespace Wasspord
             }
             try
             {
-				// This should only ever happen if the file being saved is deleted (via the Save option, Save As should be fine.)
-				if (!File.Exists(file))
+                // This should only ever happen if the file being saved is deleted (via the Save option, Save As should be fine.)
+                if (!File.Exists(file))
                 {
                     File.Create(file).Dispose();
                 }

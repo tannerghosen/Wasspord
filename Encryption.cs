@@ -86,7 +86,7 @@ namespace Wasspord
             bool validate = Validate(password);
             if (validate == false)
             {
-                //Logger.Write("Decrypt unable to decrypt, most likely the password given isn't a Base64 string! (password: " + password + ")", "ERROR");
+                //Logger.Write("Validate has determined most likely the password given isn't a Base64 string! (password: " + password + ")", "ERROR");
                 return "error";
             }
 
@@ -124,10 +124,17 @@ namespace Wasspord
                        (namely, declaring a new bytes array and calling another Convert.FromBase64String())
                        This should normally be never called otherwise.
                     */
+                    /*
                     Logger.Write("Caught old password encryption.", "WARNING");
                     string oldpassword; // string container for our decrypted password
                     oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
                     return oldpassword;
+                    */
+
+                    // Above is unused as I no longer see a point in supporting the above since it's been a while.
+
+                    //Logger.Write("Decrypt failed beyond validation if it's valid, this shouldn't happen unless the password is severely messed up or manually altered. (password: " + password + ")", "ERROR");
+                    return "error";
                 }
             }
             return password;
