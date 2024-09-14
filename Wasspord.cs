@@ -40,7 +40,6 @@ namespace Wasspord
         public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
-            Logger.Write(file);
             if (WasspordPassword == null)
             {
                 WasspordPassword = "";
@@ -76,7 +75,6 @@ namespace Wasspord
          * Parameters: location (filepath to file), filename (name of the file). */
 		public static void Load(string location, string filename)
         {
-            string fn = Filename;
             Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename;
@@ -134,7 +132,6 @@ namespace Wasspord
                 }
             }
             Logger.Write("File loaded: " + file);
-            Filename = fn;
             fs.Dispose(); // Dispose of FileStream once we're done.
         }
 

@@ -415,7 +415,7 @@ namespace Wasspord
             if (of.ShowDialog() == DialogResult.OK)
             {
                 Wasspord.Filename = Path.GetFileName(of.FileName);
-                Wasspord.Folder = Path.GetDirectoryName(of.FileName);
+                Wasspord.Folder = Path.GetDirectoryName(of.FileName); // this is temporary and not actually saved into the settings.json.
                 Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
                 return true;
             }
@@ -436,7 +436,7 @@ namespace Wasspord
             if (sf.ShowDialog() == DialogResult.OK)
             {
                 Wasspord.Filename = Path.GetFileName(sf.FileName);
-                Wasspord.Folder = Path.GetDirectoryName(sf.FileName);
+                Wasspord.Folder = Path.GetDirectoryName(sf.FileName); // this is temporary and not actually saved into the settings.json.
                 Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
                 return true;
             }
@@ -447,6 +447,7 @@ namespace Wasspord
         }
 
         /* AccountsFolderDialog: Used to select the default Accounts folder to save/open files from by default. */
+        // This method is the only way to actually change the folder the program opens with, as any Folder change caused by loading a file is only temporary.
         private void AccountsFolderDialog()
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
