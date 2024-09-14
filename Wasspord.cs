@@ -223,6 +223,7 @@ namespace Wasspord
          */
         public static void UpdateSettings(string setting, string value)
         {
+            // While WasspordGUI might change Folder's value, this is only temporary - unless this method is called, it only lasts as long as the program is open.
             switch (setting)
             {
                 case "Folder":

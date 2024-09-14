@@ -447,7 +447,8 @@ namespace Wasspord
         }
 
         /* AccountsFolderDialog: Used to select the default Accounts folder to save/open files from by default. */
-        // This method is the only way to actually change the folder the program opens with, as any Folder change caused by loading a file is only temporary.
+        // This method and UpdateSettings("folder", string) is the only way to actually change the folder the program opens with,
+        // as any Folder value change caused by loading/saving a file is only temporary and only lasts as long as the program is up.
         private void AccountsFolderDialog()
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
@@ -566,11 +567,11 @@ namespace Wasspord
             PassForm.ShowDialog();
         }
 
-        /* Error: Error window, takes message as a parameter */
-        private void Error(string message)
+        /* Error: Error window, takes message and error optionally as parameters */
+        private void Error(string message, string error = "ERROR")
         {
             Form ErrorForm = new Form();
-            ErrorForm.Text = "ERROR";
+            ErrorForm.Text = error;
             ErrorForm.Width = 300;
             ErrorForm.Height = 150;
             ErrorForm.MaximizeBox = false;
