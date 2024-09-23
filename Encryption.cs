@@ -75,10 +75,9 @@ namespace Wasspord
             // it would error out without this line below.
             password = password.Replace(" ", "+");
 
-            /* This try-catch is to validate if we actually have a Base64 string
-               If we do, great, we're fine, if not, to prevent a fatal error from byte[] b being assigned Convert.FromBase64String(password);
-               we send a message in the log that the method is unable to decrypt the string, output what the string was, and return a result
-               of "error". This may cause program problems, but the chances this happens in normal use is slim, as I can only see it happening 
+            /* We called Validate to ensure it's a valid Base64 string. If it is, we're good.
+               If not, return "error".
+               This may cause program problems, but the chances this happens in normal use is slim, as I can only see it happening 
                if I am working with the program adding new features that interact with Decrypt (in which case I have already seen a few fatal 
                errors from this method without the try-catch), or if somebody alters their .wasspord file's key / password / account passwords, 
                in which case as mentioned in Validate below that is on them.

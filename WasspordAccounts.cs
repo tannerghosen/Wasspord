@@ -77,9 +77,9 @@ namespace Wasspord
          */
         public static void AddAccount(string loc, string user, string pass)
         {
-            if (!Encryption.Validate(loc) || !Encryption.Validate(user)) //  if the file is older, it won't have encrypted names / locations
+            if (!Encryption.Validate(loc) || !Encryption.Validate(user)) // if the file is older, it won't have encrypted names / locations
             {
-                // next time it saves, however, it will
+                // however now it will
                 Accounts.Add(new Account { location = Encryption.Encrypt(loc), username = Encryption.Encrypt(user) }, pass);
             }
             else

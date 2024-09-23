@@ -78,61 +78,68 @@ namespace Wasspord
             Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename;
-			// This should never happen, but if it does create a blank file.
-			if (!File.Exists(file))
+            try
             {
-                File.Create(file).Dispose();
-            }
-            var fs = new FileStream(file, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
-            using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
-            {
-                string line; // our current line
-                int Line = 1;
-
-                while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
+                // This should never happen, but if it does create a blank file.
+                if (!File.Exists(file))
                 {
-                    if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
-                    {
-                        bool IsValid = Encryption.Validate(line); // Validate it, it could be a bad file
-                        if (IsValid) // Is this a Valid Base64 String Key?
-                        {
-                            Logger.Write("Setting Key to " + line);
-                            Encryption.SetKey(line);
-                        }
-                        else // If it isn't, don't bother loading the file.
-                        {
-                            Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
-                            fs.Dispose();
-                            break; // Break the while loop, no point in trying to load any further
-                        }
-                    }
-                    else if (Line == 2 && !line.Contains("|")) // Does the .wasspord file have a password to unlock it?
-                    {
-                        // If so, set WasspordPassword's value to the decrypted line.
-                        //WasspordPassword = line;
-                        WasspordPassword = Encryption.Decrypt(line);
-                    }
-                    else
-                    {
-                        try // try-catch in case the acc cannot be split by |
-                        {
-                            // Split the details we need (location, username, password) by the |'s into an array
-                            // acc[0] = location, acc[1] = username, acc[2] = password
-                            var acc = line.Split('|');
-                            WasspordAccounts.AddAccount(acc[0], acc[1], acc[2]);
-                        }
-                        catch // if we get a bad file after the key check
-                        {
-                            Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
-                            fs.Dispose();
-                            break; // Break the while loop, no point in trying to load any further
-                        }
-                    }
-                    Line++;
+                    File.Create(file).Dispose();
                 }
+                var fs = new FileStream(file, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
+                using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
+                {
+                    string line; // our current line
+                    int Line = 1;
+
+                    while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
+                    {
+                        if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
+                        {
+                            bool IsValid = Encryption.Validate(line); // Validate it, it could be a bad file
+                            if (IsValid) // Is this a Valid Base64 String Key?
+                            {
+                                Logger.Write("Setting Key to " + line);
+                                Encryption.SetKey(line);
+                            }
+                            else // If it isn't, don't bother loading the file.
+                            {
+                                Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
+                                fs.Dispose();
+                                break; // Break the while loop, no point in trying to load any further
+                            }
+                        }
+                        else if (Line == 2 && !line.Contains("|")) // Does the .wasspord file have a password to unlock it?
+                        {
+                            // If so, set WasspordPassword's value to the decrypted line.
+                            //WasspordPassword = line;
+                            WasspordPassword = Encryption.Decrypt(line);
+                        }
+                        else
+                        {
+                            try // try-catch in case the acc cannot be split by |
+                            {
+                                // Split the details we need (location, username, password) by the |'s into an array
+                                // acc[0] = location, acc[1] = username, acc[2] = password
+                                var acc = line.Split('|');
+                                WasspordAccounts.AddAccount(acc[0], acc[1], acc[2]);
+                            }
+                            catch // if we get a bad file after the key check
+                            {
+                                Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
+                                fs.Dispose();
+                                break; // Break the while loop, no point in trying to load any further
+                            }
+                        }
+                        Line++;
+                    }
+                }
+                Logger.Write("File loaded: " + file);
+                fs.Dispose(); // Dispose of FileStream once we're done.
             }
-            Logger.Write("File loaded: " + file);
-            fs.Dispose(); // Dispose of FileStream once we're done.
+            catch (System.Exception e)
+            {
+                Logger.Write("Error loading file \"" + file + "\". (Error: " + e + ")", "ERROR");
+            }
         }
 
         /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */
@@ -242,16 +249,17 @@ namespace Wasspord
         /* SaveSettings: Saves our settings to settings.json. */
         public static void SaveSettings()
         {
-            // We write into our settings.json file an JSON object
+            // We write into our settings.json file a JSON object
             // This contains our settings.
+            string autosave = Autosave.ToString().ToLower(), display = Display.ToString().ToLower(), folder = JsonSerializer.Serialize(Folder);
             using (StreamWriter writer = new StreamWriter(Settings))
             {
                 // Because C# bools are capitalized, we need to lowercase it before we send it,
                 // as shown in the code below.
                 writer.WriteLine("{");
-                writer.WriteLine("\"Autosave\":" + Autosave.ToString().ToLower() + ",");
-                writer.WriteLine("\"Display\":" + Display.ToString().ToLower() + ",");
-                writer.WriteLine("\"Folder\": " + JsonSerializer.Serialize(Folder)); // we need to make our Folder string into a JSON string that won't cause errors.
+                writer.WriteLine("\"Autosave\":" + autosave + ",");
+                writer.WriteLine("\"Display\":" + display + ",");
+                writer.WriteLine("\"Folder\": " + folder); // we need to make our Folder string into a JSON string that won't cause errors.
                 writer.WriteLine("}");
                 writer.Close();
             }
