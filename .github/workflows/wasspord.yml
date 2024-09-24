@@ -20,10 +20,10 @@ jobs:
         msbuild-version: '17.8'  # Specify the version appropriate for your project
 
     - name: Restore NuGet packages
-      run: nuget restore Wasspord/Wasspord.sln 
+      run: nuget restore Wasspord.sln 
 
-    - name: Build the project
-      run: msbuild Wasspord/Wasspord.sln /p:Configuration=Release
+    - name: Build the WinForms project
+      run: msbuild Wasspord.sln /p:Configuration=Release
 
     - name: Run Tests
-      run: msbuild WasspordUnitTestProject/WasspordUnitTestProject.csproj /p:Configuration=Release /p:Platform="Any CPU" /p:RunTests=true
+      run: msbuild ../WasspordUnitTestProject/WasspordUnitTestProject.csproj /p:Configuration=Release /p:Platform="Any CPU"
