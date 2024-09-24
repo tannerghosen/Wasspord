@@ -176,7 +176,10 @@ namespace Wasspord
         {
             Process.Start("https://github.com/tannerghosen/Wasspord/issues");
         }
-
+        private void LinkClicked(string link, object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(link);
+        }
         private void addAccountToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AddAccountButton_Click(sender, e);
