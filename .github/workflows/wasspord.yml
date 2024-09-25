@@ -26,4 +26,4 @@ jobs:
       run: msbuild Wasspord.sln /p:Configuration=Release
 
     - name: Run Tests
-      run: msbuild WasspordUnitTestProject.csproj /p:Configuration=Release /p:Platform="Any CPU"
+      run: msbuild WasspordTests.csproj /p:Configuration=Release /p:Platform="Any CPU"
