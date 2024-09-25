@@ -21,7 +21,6 @@ jobs:
 
     - name: Restore NuGet packages (1)
       run: nuget restore Wasspord.sln
-      run: nuget restore WasspordTests.csproj 
 
     - name: Restore NuGet packages (2)
       run: nuget restore WasspordTests.csproj 
