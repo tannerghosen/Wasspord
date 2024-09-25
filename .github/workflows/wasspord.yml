@@ -1,10 +1,10 @@
-name: Build and Test WinForms Application
+name: Build and Test Wasspord
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
   pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -15,12 +15,16 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up MSBuild
-      uses: microsoft/setup-msbuild@v1
-      with:
-        msbuild-version: ''  # Specify the version appropriate for your project
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1
 
     - name: Restore NuGet packages
-      run: nuget restore Wasspord.sln
+      run: dotnet restore Wasspord.sln --verbosity detailed
 
     - name: Build Wasspord
       run: msbuild Wasspord.sln /p:Configuration=Release
@@ -29,4 +33,4 @@ jobs:
       run: msbuild WasspordTests.csproj /p:Configuration=Release /p:Platform="Any CPU"
 
     - name: Run Tests
-      run: vstest.console.exe WasspordTests/bin/Release/WasspordTests.dll
+      run: vstest.console.exe WasspordTests\bin\Release\WasspordTests.dll --verbosity normal
