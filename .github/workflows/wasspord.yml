@@ -17,16 +17,13 @@ jobs:
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v1
       with:
-        msbuild-version: '17.8'  # Specify the version appropriate for your project
+        msbuild-version: ''  # Specify the version appropriate for your project
 
-    - name: Restore NuGet packages (1)
+    - name: Restore NuGet packages
       run: nuget restore Wasspord.sln
 
-    - name: Restore NuGet packages (2)
-      run: nuget restore WasspordTests.csproj 
-      
     - name: Build Wasspord
-      run: msbuild Wasspord.sln /p:Configuration=Release /t:Clean,Build
+      run: msbuild Wasspord.sln /p:Configuration=Release
 
     - name: Build the Tests
       run: msbuild WasspordTests.csproj /p:Configuration=Release /p:Platform="Any CPU"

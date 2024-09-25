@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WasspordTests", "WasspordTests\WasspordTests.csproj", "{64CFAA64-0CAC-4D56-87D2-B901C269F931}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WasspordTests", "WasspordTests\WasspordTests.csproj", "{9085CE06-0CF7-4CE3-95CE-9B3127262C2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{1AADF5F3-4DD9-44DD-817A-3F94314A68AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AADF5F3-4DD9-44DD-817A-3F94314A68AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AADF5F3-4DD9-44DD-817A-3F94314A68AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64CFAA64-0CAC-4D56-87D2-B901C269F931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64CFAA64-0CAC-4D56-87D2-B901C269F931}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64CFAA64-0CAC-4D56-87D2-B901C269F931}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64CFAA64-0CAC-4D56-87D2-B901C269F931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9085CE06-0CF7-4CE3-95CE-9B3127262C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9085CE06-0CF7-4CE3-95CE-9B3127262C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9085CE06-0CF7-4CE3-95CE-9B3127262C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9085CE06-0CF7-4CE3-95CE-9B3127262C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
