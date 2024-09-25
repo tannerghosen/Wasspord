@@ -20,6 +20,7 @@ jobs:
         msbuild-version: '17.8'  # Specify the version appropriate for your project
 
     - name: Restore NuGet packages
+
       run: nuget restore Wasspord.sln
 
     - name: Build Wasspord
