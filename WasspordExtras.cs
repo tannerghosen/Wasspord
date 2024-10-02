@@ -8,7 +8,7 @@ namespace Wasspord
 {
     /*
      * Methods: GeneratePassword, ValidatePassword, Init, AddPassword
-     * Properties/Misc: PasswordsFile, Passwords, Characters, RegexPattern, Regex, MaxAttempts
+     * Properties/Misc: PasswordsFile, Passwords, Characters, Regex
      */
     /* Basically, these are misc features which are extras to Wasspord's general purpose */
     /// <summary>
@@ -16,33 +16,36 @@ namespace Wasspord
     /// </summary>
     public static class WasspordExtras
     {
-        /* GenPassesFile: Contains our encrypted generated passwords */
-        public static string GenPassesFile = "./GeneratedPasswords.passwords";
+        /// <summary>
+        /// Contains our encrypted generated passwords
+        /// </summary>
+        public static string GeneratedPasswords = "./GeneratedPasswords.passwords";
 
-        /* Passwords: Generated passwords kept in a HashSet to prevent duplicate passwords from being generated. */
+        /// <summary>
+        /// Generated passwords kept in a HashSet to prevent duplicate passwords from being used.
+        /// </summary>
         private static HashSet<string> Passwords = new HashSet<string>();
 
-        /* Other Misc Things: Characters, RegexPattern, Regex, MaxAttempts */
+        /// <summary>
+        /// Our characters used for password generation.
+        /// </summary>
         private static string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
 
-        /* It checks for:
-        1 uppercase letter
-        1 lowercase letter
-        1 number
-        1 special character
-        should not repeat characters more than 5 times consecutively
-        8-32 characters in width
-        */
-        private static string RegexPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$";
+        /// <summary>
+        /// Our regex for password validation and valid password generation. It checks to ensure the password has 
+        /// 1 uppercase and lowercase letter, 1 number, 1 special character, 8-32 characters in length and should 
+        /// not repeat the same character more than 5 times consecutively.
+        /// </summary>
+        private static Regex Regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?!.*(.)\\1{5,}).{8,32}$");
 
-        private static Regex Regex = new Regex(RegexPattern);
-
-        /* GeneratePassword: Generates a random password that's 16 characters in length,
-          while also trying to prevent duplicates and non-regex following attempts
-          by recursively calling itself up to a specified amount of times before going with 
-          a duplicate / failed password.
-          Parameter: attempt (autoincrements on every recursion call, optional parameter)
-          Returns: Generated Password */
+        /// <summary>
+        /// Generates a random password that's 16 characters in length,
+        /// while also trying to prevent duplicates and non-regex following attempts
+        /// by recursively calling itself up to a specified amount of times before going with
+        /// a duplicate / failed password.
+        /// </summary>
+        /// <param name="attempt"></param>
+        /// <returns>Generated Password</returns>
         public static string GeneratePassword(int attempt = 0)
         {
             StringBuilder password = new StringBuilder(string.Empty);
@@ -72,27 +75,31 @@ namespace Wasspord
             }
         }
 
-        /* ValidatePassword: Validates a given password against a regex (details on what it checks is above).
-         * Parameters: password
-         * Returns: Regex result (either positive or negative) */
+        /// <summary>
+        /// Validates a given password against a regex. (See criteria of what it validates on in WasspordExtras.Regex)
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>Regex result (either positive or negative)</returns>
         public static string ValidatePassword(string password)
         {
             return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
 
-        /* Init: Initializes the Passwords HashSet with the contents of PasswordsFile, or creates the file. */
+        /// <summary>
+        /// Initializes the Passwords HashSet with the contents of the GeneratedPasswords file, or creates the file if this is the first time it's called / the file was deleted.
+        /// </summary>
         public static void Init()
         {
             // If this is the first time we're running Wasspord OR the user deleted the GeneratedPasswords file
-            if (!File.Exists(GenPassesFile))
+            if (!File.Exists(GeneratedPasswords))
             {
-                File.Create(GenPassesFile).Dispose();
+                File.Create(GeneratedPasswords).Dispose();
             }
             else // else, we've run this program before, read the content of the file.
             {
                 string OldKey = Encryption.GetKey(); // Store our current encryption key
                 Encryption.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
-                var fs = new FileStream(GenPassesFile, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
+                var fs = new FileStream(GeneratedPasswords, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
                 using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
                 {
                     string line; // our current line
@@ -105,15 +112,16 @@ namespace Wasspord
             }
         }
 
-        /* AddPassword: Adds an uniquely generated password to our Passwords hashset, as well as the GeneratedPasswords file 
-         * Parameters: password
-         */
+        /// <summary>
+        /// Adds an uniquely generated password to our Passwords hashset, as well as the GeneratedPasswords file.
+        /// </summary>
+        /// <param name="password"></param>
         public static void AddPassword(string password)
         {
             Passwords.Add(password); // Add the generated password to the Passwords hashset
             string OldKey = Encryption.GetKey(); // Store our current encryption key
             Encryption.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
-            using (StreamWriter writer = new StreamWriter(GenPassesFile, true))
+            using (StreamWriter writer = new StreamWriter(GeneratedPasswords, true))
             {
                 writer.WriteLine(Encryption.Encrypt(password));
                 writer.Close();

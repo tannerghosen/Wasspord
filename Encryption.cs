@@ -7,20 +7,30 @@ namespace Wasspord
 {
     /*
      * Methods: Encrypt, Decrypt, Init, GetKey, SetKey, GenerateKey, Validate
-     * Properties/Misc: Key, Bytes
+     * Properties/Misc: Key, Salt
      */
     /// <summary>
     /// This class handles all encryption and decryption related tasks of the program, including generating a Key to be used for a Key and IV in both tasks as well as validating Base64 strings.
     /// </summary>
     public static class Encryption
     {
-        /* Key and Bytes: These are used when we encrypt/decrypt passwords. Our key
-           is an encryption key used in the encryption/decryption and our bytes is 
-           our IV (initialization vector, or initial state). 
-        */
-
+        /* Why do I use a Key and Salt to get an encryption key instead of password and Salt?
+         * Mostly this comes down to me not being extremely knowledgeable in Encryption / Decryption, 
+         * but part of the why has to do with the fact I don't want each password to have its own key for 
+         * decryption, as it would complex the program more than it needs to be for a minimal security trade-off.
+         * Considering the application is offline and does not store this info online where this is a critical point 
+         * of attack that could be exploited, I believe this is acceptable as of this time. 
+         */
+        /// <summary>
+        /// Our key which is initialized as "p0ssw4rd" for backwards compatability.
+        /// Used in Rfc2898DeriveBytes in tandem with Bytes to get our encryption Key and IV.
+        /// </summary>
         private static string Key = "p055w4rd";
-        private static byte[] Bytes = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
+        /// <summary>
+        /// Our salt for key derivation (these are not changed at all by the program).
+        /// Used in Rfc2898DeriveBytes in tandem with Key to get our encryption Key and IV.
+        /// </summary>
+        private static byte[] Salt = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
 
         // Reference on Encryption / Decryption being done here:
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
@@ -37,9 +47,11 @@ namespace Wasspord
            or decrypted, depending on the desired result.
          */
 
-        /* Encrypt: Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
-		 * Parameters: password 
-		 * Returns: encrypted password */
+        /// <summary>
+        /// Encrypts the account password before it's saved to the account dictionary using AES. Can be decrypted by Decrypt.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>encrypted password </returns>
         public static string Encrypt(string password)
         {
             // Get bytes from our string password
@@ -48,8 +60,8 @@ namespace Wasspord
             // Create Aes object
             using (Aes aes = Aes.Create())
             {
-                // Create a deriver to derive bytes from Key and Bytes using PBKDF2 to get our Key and IV for encryption
-                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Bytes);
+                // Create our encryption key and IV using PBKDF2 with Key and Salt
+                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Salt);
                 aes.Key = d.GetBytes(32); // this is our key
                 aes.IV = d.GetBytes(16); // this is our IV (initialization vector)
                 // Create streams for encryption
@@ -60,15 +72,17 @@ namespace Wasspord
                         cs.Write(b, 0, b.Length); // write bytes to cryptostream
                         cs.Close(); // close the cryptostream
                     }
-                    // Our data in ms (our encrypted password) is encrypted as a Base64 String based on the content from above CryptoStream.
+                    // Convert the encrypted bytes in memorystream to an Base64 string.
                     password = Convert.ToBase64String(ms.ToArray());
                 }
             }
             return password;
         }
-        /* Decrypt: Decrypts the account password previously encrypted and saved to either an account dictionary or a .wasspord file.
-		 * Parameters: password
-		 * Returns: decrypted password */
+        /// <summary>
+        /// Decrypts the account password previously encrypted and saved to either an account dictionary or a .wasspord file.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>decrypted password</returns>
         public static string Decrypt(string password)
         {
             // This is in case passwords had a space in them prior to decrypting (so if it was encrypted as "hello world"),
@@ -79,8 +93,7 @@ namespace Wasspord
                If not, return "error".
                This may cause program problems, but the chances this happens in normal use is slim, as I can only see it happening 
                if I am working with the program adding new features that interact with Decrypt (in which case I have already seen a few fatal 
-               errors from this method without the try-catch), or if somebody alters their .wasspord file's key / password / account passwords, 
-               in which case as mentioned in Validate below that is on them.
+               errors from this method without the try-catch), or if somebody alters their .wasspord file's key / password / account password.
              */
             bool validate = Validate(password);
             if (validate == false)
@@ -95,8 +108,8 @@ namespace Wasspord
             // Create Aes object
             using (Aes aes = Aes.Create())
             {
-                // Create a deriver to derive bytes from Key and Bytes using PBKDF2 to get our Key and IV for decryption
-                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Bytes);
+                // Create our encryption key and IV using PBKDF2 with Key and Salt
+                Rfc2898DeriveBytes d = new Rfc2898DeriveBytes(Key, Salt);
                 aes.Key = d.GetBytes(32); // this is our key
                 aes.IV = d.GetBytes(16); // this is our IV (initialization vector)
 
@@ -110,34 +123,22 @@ namespace Wasspord
                             cs.Write(b, 0, b.Length); // write bytes to cryptostream
                             cs.Close(); // close the cryptostream
                         }
-                        // Our data in ms (our decrypted password) is converted to a regular Unicode String based on contents from above CryptoStream.
+                        // Convert the decrypted bytes in memorystream to an Unicode string.
                         password = Encoding.Unicode.GetString(ms.ToArray());
                     }
                 }
                 catch
                 {
-                    /* This comes from older code, pre-commit 14ff6c5
-                       This is to keep compability with older files and not cause errors / invalid passwords being loaded.
-                       Because we already get our bytes from our base64 string earlier in our code,
-                       we don't need to redclare all of the code from our old code.
-                       (namely, declaring a new bytes array and calling another Convert.FromBase64String())
-                       This should normally be never called otherwise.
-                    */
-                    /*
-                    Logger.Write("Caught old password encryption.", "WARNING");
-                    string oldpassword; // string container for our decrypted password
-                    oldpassword = Encoding.ASCII.GetString(b); // get string out of our bytes
-                    return oldpassword;
-                    */
-
-                    // Above is unused as I no longer see a point in supporting the above since it's been a while.
-
-                    //Logger.Write("Decrypt failed beyond validation if it's valid, this shouldn't happen unless the password is severely messed up or manually altered. (password: " + password + ")", "ERROR");
+                    //Logger.Write("Decrypt failed beyond validation. This shouldn't happen unless the password is severely messed up or manually altered.", "ERROR");
+                    //Logger.Write("password: " + password, "DEBUG");
                     return "error";
                 }
             }
             return password;
         }
+        /// <summary>
+        /// Generates a new Key for our Encryption / Decryption
+        /// </summary>
         public static void GenerateKey()
         {
             var rng = new RNGCryptoServiceProvider(); // create secure number generator
@@ -146,32 +147,35 @@ namespace Wasspord
             Key = Convert.ToBase64String(bytes); // convert bytes array to a Base64 string, sets Key to it
         }
 
-        /* GetKey: Gets key used in encryption
-         * Returns: Key
-        */
+        /// <summary>
+        /// Gets key used in encryption
+        /// </summary>
+        /// <returns>Key</returns>
         public static string GetKey()
         {
             return Key;
         }
 
-        /* SetKey: Sets key for encryption
-         * Parameters: key
-         */
+        /// <summary>
+        /// Sets key for encryption
+        /// </summary>
+        /// <param name="key"></param>
         public static void SetKey(string key)
         {
             Key = key;
         }
 
-        /* Validate: Validates the authenticity of a string by trying to convert it from a Base64 String.
-         * Parameters: s (string)
-         */
+        /// <summary>
+        /// Validates the authenticity of a string by trying to convert it from a Base64 String.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns>Boolean value depending on the result of whether or not it's a valid Base64 string</returns>
         public static bool Validate(string s)
         {
             /* Validate uses a try-catch to see if the string causes an exception, if it doesn't, return true, if the catch occurs,
                it's a bad string, therefore return false.
-               This does not handle manually altered strings in the .wasspord file itself unless it's turned into an invalid Base64 string, 
-               should the user alter the key and it becomes a corrupted wasspord file (i.e. passwords are not correctly decrypted
-               or the .wasspord's password to unlock it becomes corrupted), that is on them.
+               This does not handle manually altered strings in the .wasspord file itself unless it's turned into an invalid Base64 string.
+               I unfortunately cannot really handle that and that would be the user's choice to risk corrupting or ruining their .wasspord files.
             */
             try 
             {

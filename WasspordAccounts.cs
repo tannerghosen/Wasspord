@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static Wasspord.WasspordAccounts;
 
 namespace Wasspord
 {
@@ -12,24 +16,31 @@ namespace Wasspord
     /// </summary>
     public static class WasspordAccounts
     {
-
-        /* Account Dictionary: A dictionary with a key made of 2 parts (location, username)  that contains information on 
-          where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
-          under the same username/email at multiple websites.
-       */
+        /// <summary>
+        /// A dictionary with a key made of 2 parts (location, username)  that contains information on 
+        /// where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
+        /// under the same username/email at multiple websites.
+        /// </summary>
         public static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
-        /* Account Struct: This is our key when we insert entries into the Account dictionary,
-           which is also the same key used to find entries in other functions. where is where 
-           the account is used, username is the username/email used.
-        */
+
+        /// <summary>
+        /// This is our key when we insert entries into the Account dictionary,
+        /// which is also the same key used to find entries in other functions. In the struct, 
+        /// location is where the account is used, username is the username/email used.
+        /// </summary>
         public struct Account
         {
             public string location;
             public string username;
         }
 
-        /* ManageAccount: Adds, updates, and deletes accounts to/from the account dictionary.
-         * Parameters: operation (add/update/delete), location, username, password (optional) */
+        /// <summary>
+        /// ManageAccount: Adds, updates, and deletes accounts to/from the account dictionary.
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="location"></param>
+        /// <param name="username"></param>
+        /// <param name="password">optional</param>
         public static void ManageAccount(string operation, string location, string username, string password)
         {
             Account acc = new Account { location = Encryption.Encrypt(location), username = Encryption.Encrypt(username) };
@@ -72,9 +83,12 @@ namespace Wasspord
             ManageAccount(operation, location, username, "");
         }
 
-        /* AddAccount: Adds a premade account to the dictionary.
-         * Parameters: loc (location), user (username), pass (password)
-         */
+        /// <summary>
+        /// Adds a premade account to the dictionary.
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <param name="user"></param>
+        /// <param name="pass"></param>
         public static void AddAccount(string loc, string user, string pass)
         {
             if (!Encryption.Validate(loc) || !Encryption.Validate(user)) // if the file is older, it won't have encrypted names / locations
@@ -88,24 +102,29 @@ namespace Wasspord
             }
         }
 
-        /* GetAccounts: Gets the contents of the Accounts Dictionary
-         * Returns: Accounts Dictionary */
+        /// <summary>
+        /// Gets the contents of the Accounts Dictionary
+        /// </summary>
+        /// <returns>Accounts Dictionary</returns>
         public static Dictionary<Account, string> GetAccounts()
         {
             return Accounts;
         }
 
-        /* SetAccounts: Sets account dictionary
-         * Parameters: accs (Accounts Dictionary)
-         */
+        /// <summary>
+        /// Sets Accounts dictionary
+        /// </summary>
+        /// <param name="accs"></param>
         public static void SetAccounts(Dictionary<Account, string> accs)
         {
             Accounts = accs;
         }
 
-        /* GetRow: Returns a specified row in the Accounts Dictionary, including the location, username, and password.
-         * Parameters: row (row you want to access)
-         * Returns: 3 string array containing the location, username, and password for that row. */
+        /// <summary>
+        /// Returns a specified row in the Accounts Dictionary, including the location, username, and password.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns>3 string array containing the location, username, and password for that row</returns>
         public static string[] GetRow(int row)
         {
             var acc = Accounts.ElementAt(row);

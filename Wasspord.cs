@@ -19,12 +19,30 @@ namespace Wasspord
            This includes our program's settings (located at ./settings.json), Autosave and Display settings,
            and the file path and file name of our loaded .wasspord file
         */
+        /// <summary>
+        /// Settings file
+        /// </summary>
         public static string Settings = "./settings.json";
+        /// <summary>
+        /// Autosave variable
+        /// </summary>
         public static bool Autosave { get; set; }
+        /// <summary>
+        /// Display variable, handles whether or not info like passwords will be shown by default or not on file load.
+        /// </summary>
         public static bool Display { get; set; }
-        public static string Filename { get; set; } // Our file's name
-        public static string Folder { get; set; } // Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts)
-        public static string WasspordPassword { get; set; } // Our .wasspord's password, if it exists
+        /// <summary>
+        /// Our opened file's name
+        /// </summary>
+        public static string Filename { get; set; }
+        /// <summary>
+        /// Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts))
+        /// </summary>
+        public static string Folder { get; set; }
+        /// <summary>
+        /// Our .wasspord's password (optional)
+        /// </summary>
+        public static string WasspordPassword { get; set; }
         /* 
            In both Save and Load, we use Streams to write to a file and read a file.
            In .NET, Streams are an abstraction of a sequence of bytes (a file in this case)
@@ -33,10 +51,11 @@ namespace Wasspord
            options (mode, read/write) and creates a stream, and StreamReader reads the FileStream 
            (or any Stream) so long as it's given the encoding (in this case because we use UTF-8 it's Encoding.UTF8) 
         */
-
-        /* Save: Saves account information to a .wasspord file for future use by the end user by writing data 
-           down from the Account dictionary.
-         * Parameters: location (filepath to file), filename (name of the file). */
+        /// <summary>
+        /// Saves account information to a .wasspord file for future use by the end user by writing data down from the Account dictionary.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="filename"></param>
         public static void Save(string location, string filename)
         {
             string file = location + @"\" + filename;
@@ -71,9 +90,12 @@ namespace Wasspord
             }
         }
 
-		/* Load: Loads previously saved account information from a .wasspord file to the account dictionary for current use. 
-         * Parameters: location (filepath to file), filename (name of the file). */
-		public static void Load(string location, string filename)
+        /// <summary>
+        /// Loads previously saved account information from a .wasspord file to the account dictionary for current use. 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="filename"></param>
+        public static void Load(string location, string filename)
         {
             Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
@@ -142,7 +164,9 @@ namespace Wasspord
             }
         }
 
-        /* Reset: Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name. */
+        /// <summary>
+        /// Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name.
+        /// </summary>
         public static void Reset()
         {
             WasspordPassword = "";
@@ -152,7 +176,9 @@ namespace Wasspord
             Logger.Write("Resetted / cleared several items.");
         }
 
-        /* Init: Initalizes our program settings, creates settings.json and our Accounts folder */
+        /// <summary>
+        /// Initalizes our program settings, creates settings.json and our Accounts folder.
+        /// </summary>
         public static void Init()
         {
             if (!File.Exists(Settings)) // if settings.json file doesn't exist
@@ -202,9 +228,10 @@ namespace Wasspord
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
         }
 
-        /* UpdateSettings: Updates a specified setting.
-         * Parameters: setting
-         */
+        /// <summary>
+        /// Updates a specified setting.
+        /// </summary>
+        /// <param name="setting"></param>
         public static void UpdateSettings(string setting)
         {
             // Simply enough, this switch inverts our setting
@@ -225,9 +252,11 @@ namespace Wasspord
             // And we save our settings.
             SaveSettings();
         }
-        /* UpdateSettings: Updates a specified setting with a value.
-         * Parameters: setting, value
-         */
+        /// <summary>
+        /// Updates a specified setting with a value.
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <param name="value"></param>
         public static void UpdateSettings(string setting, string value)
         {
             // While WasspordGUI might change Folder's value, this is only temporary - unless this method is called, it only lasts as long as the program is open.
@@ -245,8 +274,9 @@ namespace Wasspord
             
             SaveSettings();
         }
-
-        /* SaveSettings: Saves our settings to settings.json. */
+        /// <summary>
+        /// Saves our settings to settings.json.
+        /// </summary>
         public static void SaveSettings()
         {
             // We write into our settings.json file a JSON object
@@ -266,13 +296,19 @@ namespace Wasspord
             Logger.Write("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
         }
 
-        /* GetWasspordPassword: Returns the .wasspord file's current password. */
+        /// <summary>
+        /// Returns the .wasspord file's current password.
+        /// </summary>
+        /// <returns>.wasspord file's current password</returns>
         public static string GetWasspordPassword()
         {
             return WasspordPassword;
         }
 
-        /* SetWasspordPassword: Sets the .wasspord file's password. */
+        /// <summary>
+        /// Sets the .wasspord file's password.
+        /// </summary>
+        /// <param name="pass"></param>
         public static void SetWasspordPassword(string pass)
         {
             WasspordPassword = pass;
