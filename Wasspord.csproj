@@ -110,6 +110,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoadAndSaveStuff.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="WasspordAccounts.cs" />
     <Compile Include="WasspordExtras.cs" />
     <Compile Include="Encryption.cs" />

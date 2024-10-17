@@ -1,38 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Wasspord
 {
-    /*
-     * Methods: Save, Load, Reset, Init, UpdateSettings, SaveSettings, GetWasspordPassword, SetWasspordPassword
-     * Properties/Misc: Settings, Autosave, Display, Filename, Folder
-     */
-    /// <summary>
-    /// This class serves as the main class which handles settings, saving and loading, .wasspord-specific passwords, reseting the program
-    /// and initializing it.
-    /// </summary>
-    public static class Wasspord
+    public static class LoadAndSaveStuff
     {
-        /* Wasspord Program Settings:
-           This includes our program's settings (located at ./settings.json), Autosave and Display settings,
-           and the file path and file name of our loaded .wasspord file
-        */
-        /// <summary>
-        /// Autosave variable
-        /// </summary>
-        public static bool Autosave { get; set; }
-        /// <summary>
-        /// Display variable, handles whether or not info like passwords will be shown by default or not on file load.
-        /// </summary>
-        public static bool Display { get; set; }
         /// <summary>
         /// Our opened file's name
         /// </summary>
         public static string Filename { get; set; }
         /// <summary>
-        /// Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts))
+        /// Our folder where .wasspord files go to
         /// </summary>
         public static string Folder { get; set; }
         /// <summary>
@@ -80,7 +62,7 @@ namespace Wasspord
                 }
                 Logger.Write("File saved to: " + file);
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 Logger.Write("Error saving to file \"" + file + "\". (Error: " + e + ")", "ERROR");
             }
@@ -171,87 +153,6 @@ namespace Wasspord
             Encryption.GenerateKey(); // Generate a new key
             Logger.Write("Resetted / cleared several items.");
         }
-
-        /// <summary>
-        /// Initalizes our program settings, creates settings.json and our Accounts folder.
-        /// </summary>
-        public static void Init()
-        {
-            Settings.Init();
-            WasspordPassword = ""; // Set our WasspordPassword to an empty string
-            WasspordExtras.Init(); // Initialize WasspordExtras' stuff.
-            Encryption.GenerateKey(); // Create a key
-            WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
-        }
-
-        /// <summary>
-        /// Updates a specified setting.
-        /// </summary>
-        /// <param name="setting"></param>
-        /*public static void UpdateSettings(string setting)
-        {
-            // Simply enough, this switch inverts our setting
-            switch (setting)
-            {
-                case "Autosave":
-                    Autosave = !Autosave;
-                    break;
-                case "Display":
-                    Display = !Display;
-                    break;
-                default:
-                    Logger.Write("Invalid setting was specified for UpdateSettings without value parameter.", "ERROR");
-                    break;
-            }
-
-            Logger.Write("Updated Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ".");
-            // And we save our settings.
-            SaveSettings();
-        }
-        /// <summary>
-        /// Updates a specified setting with a value.
-        /// </summary>
-        /// <param name="setting"></param>
-        /// <param name="value"></param>
-        public static void UpdateSettings(string setting, string value)
-        {
-            // While WasspordGUI might change Folder's value, this is only temporary - unless this method is called, it only lasts as long as the program is open.
-            switch (setting)
-            {
-                case "Folder":
-                    Folder = value;
-                    break;
-                default:
-                    Logger.Write("Invalid setting was specified for UpdateSettings with value parameter.", "ERROR");
-                    break;
-            }
-
-            Logger.Write("Updated Settings: Folder Value = " + Folder + ".");
-            
-            SaveSettings();
-        }
-        /// <summary>
-        /// Saves our settings to settings.json.
-        /// </summary>
-        public static void SaveSettings()
-        {
-            // We write into our settings.json file a JSON object
-            // This contains our settings.
-            string autosave = Autosave.ToString().ToLower(), display = Display.ToString().ToLower(), folder = JsonSerializer.Serialize(Folder);
-            using (StreamWriter writer = new StreamWriter(Settings))
-            {
-                // Because C# bools are capitalized, we need to lowercase it before we send it,
-                // as shown in the code below.
-                writer.WriteLine("{");
-                writer.WriteLine("\"Autosave\":" + autosave + ",");
-                writer.WriteLine("\"Display\":" + display + ",");
-                writer.WriteLine("\"Folder\": " + folder); // we need to make our Folder string into a JSON string that won't cause errors.
-                writer.WriteLine("}");
-                writer.Close();
-            }
-            Logger.Write("Saved Settings: Autosave Value = " + Autosave + ", Display Value = " + Display + ", Folder Value = " + Folder + ".");
-        }*/
-
         /// <summary>
         /// Returns the .wasspord file's current password.
         /// </summary>
@@ -268,6 +169,15 @@ namespace Wasspord
         public static void SetWasspordPassword(string pass)
         {
             WasspordPassword = pass;
+        }
+
+        public static void Init()
+        {
+            string folder = Settings.GetFolder();
+            if (folder != null)
+            {
+                Folder = folder;
+            }
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-            showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
-            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+            showHideAccountsPasswordsToolStripMenuItem.Text = Settings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            autosaveToolStripMenuItem.Text = Settings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
             Account("add");
-			if (Wasspord.Autosave == true)
+			if (Settings.Autosave == true)
 				Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             PrintRows();
         }
@@ -28,7 +28,7 @@ namespace Wasspord
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
 		{
             Account("delete");
-            if (Wasspord.Autosave == true)
+            if (Settings.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             PrintRows();
         }
@@ -36,7 +36,7 @@ namespace Wasspord
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
             Account("update");
-            if (Wasspord.Autosave == true)
+            if (Settings.Autosave == true)
                 Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
             PrintRows();
         }
@@ -45,7 +45,7 @@ namespace Wasspord
 		{
             Location = new Point((Screen.PrimaryScreen.Bounds.Width - Width) / 2, (Screen.PrimaryScreen.Bounds.Height - Height) / 2);
 			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
-            if (Wasspord.Display == false)
+            if (Settings.Display == false)
                 PasswordTextbox.ForeColor = Color.FromName("Black");
         }
 
@@ -137,7 +137,7 @@ namespace Wasspord
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
             PasswordTextbox.ForeColor = PasswordTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White") : Color.FromName("Black");
-            Wasspord.UpdateSettings("Display");
+            Settings.UpdateSettings("Display");
             showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
         }
 
@@ -197,15 +197,15 @@ namespace Wasspord
 
 		private void autosaveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Wasspord.Autosave == true)
+			if (Settings.Autosave == true)
 			{
-                Wasspord.UpdateSettings("Autosave");
+                Settings.UpdateSettings("Autosave");
 			}
-			else if (Wasspord.Autosave == false)
+			else if (Settings.Autosave == false)
 			{
-                Wasspord.UpdateSettings("Autosave");
+                Settings.UpdateSettings("Autosave");
 			}
-            autosaveToolStripMenuItem.Text = Wasspord.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+            autosaveToolStripMenuItem.Text = Settings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
 
 		private void showHideAccountsPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -460,7 +460,7 @@ namespace Wasspord
             {
                 string path = fd.SelectedPath;
                 path = fd.SelectedPath.Replace(@"\", @"\\"); // replace \'s with \\ to avoid a JSON error using escape characters
-                Wasspord.UpdateSettings("Folder", path);
+                Settings.UpdateSettings("Folder", path);
             }
         }
 
