@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Wasspord
 {
-    public static class Settings
+    public static class WasspordSettings
     {
         /* Wasspord Program Settings:
            This includes our program's settings (located at ./settings.json), Autosave and Display settings,

@@ -14,30 +14,30 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-            showHideAccountsPasswordsToolStripMenuItem.Text = Settings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
-            autosaveToolStripMenuItem.Text = Settings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            autosaveToolStripMenuItem.Text = WasspordSettings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
             Account("add");
-			if (Settings.Autosave == true)
-				Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
+			if (WasspordSettings.Autosave == true)
+				WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
             PrintRows();
         }
 
 		private void DeleteAccountButton_Click(object sender, EventArgs e)
 		{
             Account("delete");
-            if (Settings.Autosave == true)
-                Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
+            if (WasspordSettings.Autosave == true)
+                WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
             PrintRows();
         }
 
 		private void UpdatePasswordButton_Click(object sender, EventArgs e)
 		{
             Account("update");
-            if (Settings.Autosave == true)
-                Wasspord.Save(Wasspord.Filename, Wasspord.Folder);
+            if (WasspordSettings.Autosave == true)
+                WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
             PrintRows();
         }
 
@@ -45,19 +45,19 @@ namespace Wasspord
 		{
             Location = new Point((Screen.PrimaryScreen.Bounds.Width - Width) / 2, (Screen.PrimaryScreen.Bounds.Height - Height) / 2);
 			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
-            if (Settings.Display == false)
+            if (WasspordSettings.Display == false)
                 PasswordTextbox.ForeColor = Color.FromName("Black");
         }
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Wasspord.Filename == null)
+			if (WasspordFilesHandler.Filename == null)
 			{
 				saveAsToolStripMenuItem_Click(sender, e);
 			}
 			else
 			{
-				Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
+				WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
 			}
 		}
 
@@ -67,18 +67,18 @@ namespace Wasspord
             if (save == true)
             {
                 SavePasswordPrompt();
-                Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
+                WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
             }
         }
 
 		private void loadToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-            string wppw = Wasspord.GetWasspordPassword();
-            Wasspord.SetWasspordPassword("");
+            string wppw = WasspordFilesHandler.GetWasspordPassword();
+            WasspordFilesHandler.SetWasspordPassword("");
             bool load = OpenFileDialog();
             if (load == true)
             {
-                string pass = Wasspord.GetWasspordPassword();
+                string pass = WasspordFilesHandler.GetWasspordPassword();
                 if (pass != "") // if password is not null
                 {
                     bool passwordprompt = PasswordPrompt();
@@ -99,7 +99,7 @@ namespace Wasspord
             }
             else
             {
-                Wasspord.SetWasspordPassword(wppw);
+                WasspordFilesHandler.SetWasspordPassword(wppw);
             }
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -137,8 +137,8 @@ namespace Wasspord
 		private void DisplayButton_Click(object sender, EventArgs e)
 		{
             PasswordTextbox.ForeColor = PasswordTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White") : Color.FromName("Black");
-            Settings.UpdateSettings("Display");
-            showHideAccountsPasswordsToolStripMenuItem.Text = Wasspord.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            WasspordSettings.UpdateSettings("Display");
+            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
         }
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -197,15 +197,15 @@ namespace Wasspord
 
 		private void autosaveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (Settings.Autosave == true)
+			if (WasspordSettings.Autosave == true)
 			{
-                Settings.UpdateSettings("Autosave");
+                WasspordSettings.UpdateSettings("Autosave");
 			}
-			else if (Settings.Autosave == false)
+			else if (WasspordSettings.Autosave == false)
 			{
-                Settings.UpdateSettings("Autosave");
+                WasspordSettings.UpdateSettings("Autosave");
 			}
-            autosaveToolStripMenuItem.Text = Settings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+            autosaveToolStripMenuItem.Text = WasspordSettings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
 
 		private void showHideAccountsPasswordsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -413,13 +413,13 @@ namespace Wasspord
             OpenFileDialog of = new OpenFileDialog();
             of.Title = "Open";
             of.Filter = "Wasspord Text File|*.wasspord";
-            of.InitialDirectory = Wasspord.Folder;
+            of.InitialDirectory = WasspordFilesHandler.Folder;
             of.RestoreDirectory = true;
             if (of.ShowDialog() == DialogResult.OK)
             {
-                Wasspord.Filename = Path.GetFileName(of.FileName);
-                Wasspord.Folder = Path.GetDirectoryName(of.FileName); // this is temporary and not actually saved into the settings.json.
-                Wasspord.Load(Wasspord.Folder, Wasspord.Filename);
+                WasspordFilesHandler.Filename = Path.GetFileName(of.FileName);
+                WasspordFilesHandler.Folder = Path.GetDirectoryName(of.FileName); // this is temporary and not actually saved into the settings.json.
+                WasspordFilesHandler.Load(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
                 return true;
             }
             else
@@ -434,13 +434,13 @@ namespace Wasspord
             SaveFileDialog sf = new SaveFileDialog();
             sf.Title = "Save";
             sf.Filter = "Wasspord Text File|*.wasspord";
-            sf.InitialDirectory = Wasspord.Folder;
+            sf.InitialDirectory = WasspordFilesHandler.Folder;
             sf.RestoreDirectory = true;
             if (sf.ShowDialog() == DialogResult.OK)
             {
-                Wasspord.Filename = Path.GetFileName(sf.FileName);
-                Wasspord.Folder = Path.GetDirectoryName(sf.FileName); // this is temporary and not actually saved into the settings.json.
-                Wasspord.Save(Wasspord.Folder, Wasspord.Filename);
+                WasspordFilesHandler.Filename = Path.GetFileName(sf.FileName);
+                WasspordFilesHandler.Folder = Path.GetDirectoryName(sf.FileName); // this is temporary and not actually saved into the settings.json.
+                WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
                 return true;
             }
             else
@@ -460,7 +460,9 @@ namespace Wasspord
             {
                 string path = fd.SelectedPath;
                 path = fd.SelectedPath.Replace(@"\", @"\\"); // replace \'s with \\ to avoid a JSON error using escape characters
-                Settings.UpdateSettings("Folder", path);
+                WasspordSettings.UpdateSettings("Folder", path);
+                if(WasspordFilesHandler.Filename == null)
+                    WasspordFilesHandler.Folder = WasspordSettings.Folder; // Might as well update it to the custom folder if Filename is null
             }
         }
 
@@ -481,7 +483,7 @@ namespace Wasspord
         /* PasswordPrompt: Prompts for password */
         private bool PasswordPrompt()
         {
-            string pass = Wasspord.GetWasspordPassword();
+            string pass = WasspordFilesHandler.GetWasspordPassword();
             bool success = false;
             Form PassForm = new Form();
             PassForm.Text = "Load - Input Password";
@@ -551,12 +553,12 @@ namespace Wasspord
             {
                 if (PassTextbox.Text != "")
                 {
-                    Wasspord.SetWasspordPassword(PassTextbox.Text);
+                    WasspordFilesHandler.SetWasspordPassword(PassTextbox.Text);
                     PassForm.Close();
                 }
                 else
                 {
-                    Wasspord.SetWasspordPassword("");
+                    WasspordFilesHandler.SetWasspordPassword("");
                     PassForm.Close();
                 }
             };

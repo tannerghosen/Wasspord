@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace Wasspord
 {
-    public static class LoadAndSaveStuff
+    /*
+     * Methods: Save, Load
+     * Properties/Misc: Filename, Folder, WasspordPassword, GetWasspordPassword, SetWasspordPassword, Init
+     */
+    /// <summary>
+    /// This class handles saving and loading of .wasspord files, as well as setting/getting the wasspord file's password for accessing it.
+    /// </summary>
+    public static class WasspordFilesHandler
     {
         /// <summary>
         /// Our opened file's name
@@ -143,17 +150,6 @@ namespace Wasspord
         }
 
         /// <summary>
-        /// Clears the dictionary, generates a new key (which may be overwritten if load was used) and resets the opened file name.
-        /// </summary>
-        public static void Reset()
-        {
-            WasspordPassword = "";
-            WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // Clear account dictionary
-            Filename = ""; // reset the filename to nothing
-            Encryption.GenerateKey(); // Generate a new key
-            Logger.Write("Resetted / cleared several items.");
-        }
-        /// <summary>
         /// Returns the .wasspord file's current password.
         /// </summary>
         /// <returns>.wasspord file's current password</returns>
@@ -173,7 +169,7 @@ namespace Wasspord
 
         public static void Init()
         {
-            string folder = Settings.GetFolder();
+            string folder = WasspordSettings.GetFolder();
             if (folder != null)
             {
                 Folder = folder;
