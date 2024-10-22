@@ -82,7 +82,7 @@ namespace Wasspord
         /// <param name="filename"></param>
         public static void Load(string location, string filename)
         {
-            Reset(); // Reset ahead of time so we don't have errors down the line.
+            Wasspord.Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename;
             try

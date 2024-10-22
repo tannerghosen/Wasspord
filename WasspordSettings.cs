@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Wasspord
 {
+    /// <summary>
+    /// This class handles Wasspord's settings.
+    /// </summary>
     public static class WasspordSettings
     {
         /* Wasspord Program Settings:

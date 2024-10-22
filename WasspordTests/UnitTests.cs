@@ -16,7 +16,7 @@ namespace WasspordTests
             string filename = "testcase.wasspord";
             try
             {
-                Wasspord.Wasspord.Save("", filename);
+                Wasspord.WasspordFilesHandler.Save("", filename);
             }
             catch
             {
@@ -34,7 +34,7 @@ namespace WasspordTests
             }
             try
             {
-                Wasspord.Wasspord.Load("", filename);
+                Wasspord.WasspordFilesHandler.Load("", filename);
             }
             catch
             {
@@ -133,10 +133,10 @@ namespace WasspordTests
         public void TestReset()
         {
             Wasspord.Wasspord.Reset();
-            Wasspord.Wasspord.SetWasspordPassword("test");
+            Wasspord.WasspordFilesHandler.SetWasspordPassword("test");
             WasspordAccounts.ManageAccount("add", "test", "admin", "root");
             string key = Encryption.GetKey();
-            Wasspord.Wasspord.Save("", "test");
+            Wasspord.WasspordFilesHandler.Save("", "test");
             Wasspord.Wasspord.Reset();
             if (WasspordAccounts.GetAccounts().Count() != new Dictionary<WasspordAccounts.Account, string>().Count())
             {
@@ -146,11 +146,11 @@ namespace WasspordTests
             {
                 Assert.Fail("Reset did not properly work. (Key)");
             }
-            if (Wasspord.Wasspord.GetWasspordPassword() == "test")
+            if (Wasspord.WasspordFilesHandler.GetWasspordPassword() == "test")
             {
                 Assert.Fail("Reset did not properly work. (WasspordPassword)");
             }
-            if (Wasspord.Wasspord.Filename == "test")
+            if (Wasspord.WasspordFilesHandler.Filename == "test")
             {
                 Assert.Fail("Reset did not properly work. (Filename)");
             }
