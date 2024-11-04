@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Reflection;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using static Wasspord.WasspordAccounts;
 
 namespace Wasspord
 {

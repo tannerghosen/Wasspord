@@ -383,10 +383,19 @@ namespace Wasspord
                         WasspordAccounts.ManageAccount("add", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
                         break;
                     case "update":
+                        //bool warning = ErrorChoice("Are you sure you want to update\nthis account?", "WARNING");
+                        //if(warning == true)
+                        //{
                         WasspordAccounts.ManageAccount("update", LocationTextbox.Text, UsernameTextbox.Text, PasswordTextbox.Text);
+                        //}
                         break;
                     case "delete":
-                        WasspordAccounts.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
+                        bool warning = ErrorChoice("Are you sure you want to delete\nthis account?", "WARNING");
+                        if (warning == true)
+                        {
+                            WasspordAccounts.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
+                            PrintRows();
+                        }
                         break;
                 }
                 AccountForm.Close();
@@ -572,7 +581,7 @@ namespace Wasspord
             PassForm.ShowDialog();
         }
 
-        /* Error: Error window, takes message and error optionally as parameters */
+        /* Error: Error / warning window, takes message and error optionally as parameters */
         private void Error(string message, string error = "ERROR")
         {
             Form ErrorForm = new Form();
@@ -601,6 +610,50 @@ namespace Wasspord
                 ErrorForm.Location = new Point((WX + (Width - ErrorForm.Width) / 2), (WY + (Height - ErrorForm.Height) / 2));
             };
             ErrorForm.ShowDialog();
+        }
+        private bool ErrorChoice(string message, string error = "ERROR")
+        {
+            bool result = new bool();
+            Form ErrorForm = new Form();
+            ErrorForm.Text = error;
+            ErrorForm.Width = 300;
+            ErrorForm.Height = 150;
+            ErrorForm.MaximizeBox = false;
+            ErrorForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+            Button ErrorFormYesButton = new Button();
+            ErrorFormYesButton.Text = "Yes";
+            ErrorFormYesButton.Width = 75;
+            ErrorFormYesButton.Height = 23;
+            ErrorFormYesButton.Location = new Point(50, 75);
+            Button ErrorFormNoButton = new Button();
+            ErrorFormNoButton.Text = "No";
+            ErrorFormNoButton.Width = 75;
+            ErrorFormNoButton.Height = 23;
+            ErrorFormNoButton.Location = new Point(150, 75);
+            Label ErrorFormLabel = new Label();
+            ErrorFormLabel.Text = message;
+            ErrorFormLabel.Location = new Point(60, 30);
+            ErrorFormLabel.Width = 200;
+            ErrorFormLabel.Height = 100;
+            ErrorForm.Controls.Add(ErrorFormYesButton);
+            ErrorForm.Controls.Add(ErrorFormNoButton);
+            ErrorForm.Controls.Add(ErrorFormLabel);
+            ErrorFormYesButton.Click += (s, ev) =>
+            {
+                result = true;
+                ErrorForm.Close();
+            };
+            ErrorFormNoButton.Click += (s, ev) =>
+            {
+                result = false;
+                ErrorForm.Close();
+            };
+            ErrorForm.Load += (s, ev) =>
+            {
+                ErrorForm.Location = new Point((WX + (Width - ErrorForm.Width) / 2), (WY + (Height - ErrorForm.Height) / 2));
+            };
+            ErrorForm.ShowDialog();
+            return result;
         }
     }
 }
