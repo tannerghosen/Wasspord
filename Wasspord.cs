@@ -17,7 +17,6 @@ namespace Wasspord
         {
             WasspordSettings.Init(); // Initalize our Settings
             WasspordFilesHandler.Init(); // Initialize our FilesHandler settings
-            WasspordFilesHandler.SetWasspordPassword(""); // Set our WasspordPassword to an empty string
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff
             Encryption.GenerateKey(); // Create a key
             WasspordAccounts.SetAccounts(new Dictionary<WasspordAccounts.Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
