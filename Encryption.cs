@@ -130,7 +130,6 @@ namespace Wasspord
                 catch
                 {
                     //Logger.Write("Decrypt failed beyond validation. This shouldn't happen unless the password is severely messed up or manually altered.", "ERROR");
-                    //Logger.Write("password: " + password, "DEBUG");
                     return "error";
                 }
             }

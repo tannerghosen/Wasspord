@@ -99,7 +99,7 @@ namespace Wasspord
             }
             else
             {
-                WasspordFilesHandler.SetWasspordPassword(wppw);
+                WasspordFilesHandler.SetWasspordPassword(wppw); // else if we don't go through with loading just set the wasspord password to one we had from the get go
             }
         }
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -394,7 +394,6 @@ namespace Wasspord
                         if (warning == true)
                         {
                             WasspordAccounts.ManageAccount("delete", LocationTextbox.Text, UsernameTextbox.Text);
-                            PrintRows();
                         }
                         break;
                 }

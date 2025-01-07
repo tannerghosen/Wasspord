@@ -126,5 +126,13 @@ namespace Wasspord
             var acc = Accounts.ElementAt(row);
             return new string[3] { acc.Key.location, acc.Key.username, acc.Value };
         }
+
+        /// <summary>
+        /// Clears our Accounts Dictionary
+        /// </summary>
+        public static void ClearAccounts()
+        {
+            SetAccounts(new Dictionary<Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
+        }
     }
 }

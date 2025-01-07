@@ -53,14 +53,14 @@ namespace Wasspord
                 }
                 using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
                 {
-                    sw.WriteLine(Encryption.GetKey());
-                    if (WasspordPassword != "")
+                    sw.WriteLine(Encryption.GetKey()); // write our key to the file
+                    if (WasspordPassword != "") // if wasspordpassword is not null
                     {
-                        sw.WriteLine(Encryption.Encrypt(WasspordPassword)); // Pre-planning Password Support for .wasspord files
+                        sw.WriteLine(Encryption.Encrypt(WasspordPassword)); // write down our key-encrypted wasspordpassword down
                     }
                     foreach (var acc in WasspordAccounts.GetAccounts()) // for each acc in Accounts, writeline into the file the location, username, value.
                     {
-                        sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value);
+                        sw.WriteLine(acc.Key.location + "|" + acc.Key.username + "|" + acc.Value); // seperate by |'s
                     }
                 }
                 Logger.Write("File saved to: " + file);
@@ -80,7 +80,7 @@ namespace Wasspord
         {
             Wasspord.Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
-            string file = location + @"\" + filename;
+            string file = location + @"\" + filename; // this is our directory to the file
             try
             {
                 // This should never happen, but if it does create a blank file.
@@ -91,18 +91,18 @@ namespace Wasspord
                 var fs = new FileStream(file, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
                 using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
                 {
-                    string line; // our current line
-                    int Line = 1;
+                    string line; // our current line as a string
+                    int Line = 1; // the count of the line we're on, acts as our iterator
 
                     while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                     {
-                        if (Line == 1 && !line.Contains("|")) // If the .wasspord file has a key set
+                        if (Line == 1 && !line.Contains("|")) // if we're on Line 1 and it doesn't contain a |, it's our key, assumedly.
                         {
                             bool IsValid = Encryption.Validate(line); // Validate it, it could be a bad file
                             if (IsValid) // Is this a Valid Base64 String Key?
                             {
-                                Logger.Write("Setting Key to " + line);
-                                Encryption.SetKey(line);
+                                Logger.Write("Setting Key to " + line); 
+                                Encryption.SetKey(line); // We set it as our key
                             }
                             else // If it isn't, don't bother loading the file.
                             {
@@ -111,13 +111,12 @@ namespace Wasspord
                                 break; // Break the while loop, no point in trying to load any further
                             }
                         }
-                        else if (Line == 2 && !line.Contains("|")) // Does the .wasspord file have a password to unlock it?
+                        else if (Line == 2 && !line.Contains("|")) // If we're on Line 2 and it doesn't contain a |, it's likely our WassprodPassword
                         {
-                            // If so, set WasspordPassword's value to the decrypted line.
-                            //WasspordPassword = line;
+                            // Set WasspordPassword's value to the decrypted line.
                             WasspordPassword = Encryption.Decrypt(line);
                         }
-                        else
+                        else // Otherwise we add the accounts to the Accounts Dictionary
                         {
                             try // try-catch in case the acc cannot be split by |
                             {
@@ -130,10 +129,11 @@ namespace Wasspord
                             {
                                 Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
                                 fs.Dispose();
+                                Wasspord.Reset(); // reset the program
                                 break; // Break the while loop, no point in trying to load any further
                             }
                         }
-                        Line++;
+                        Line++; // Increase Line iterator by 1
                     }
                 }
                 Logger.Write("File loaded: " + file);
@@ -163,6 +163,9 @@ namespace Wasspord
             WasspordPassword = pass;
         }
 
+        /// <summary>
+        /// Initializes the settings for WasspordFilesHandler
+        /// </summary>
         public static void Init()
         {
             string folder = WasspordSettings.GetFolder();
