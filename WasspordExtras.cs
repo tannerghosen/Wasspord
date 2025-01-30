@@ -14,12 +14,12 @@ namespace Wasspord
     /// <summary>
     /// This class serves extra features to Wasspord, such as password generation and validation.
     /// </summary>
-    public static class WasspordExtras
+    public static class WasspordExtras // mutable class
     {
         /// <summary>
         /// Contains our encrypted generated passwords
         /// </summary>
-        public static string GeneratedPasswords = "./GeneratedPasswords.passwords";
+        private static readonly string GeneratedPasswords = "./GeneratedPasswords.passwords";
 
         /// <summary>
         /// Generated passwords kept in a HashSet to prevent duplicate passwords from being used.
@@ -29,7 +29,7 @@ namespace Wasspord
         /// <summary>
         /// Our characters used for password generation.
         /// </summary>
-        private static string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+        private static readonly string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
 
         /// <summary>
         /// Our regex for password validation and valid password generation. It checks to ensure the password has 
@@ -46,7 +46,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="attempt"></param>
         /// <returns>Generated Password</returns>
-        public static string GeneratePassword(int attempt = 0)
+        public static string GeneratePassword(int attempt = 0) // O(1) best case, O(n) worst case
         {
             StringBuilder password = new StringBuilder(string.Empty);
             Random r = new Random();
@@ -80,7 +80,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>Regex result (either positive or negative)</returns>
-        public static string ValidatePassword(string password)
+        public static string ValidatePassword(string password) // O(1)
         {
             return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
@@ -116,7 +116,7 @@ namespace Wasspord
         /// Adds an uniquely generated password to our Passwords hashset, as well as the GeneratedPasswords file.
         /// </summary>
         /// <param name="password"></param>
-        public static void AddPassword(string password)
+        public static void AddPassword(string password) // O(1)
         {
             Passwords.Add(password); // Add the generated password to the Passwords hashset
             string OldKey = Encryption.GetKey(); // Store our current encryption key

@@ -11,18 +11,18 @@ namespace Wasspord
     /// <summary>
     /// This class handles logging for various classes throughout the program, including a stacktrace output in case we have an error.
     /// </summary>
-    public static class Logger
+    public static class Logger // immutable class
     {
         /// <summary>
         /// Our log file is located in the program's folder
         /// </summary>
-        public static string Log = "./Wasspord.log";
+        private static readonly string Log = "./Wasspord.log";
         /// <summary>
         /// Write: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate if an issue arises.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="messagetype"></param>
-        public static void Write(string message, string messagetype = "LOG")
+        public static void Write(string message, string messagetype = "LOG") // O(1)
         {
             string[] flavortexts = { "The problem probably lies in", "The stack is as follows:" };
             string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");

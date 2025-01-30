@@ -10,7 +10,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles everything to do with adding, updating, removing, and getting Accounts from individual .wasspord files.
     /// </summary>
-    public static class WasspordAccounts
+    public static class WasspordAccounts // mutable class
     {
         /// <summary>
         /// A dictionary with a key made of 2 parts (location, username)  that contains information on 
@@ -37,7 +37,7 @@ namespace Wasspord
         /// <param name="location"></param>
         /// <param name="username"></param>
         /// <param name="password">optional</param>
-        public static void ManageAccount(string operation, string location, string username, string password)
+        public static void ManageAccount(string operation, string location, string username, string password) // O(1)
         {
             Account acc = new Account { location = Encryption.Encrypt(location), username = Encryption.Encrypt(username) };
 
@@ -85,7 +85,7 @@ namespace Wasspord
         /// <param name="loc"></param>
         /// <param name="user"></param>
         /// <param name="pass"></param>
-        public static void AddAccount(string loc, string user, string pass)
+        public static void AddAccount(string loc, string user, string pass) // O(1)
         {
             if (!Encryption.Validate(loc) || !Encryption.Validate(user)) // if the file is older, it won't have encrypted names / locations
             {
@@ -121,7 +121,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="row"></param>
         /// <returns>3 string array containing the location, username, and password for that row</returns>
-        public static string[] GetRow(int row)
+        public static string[] GetRow(int row) // O(1)
         {
             var acc = Accounts.ElementAt(row);
             return new string[3] { acc.Key.location, acc.Key.username, acc.Value };

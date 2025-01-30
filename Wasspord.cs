@@ -8,7 +8,7 @@ namespace Wasspord
     /// <summary>
     /// This class initializes other classes as well as reset the classes various settings
     /// </summary>
-    public static class Wasspord
+    public static class Wasspord // mutable class
     {
         /// <summary>
         /// Initalizes our program settings by calling multiple other classes Init methods and generating a key.

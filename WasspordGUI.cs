@@ -113,7 +113,7 @@ namespace Wasspord
 			Label AboutFormLabel = new Label();
 			AboutFormLabel.Location = new Point(125, 175);
 			AboutFormLabel.Size = new Size(250, 50);
-			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023 - 2024";
+			AboutFormLabel.Text = "The Password Manager\r\nBy Tanner Ghosen\r\n2023 - 2025";
 			LinkLabel AboutFormLinkLabel = new LinkLabel();
 			AboutFormLinkLabel.Location = new Point(75, 225);
 			AboutFormLinkLabel.Size = new Size(250, 15);

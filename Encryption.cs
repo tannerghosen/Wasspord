@@ -12,7 +12,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles all encryption and decryption related tasks of the program, including generating a Key to be used for a Key and IV in both tasks as well as validating Base64 strings.
     /// </summary>
-    public static class Encryption
+    public static class Encryption // mutable class
     {
         /* Why do I use a Key and Salt to get an encryption key instead of password and Salt?
          * Mostly this comes down to me not being extremely knowledgeable in Encryption / Decryption, 
@@ -30,7 +30,7 @@ namespace Wasspord
         /// Our salt for key derivation (these are not changed at all by the program).
         /// Used in Rfc2898DeriveBytes in tandem with Key to get our encryption Key and IV.
         /// </summary>
-        private static byte[] Salt = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
+        private static readonly byte[] Salt = { 0x31, 0xAB, 0xA7, 0x91, 0x93, 0x9B, 0x7D, 0x1F, 0x3B, 0xF7, 0x8D, 0x3F, 0x9A };
 
         // Reference on Encryption / Decryption being done here:
         // https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0
@@ -52,7 +52,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>encrypted password </returns>
-        public static string Encrypt(string password)
+        public static string Encrypt(string password) // O(n)
         {
             // Get bytes from our string password
             byte[] b = Encoding.Unicode.GetBytes(password);
@@ -83,7 +83,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>decrypted password</returns>
-        public static string Decrypt(string password)
+        public static string Decrypt(string password) // O(n)
         {
             // This is in case passwords had a space in them prior to decrypting (so if it was encrypted as "hello world"),
             // it would error out without this line below.
@@ -138,7 +138,7 @@ namespace Wasspord
         /// <summary>
         /// Generates a new Key for our Encryption / Decryption
         /// </summary>
-        public static void GenerateKey()
+        public static void GenerateKey() // O(1)
         {
             var rng = new RNGCryptoServiceProvider(); // create secure number generator
             var bytes = new byte[16]; // create bytes array

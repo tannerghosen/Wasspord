@@ -10,7 +10,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles saving and loading of .wasspord files, as well as setting/getting the wasspord file's password for accessing it.
     /// </summary>
-    public static class WasspordFilesHandler
+    public static class WasspordFilesHandler // mutable class
     {
         /// <summary>
         /// Our opened file's name
@@ -37,7 +37,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="location"></param>
         /// <param name="filename"></param>
-        public static void Save(string location, string filename)
+        public static void Save(string location, string filename) // O(n)
         {
             string file = location + @"\" + filename;
             if (WasspordPassword == null)
@@ -76,7 +76,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="location"></param>
         /// <param name="filename"></param>
-        public static void Load(string location, string filename)
+        public static void Load(string location, string filename) // O(n)
         {
             Wasspord.Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
