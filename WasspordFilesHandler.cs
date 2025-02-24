@@ -88,13 +88,12 @@ namespace Wasspord
                 {
                     File.Create(file).Dispose();
                 }
-                var fs = new FileStream(file, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
-                using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
+                using (StreamReader sr = new StreamReader(file))
                 {
                     string line; // our current line as a string
                     int Line = 1; // the count of the line we're on, acts as our iterator
 
-                    while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
+                    while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading isn't null
                     {
                         if (Line == 1 && !line.Contains("|")) // if we're on Line 1 and it doesn't contain a |, it's our key, assumedly.
                         {
@@ -107,7 +106,6 @@ namespace Wasspord
                             else // If it isn't, don't bother loading the file.
                             {
                                 Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
-                                fs.Dispose();
                                 break; // Break the while loop, no point in trying to load any further
                             }
                         }
@@ -128,7 +126,6 @@ namespace Wasspord
                             catch // if we get a bad file after the key check
                             {
                                 Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
-                                fs.Dispose();
                                 Wasspord.Reset(); // reset the program
                                 break; // Break the while loop, no point in trying to load any further
                             }
@@ -137,7 +134,6 @@ namespace Wasspord
                     }
                 }
                 Logger.Write("File loaded: " + file);
-                fs.Dispose(); // Dispose of FileStream once we're done.
             }
             catch (System.Exception e)
             {

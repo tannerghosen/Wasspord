@@ -99,8 +99,7 @@ namespace Wasspord
             {
                 string OldKey = Encryption.GetKey(); // Store our current encryption key
                 Encryption.SetKey("p055w4rd"); // Because the encryption used for the file uses the old encryption key, we set it here
-                var fs = new FileStream(GeneratedPasswords, FileMode.Open, FileAccess.Read); // open a FileStream for StreamReader to use
-                using (var sr = new StreamReader(fs, Encoding.UTF8)) // creates a StreamReader to read our file
+                using (StreamReader sr = new StreamReader(GeneratedPasswords)) // creates a StreamReader to read our file
                 {
                     string line; // our current line
                     while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
