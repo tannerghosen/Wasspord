@@ -37,7 +37,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="location"></param>
         /// <param name="filename"></param>
-        public static void Save(string location, string filename) // O(n)
+        public static void Save(string location, string filename) 
         {
             string file = location + @"\" + filename;
             if (WasspordPassword == null)
@@ -76,7 +76,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="location"></param>
         /// <param name="filename"></param>
-        public static void Load(string location, string filename) // O(n)
+        public static void Load(string location, string filename) 
         {
             Wasspord.Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.

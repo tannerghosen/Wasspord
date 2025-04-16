@@ -52,7 +52,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>encrypted password </returns>
-        public static string Encrypt(string password) // O(n)
+        public static string Encrypt(string password)
         {
             // Get bytes from our string password
             byte[] b = Encoding.Unicode.GetBytes(password);
@@ -83,7 +83,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>decrypted password</returns>
-        public static string Decrypt(string password) // O(n)
+        public static string Decrypt(string password) 
         {
             // This is in case passwords had a space in them prior to decrypting (so if it was encrypted as "hello world"),
             // it would error out without this line below.
@@ -138,7 +138,7 @@ namespace Wasspord
         /// <summary>
         /// Generates a new Key for our Encryption / Decryption
         /// </summary>
-        public static void GenerateKey() // O(1)
+        public static void GenerateKey() 
         {
             var rng = new RNGCryptoServiceProvider(); // create secure number generator
             var bytes = new byte[16]; // create bytes array

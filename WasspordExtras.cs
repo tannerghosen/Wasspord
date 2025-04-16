@@ -46,7 +46,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="attempt"></param>
         /// <returns>Generated Password</returns>
-        public static string GeneratePassword(int attempt = 0) // O(1) best case, O(n) worst case
+        public static string GeneratePassword(int attempt = 0) 
         {
             StringBuilder password = new StringBuilder(string.Empty);
             Random r = new Random();
@@ -80,7 +80,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="password"></param>
         /// <returns>Regex result (either positive or negative)</returns>
-        public static string ValidatePassword(string password) // O(1)
+        public static string ValidatePassword(string password) 
         {
             return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
@@ -115,7 +115,7 @@ namespace Wasspord
         /// Adds an uniquely generated password to our Passwords hashset, as well as the GeneratedPasswords file.
         /// </summary>
         /// <param name="password"></param>
-        public static void AddPassword(string password) // O(1)
+        public static void AddPassword(string password) 
         {
             Passwords.Add(password); // Add the generated password to the Passwords hashset
             string OldKey = Encryption.GetKey(); // Store our current encryption key

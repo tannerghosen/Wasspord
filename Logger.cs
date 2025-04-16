@@ -22,7 +22,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="message"></param>
         /// <param name="messagetype"></param>
-        public static void Write(string message, string messagetype = "LOG") // O(1)
+        public static void Write(string message, string messagetype = "LOG") 
         {
             string[] flavortexts = { "The problem probably lies in", "The stack is as follows:" };
             string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");

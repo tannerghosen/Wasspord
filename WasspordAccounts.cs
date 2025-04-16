@@ -37,7 +37,7 @@ namespace Wasspord
         /// <param name="location"></param>
         /// <param name="username"></param>
         /// <param name="password">optional</param>
-        public static void ManageAccount(string operation, string location, string username, string password) // O(1)
+        public static void ManageAccount(string operation, string location, string username, string password) 
         {
             Account acc = new Account { location = Encryption.Encrypt(location), username = Encryption.Encrypt(username) };
 
@@ -85,7 +85,7 @@ namespace Wasspord
         /// <param name="loc"></param>
         /// <param name="user"></param>
         /// <param name="pass"></param>
-        public static void AddAccount(string loc, string user, string pass) // O(1)
+        public static void AddAccount(string loc, string user, string pass) 
         {
             if (!Encryption.Validate(loc) || !Encryption.Validate(user)) // if the file is older, it won't have encrypted names / locations
             {
@@ -121,7 +121,7 @@ namespace Wasspord
         /// </summary>
         /// <param name="row"></param>
         /// <returns>3 string array containing the location, username, and password for that row</returns>
-        public static string[] GetRow(int row) // O(1)
+        public static string[] GetRow(int row)
         {
             var acc = Accounts.ElementAt(row);
             return new string[3] { acc.Key.location, acc.Key.username, acc.Value };

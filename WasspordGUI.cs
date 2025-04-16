@@ -14,7 +14,7 @@ namespace Wasspord
         public WasspordGUI()
 		{
 			InitializeComponent();
-            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (Show)" : "Show / Hide (Hide)";
             autosaveToolStripMenuItem.Text = WasspordSettings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
         }
         private void AddAccountButton_Click(object sender, EventArgs e)
@@ -138,7 +138,7 @@ namespace Wasspord
 		{
             PasswordTextbox.ForeColor = PasswordTextbox.ForeColor == Color.FromName("Black") ? Color.FromName("White") : Color.FromName("Black");
             WasspordSettings.UpdateSettings("Display");
-            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (ON)" : "Show / Hide (OFF)";
+            showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (Show)" : "Show / Hide (Hide)";
         }
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
