@@ -81,6 +81,7 @@ namespace Wasspord
             Wasspord.Reset(); // Reset ahead of time so we don't have errors down the line.
             Encryption.SetKey("p055w4rd"); // Set it to the old key prior to starting, in case we have an old .wasspord file.
             string file = location + @"\" + filename; // this is our directory to the file
+            bool fail = false;
             try
             {
                 // This should never happen, but if it does create a blank file.
@@ -106,6 +107,7 @@ namespace Wasspord
                             else // If it isn't, don't bother loading the file.
                             {
                                 Logger.Write("Invalid key in the .wasspord file \"" + file + "\" (Key was \"" + line + "\").", "ERROR");
+                                fail = true;
                                 break; // Break the while loop, no point in trying to load any further
                             }
                         }
@@ -126,6 +128,7 @@ namespace Wasspord
                             catch // if we get a bad file after the key check
                             {
                                 Logger.Write("Bad .wasspord file \"" + file + "\".", "ERROR");
+                                fail = true;
                                 Wasspord.Reset(); // reset the program
                                 break; // Break the while loop, no point in trying to load any further
                             }
@@ -133,7 +136,7 @@ namespace Wasspord
                         Line++; // Increase Line iterator by 1
                     }
                 }
-                Logger.Write("File loaded: " + file);
+                if(!fail) Logger.Write("File loaded: " + file);
             }
             catch (System.Exception e)
             {
