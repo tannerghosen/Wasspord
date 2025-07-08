@@ -18,9 +18,13 @@ namespace WasspordTests
             {
                 Wasspord.WasspordFilesHandler.Save("", filename);
             }
-            catch
+            catch (Exception e)
             {
-                Assert.Fail("Save method had an exception. Caught in Unit Tests.");
+                Assert.Fail("Save method had an exception. Caught in Unit Tests. " + e);
+            }
+            if (!File.Exists(filename))
+            {
+                Assert.Fail("Save method did not save a file. Caught in Unit Tests.");
             }
         }
 
@@ -36,9 +40,9 @@ namespace WasspordTests
             {
                 Wasspord.WasspordFilesHandler.Load("", filename);
             }
-            catch
+            catch(Exception e) 
             {
-                Assert.Fail("Load method had an exception. Caught in Unit Tests.");
+                Assert.Fail("Load method had an exception. Caught in Unit Tests. " + e);
             }
         }
 
@@ -49,9 +53,9 @@ namespace WasspordTests
             {
                 Encryption.Decrypt("4OWaPe1CCzJuBaA+11uaWQ==");
             }
-            catch
+            catch(Exception e)
             {
-                Assert.Fail("Failed to Decrypt Valid Base64 string");
+                Assert.Fail("Failed to Decrypt Valid Base64 string. " + e);
             }
         }
 
@@ -61,7 +65,7 @@ namespace WasspordTests
             string test = Encryption.Decrypt("test55551231@@##");
             if (test != "error")
             {
-                Assert.Fail("Failed to handle invalid Base64 string");
+                Assert.Fail("Failed to handle invalid Base64 string.");
             }
         }
 
@@ -81,9 +85,9 @@ namespace WasspordTests
                     Assert.Fail("Failed to update account because it doesn't exist");
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Assert.Fail("Failed to either create an account or update an account, likely methods don't work anymore");
+                Assert.Fail("Failed to either create an account or update an account due to an exception. " + e);
             }
         }
 
@@ -98,20 +102,20 @@ namespace WasspordTests
                     Assert.Fail("Failed to delete account");
                 }
             }
-            catch
+            catch(Exception e)
             {
-                Assert.Fail("Failed to delete account, method doesn't likely work anymore");
+                Assert.Fail("Failed to delete account due to an exception. " + e);
             }
         }
         [TestMethod]
         public void TestValidate()
         {
-            bool test1 = Encryption.Validate("4OWaPe1CCzJuBaA+11uaWQ==");
+            bool test1 = Encryption.Validate("4OWaPe1CCzJuBaA+11uaWQ=="); // should validate as valid base64
             if (test1 != true)
             {
                 Assert.Fail("Validate Method Test 1 failed");
             }
-            bool test2 = Encryption.Validate("test55551231@@##");
+            bool test2 = Encryption.Validate("test55551231@@##"); // should fail (plain text)
             if (test2 != false)
             {
                 Assert.Fail("Validate Method Test 2 failed");
@@ -122,7 +126,7 @@ namespace WasspordTests
         public void TestEncryption()
         {
             Encryption.SetKey("wYAberIJyVjTYQxawGL1XQ==");
-            string encrypt = Encryption.Encrypt("5");
+            string encrypt = Encryption.Encrypt("5"); 
             if (encrypt != "80De3FurcgXG4yZqLWBKXA==")
             {
                 Assert.Fail("Failed to encrypt, only reason this mismatch would happen is if the Key / Encrypt / Decrypt methods were changed significantly.");
