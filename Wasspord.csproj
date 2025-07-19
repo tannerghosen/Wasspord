@@ -110,6 +110,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export.cs" />
     <Compile Include="WasspordFilesHandler.cs" />
     <Compile Include="WasspordSettings.cs" />
     <Compile Include="WasspordAccounts.cs" />

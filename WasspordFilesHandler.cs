@@ -172,6 +172,7 @@ namespace Wasspord
             {
                 Folder = folder;
             }
+            Filename = "";
             WasspordPassword = "";
         }
     }

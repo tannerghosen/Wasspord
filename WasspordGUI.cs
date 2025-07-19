@@ -654,5 +654,12 @@ namespace Wasspord
             ErrorForm.ShowDialog();
             return result;
         }
+
+        private void totxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (WasspordFilesHandler.Filename == String.Empty) { Error("Cannot export without a saved file.", "Wasspord"); return; }
+            if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return;  }
+            Export.ExportToTxt(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename+".txt");
+        }
     }
 }
