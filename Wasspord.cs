@@ -29,7 +29,6 @@ namespace Wasspord
         {
             WasspordFilesHandler.SetWasspordPassword(""); // Set our WasspordPassword to an empty string
             WasspordAccounts.ClearAccounts(); // Clears our accounts dictionary
-            WasspordFilesHandler.Filename = ""; // Set the filename to nothing
             Encryption.GenerateKey(); // Generate a new key
             Logger.Write("Resetted / cleared several items.");
         }

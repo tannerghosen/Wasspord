@@ -39,6 +39,8 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.totxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +62,7 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.ScrollBar = new System.Windows.Forms.VScrollBar();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.totxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tocsvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -108,30 +109,46 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadToolStripMenuItem.Text = "Open";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.totxtToolStripMenuItem,
+            this.tocsvToolStripMenuItem});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // totxtToolStripMenuItem
+            // 
+            this.totxtToolStripMenuItem.Name = "totxtToolStripMenuItem";
+            this.totxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.totxtToolStripMenuItem.Text = "To .txt";
+            this.totxtToolStripMenuItem.Click += new System.EventHandler(this.totxtToolStripMenuItem_Click);
             // 
             // accountsToolStripMenuItem
             // 
@@ -146,21 +163,21 @@
             // addAccountToolStripMenuItem
             // 
             this.addAccountToolStripMenuItem.Name = "addAccountToolStripMenuItem";
-            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addAccountToolStripMenuItem.Text = "Add Account";
             this.addAccountToolStripMenuItem.Click += new System.EventHandler(this.addAccountToolStripMenuItem_Click);
             // 
             // updatePasswordToolStripMenuItem
             // 
             this.updatePasswordToolStripMenuItem.Name = "updatePasswordToolStripMenuItem";
-            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updatePasswordToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.updatePasswordToolStripMenuItem.Text = "Update Password";
             this.updatePasswordToolStripMenuItem.Click += new System.EventHandler(this.updatePasswordToolStripMenuItem_Click);
             // 
             // deleteAccountToolStripMenuItem
             // 
             this.deleteAccountToolStripMenuItem.Name = "deleteAccountToolStripMenuItem";
-            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteAccountToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.deleteAccountToolStripMenuItem.Text = "Delete Account";
             this.deleteAccountToolStripMenuItem.Click += new System.EventHandler(this.deleteAccountToolStripMenuItem_Click);
             // 
@@ -207,14 +224,14 @@
             // generatePasswordToolStripMenuItem
             // 
             this.generatePasswordToolStripMenuItem.Name = "generatePasswordToolStripMenuItem";
-            this.generatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generatePasswordToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.generatePasswordToolStripMenuItem.Text = "Generate Password";
             this.generatePasswordToolStripMenuItem.Click += new System.EventHandler(this.generatePasswordToolStripMenuItem_Click);
             // 
             // validatePasswordToolStripMenuItem
             // 
             this.validatePasswordToolStripMenuItem.Name = "validatePasswordToolStripMenuItem";
-            this.validatePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.validatePasswordToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.validatePasswordToolStripMenuItem.Text = "Validate Password";
             this.validatePasswordToolStripMenuItem.Click += new System.EventHandler(this.validatePasswordToolStripMenuItem_Click);
             // 
@@ -316,20 +333,12 @@
             this.ScrollBar.TabIndex = 12;
             this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
-            // exportToolStripMenuItem
+            // tocsvToolStripMenuItem
             // 
-            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.totxtToolStripMenuItem});
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportToolStripMenuItem.Text = "Export";
-            // 
-            // totxtToolStripMenuItem
-            // 
-            this.totxtToolStripMenuItem.Name = "totxtToolStripMenuItem";
-            this.totxtToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.totxtToolStripMenuItem.Text = "To .txt";
-            this.totxtToolStripMenuItem.Click += new System.EventHandler(this.totxtToolStripMenuItem_Click);
+            this.tocsvToolStripMenuItem.Name = "tocsvToolStripMenuItem";
+            this.tocsvToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tocsvToolStripMenuItem.Text = "To .csv";
+            this.tocsvToolStripMenuItem.Click += new System.EventHandler(this.tocsvToolStripMenuItem_Click);
             // 
             // WasspordGUI
             // 
@@ -393,6 +402,7 @@
         private System.Windows.Forms.ToolStripMenuItem accountsFolderToolStripMenuItem;
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripMenuItem totxtToolStripMenuItem;
+        private ToolStripMenuItem tocsvToolStripMenuItem;
     }
 }
 
