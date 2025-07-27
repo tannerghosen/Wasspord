@@ -9,54 +9,36 @@ namespace Wasspord
 {
     public static class Export
     {
-        public static void ExportToTxt(string location, string filename)
+        public static void export(string location, string filename, string type)
         {
             if (WasspordAccounts.Accounts.Count == 0) return;
-            string file = location + @"\" + filename + ".txt";
-            try
+            string file = location + @"\" + filename + "." + type;
+            if (!File.Exists(file))
             {
-                if (!File.Exists(file))
-                {
-                    File.Create(file).Dispose();
-                }
-                using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
-                {
-                    foreach (var acc in WasspordAccounts.GetAccounts()) 
+                File.Create(file).Dispose();
+            }
+            switch (type)
+            {
+                case "txt":
+                case "csv":
+                    try
                     {
-                        sw.WriteLine(Encryption.Decrypt(acc.Key.location) + "," + Encryption.Decrypt(acc.Key.username) + "," + Encryption.Decrypt(acc.Value));
+                        using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
+                        {
+                            foreach (var acc in WasspordAccounts.GetAccounts())
+                            {
+                                sw.WriteLine(Encryption.Decrypt(acc.Key.location) + "," + Encryption.Decrypt(acc.Key.username) + "," + Encryption.Decrypt(acc.Value));
+                            }
+                        }
+                        Logger.Write("Exported " + type + " file: " + file);
                     }
-                }
-                Logger.Write("Exported text file: " + file);
-            }
-            catch (System.Exception e)
-            {
-                Logger.Write("Error saving to file \"" + file + "\". (Error: " + e + ")", "ERROR");
-            }
-
-        }
-
-        public static void ExportToCsv(string location, string filename)
-        {
-            if (WasspordAccounts.Accounts.Count == 0) return;
-            string file = location + @"\" + filename + ".csv";
-            try
-            {
-                if (!File.Exists(file))
-                {
-                    File.Create(file).Dispose();
-                }
-                using (StreamWriter sw = new StreamWriter(file)) // creates a StreamWriter which writes into our file
-                {
-                    foreach (var acc in WasspordAccounts.GetAccounts())
+                    catch (System.Exception e)
                     {
-                        sw.WriteLine(Encryption.Decrypt(acc.Key.location) + "," + Encryption.Decrypt(acc.Key.username) + "," + Encryption.Decrypt(acc.Value));
+                        Logger.Write("Error saving to file \"" + file + "\". (Error: " + e + ")", "ERROR");
                     }
-                }
-                Logger.Write("Exported csv file: " + file);
-            }
-            catch (System.Exception e)
-            {
-                Logger.Write("Error saving to file \"" + file + "\". (Error: " + e + ")", "ERROR");
+                    break;
+                default:
+                    break;
             }
         }
     }

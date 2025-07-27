@@ -659,14 +659,14 @@ namespace Wasspord
         {
             if (WasspordFilesHandler.Filename == "") { Error("Cannot export without a saved file.", "Wasspord"); return; }
             if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return;  }
-            Export.ExportToTxt(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
+            Export.export(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename, "txt");
         }
 
         private void tocsvToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (WasspordFilesHandler.Filename == "") { Error("Cannot export without a saved file.", "Wasspord"); return; }
             if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return; }
-            Export.ExportToCsv(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
+            Export.export(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename, "csv");
         }
     }
 }
