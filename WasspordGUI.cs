@@ -705,7 +705,7 @@ namespace Wasspord
                     programLogToolStripMenuItem.Text = "Log Program (On, Per Session)";
                     break;
             }
-            Logger.UpdateLogFile(WasspordSettings.LoggerSetting);
+            Logger.Update();
             WasspordSettings.SaveSettings();
         }
     }

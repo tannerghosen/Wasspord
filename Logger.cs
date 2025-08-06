@@ -46,27 +46,7 @@ namespace Wasspord
             }
         }
 
-        public static void UpdateLogFile(int logtype)
-        {
-            switch (logtype)
-            {
-                case 1:
-                    Log = "./Wasspord.log";
-                    break;
-                case 2:
-                    if (BackupPerSessionLogName == null)
-                    {
-                        BackupPerSessionLogName = $"./Wasspord {DateTime.Now.ToString("M-d-yyyy h-mm-ss tt")}.log";
-                    }
-                    Log = BackupPerSessionLogName;
-                    break;
-                case 0:
-                default:
-                    break;
-            }
-        }
-
-        public static void Init()
+        public static void Update()
         {
             switch (WasspordSettings.LoggerSetting)
             {
