@@ -4,11 +4,11 @@ using System.Text;
 namespace Wasspord
 {
     /*
-     * Methods: Save, Load
-     * Properties/Misc: Filename, Folder, WasspordPassword, GetWasspordPassword, SetWasspordPassword, Init
+     * Methods: Save, Load, GetWasspordPassword, SetWasspordPassword, Init
+     * Properties/Misc: Filename, Folder, WasspordPassword
      */
     /// <summary>
-    /// This class handles saving and loading of .wasspord files, as well as setting/getting the wasspord file's password for accessing it.
+    /// This class handles saving and loading of .wasspord files,  as well as setting/getting the wasspord file's password for accessing it.
     /// </summary>
     public static class WasspordFilesHandler // mutable class
     {

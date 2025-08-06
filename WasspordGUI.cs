@@ -16,6 +16,19 @@ namespace Wasspord
 			InitializeComponent();
             showHideAccountsPasswordsToolStripMenuItem.Text = WasspordSettings.Display ? "Show / Hide (Show)" : "Show / Hide (Hide)";
             autosaveToolStripMenuItem.Text = WasspordSettings.Autosave ? "Autosave (ON)" : "Autosave (OFF)";
+            switch (WasspordSettings.LoggerSetting)
+            {
+                case 0:
+                default:
+                    programLogToolStripMenuItem.Text = "Log Program (Off)";
+                    break;
+                case 1:
+                    programLogToolStripMenuItem.Text = "Log Program (On, One Log)";
+                    break;
+                case 2:
+                    programLogToolStripMenuItem.Text = "Log Program (On, Per Session)";
+                    break;
+            }
         }
         private void AddAccountButton_Click(object sender, EventArgs e)
 		{
@@ -667,6 +680,33 @@ namespace Wasspord
             if (WasspordFilesHandler.Filename == "") { Error("Cannot export without a saved file.", "Wasspord"); return; }
             if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return; }
             Export.export(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename, "csv");
+        }
+
+        private void programLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (WasspordSettings.LoggerSetting < 2)
+            {
+                WasspordSettings.LoggerSetting++;
+            }
+            else
+            {
+                WasspordSettings.LoggerSetting = 0;
+            }
+            switch (WasspordSettings.LoggerSetting)
+            {
+                case 0:
+                default:
+                    programLogToolStripMenuItem.Text = "Log Program (Off)";
+                    break;
+                case 1:
+                    programLogToolStripMenuItem.Text = "Log Program (On, One Log)";
+                    break;
+                case 2:
+                    programLogToolStripMenuItem.Text = "Log Program (On, Per Session)";
+                    break;
+            }
+            Logger.UpdateLogFile(WasspordSettings.LoggerSetting);
+            WasspordSettings.SaveSettings();
         }
     }
 }

@@ -16,28 +16,73 @@ namespace Wasspord
         /// <summary>
         /// Our log file is located in the program's folder
         /// </summary>
-        private static readonly string Log = "./Wasspord.log";
+        private static string Log = $"./Wasspord.log";
         /// <summary>
         /// Write: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate if an issue arises.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="messagetype"></param>
+        /// 
+        private static string BackupPerSessionLogName { get; set; }
         public static void Write(string message, string messagetype = "LOG") 
         {
-            string[] flavortexts = { "The problem probably lies in", "The stack is as follows:" };
-            string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
-            StackTrace st = new StackTrace(); // Create a stack trace
-            StackFrame parentsf = st.GetFrame(1); // this is the parent of the method call
-            StackFrame grandparentsf = st.GetFrame(2); // this is the grandparent (parent's parent) of the method call
-            using (StreamWriter writer = new StreamWriter(Log, true))
+            if (WasspordSettings.LoggerSetting != 0)
             {
-                writer.WriteLine("(" + Time + ") [" + messagetype + "]: " + message);
-                if (messagetype == "ERROR" || messagetype == "DEBUG") // if error, let's help out by giving the stack trace
+                string[] flavortexts = { "The problem probably lies in", "The stack is as follows:" };
+                string Time = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
+                StackTrace st = new StackTrace(); // Create a stack trace
+                StackFrame parentsf = st.GetFrame(1); // this is the parent of the method call
+                StackFrame grandparentsf = st.GetFrame(2); // this is the grandparent (parent's parent) of the method call
+                using (StreamWriter writer = new StreamWriter(Log, true))
                 {
-                    string stack = grandparentsf.GetMethod().Name + " -> " + parentsf.GetMethod().Name; // this is a string that says Grandparent -> Parent
-                    writer.WriteLine("(" + Time + ") [" + messagetype + "]: " + messagetype == "ERROR" ? flavortexts[0] : flavortexts[1] + " " + stack + ".");
+                    writer.WriteLine("(" + Time + ") [" + messagetype + "]: " + message);
+                    if (messagetype == "ERROR" || messagetype == "DEBUG") // if error, let's help out by giving the stack trace
+                    {
+                        string stack = grandparentsf.GetMethod().Name + " -> " + parentsf.GetMethod().Name; // this is a string that says Grandparent -> Parent
+                        writer.WriteLine("(" + Time + ") [" + messagetype + "]: " + messagetype == "ERROR" ? flavortexts[0] : flavortexts[1] + " " + stack + ".");
+                    }
+                    writer.Close();
                 }
-                writer.Close();
+            }
+        }
+
+        public static void UpdateLogFile(int logtype)
+        {
+            switch (logtype)
+            {
+                case 1:
+                    Log = "./Wasspord.log";
+                    break;
+                case 2:
+                    if (BackupPerSessionLogName == null)
+                    {
+                        BackupPerSessionLogName = $"./Wasspord {DateTime.Now.ToString("M-d-yyyy h-mm-ss tt")}.log";
+                    }
+                    Log = BackupPerSessionLogName;
+                    break;
+                case 0:
+                default:
+                    break;
+            }
+        }
+
+        public static void Init()
+        {
+            switch (WasspordSettings.LoggerSetting)
+            {
+                case 1:
+                    Log = "./Wasspord.log";
+                    break;
+                case 2:
+                    if (BackupPerSessionLogName == null)
+                    {
+                        BackupPerSessionLogName = $"./Wasspord {DateTime.Now.ToString("M-d-yyyy h-mm-ss tt")}.log";
+                    }
+                    Log = BackupPerSessionLogName;
+                    break;
+                case 0:
+                default:
+                    break;
             }
         }
     }

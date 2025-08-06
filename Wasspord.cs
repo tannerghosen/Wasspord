@@ -20,6 +20,7 @@ namespace Wasspord
             WasspordExtras.Init(); // Initialize WasspordExtras' stuff
             Encryption.GenerateKey(); // Create a key
             WasspordAccounts.ClearAccounts(); // Initialize our accounts dictionary
+            Logger.Init();
         }
 
         /// <summary>

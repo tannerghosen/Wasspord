@@ -41,6 +41,7 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.totxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tocsvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,7 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.ScrollBar = new System.Windows.Forms.VScrollBar();
-            this.tocsvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.WasspordMenustrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -150,6 +151,13 @@
             this.totxtToolStripMenuItem.Text = "To .txt";
             this.totxtToolStripMenuItem.Click += new System.EventHandler(this.totxtToolStripMenuItem_Click);
             // 
+            // tocsvToolStripMenuItem
+            // 
+            this.tocsvToolStripMenuItem.Name = "tocsvToolStripMenuItem";
+            this.tocsvToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tocsvToolStripMenuItem.Text = "To .csv";
+            this.tocsvToolStripMenuItem.Click += new System.EventHandler(this.tocsvToolStripMenuItem_Click);
+            // 
             // accountsToolStripMenuItem
             // 
             this.accountsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -186,6 +194,7 @@
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showHideAccountsPasswordsToolStripMenuItem,
             this.autosaveToolStripMenuItem,
+            this.programLogToolStripMenuItem,
             this.accountsFolderToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -333,12 +342,12 @@
             this.ScrollBar.TabIndex = 12;
             this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
-            // tocsvToolStripMenuItem
+            // programLogToolStripMenuItem
             // 
-            this.tocsvToolStripMenuItem.Name = "tocsvToolStripMenuItem";
-            this.tocsvToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.tocsvToolStripMenuItem.Text = "To .csv";
-            this.tocsvToolStripMenuItem.Click += new System.EventHandler(this.tocsvToolStripMenuItem_Click);
+            this.programLogToolStripMenuItem.Name = "programLogToolStripMenuItem";
+            this.programLogToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.programLogToolStripMenuItem.Text = "Program Log";
+            this.programLogToolStripMenuItem.Click += new System.EventHandler(this.programLogToolStripMenuItem_Click);
             // 
             // WasspordGUI
             // 
@@ -403,6 +412,7 @@
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripMenuItem totxtToolStripMenuItem;
         private ToolStripMenuItem tocsvToolStripMenuItem;
+        private ToolStripMenuItem programLogToolStripMenuItem;
     }
 }
 
