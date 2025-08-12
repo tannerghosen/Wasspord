@@ -492,7 +492,7 @@ namespace Wasspord
         {
             // Maybe should look for a better way to do this that wouldn't cause us to empty the textboxes everytime this is called.
             LocationTextbox.Text = UsernameTextbox.Text = PasswordTextbox.Text = "";
-            for (int i = 0; i < WasspordAccounts.Accounts.Count; i++)
+            for (int i = 0; i < WasspordAccounts.GetCount(); i++)
             {
                 var item = WasspordAccounts.GetRow(i);
                 LocationTextbox.Text += Encryption.Decrypt(item[0]) + Environment.NewLine;
@@ -671,14 +671,14 @@ namespace Wasspord
         private void totxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (WasspordFilesHandler.Filename == "") { Error("Cannot export without a saved file.", "Wasspord"); return; }
-            if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return;  }
+            if (WasspordAccounts.GetCount() == 0) { Error("Nothing to export.", "Wasspord"); return;  }
             Export.export(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename, "txt");
         }
 
         private void tocsvToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (WasspordFilesHandler.Filename == "") { Error("Cannot export without a saved file.", "Wasspord"); return; }
-            if (WasspordAccounts.Accounts.Count == 0) { Error("Nothing to export.", "Wasspord"); return; }
+            if (WasspordAccounts.GetCount() == 0) { Error("Nothing to export.", "Wasspord"); return; }
             Export.export(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename, "csv");
         }
 

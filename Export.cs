@@ -11,7 +11,7 @@ namespace Wasspord
     {
         public static void export(string location, string filename, string type)
         {
-            if (WasspordAccounts.Accounts.Count == 0) return;
+            if (WasspordAccounts.GetCount() == 0) return;
             string file = location + @"\" + filename + "." + type;
             if (!File.Exists(file))
             {

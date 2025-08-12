@@ -17,7 +17,7 @@ namespace Wasspord
         /// where the account is used, the username and the password. The 2 parts allow flexibility and to have multiple accounts
         /// under the same username/email at multiple websites.
         /// </summary>
-        public static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
+        private static Dictionary<Account, string> Accounts = new Dictionary<Account, string>();
 
         /// <summary>
         /// This is our key when we insert entries into the Account dictionary,
@@ -133,6 +133,11 @@ namespace Wasspord
         public static void ClearAccounts()
         {
             SetAccounts(new Dictionary<Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
+        }
+
+        public static int GetCount()
+        {
+            return Accounts.Count;
         }
     }
 }
