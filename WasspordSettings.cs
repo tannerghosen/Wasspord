@@ -39,7 +39,7 @@ namespace Wasspord
             if (!File.Exists(SettingsFile)) // if settings.json file doesn't exist
             {
                 // We initialize it with default settings
-                Autosave = false;
+                Autosave = true;
                 Display = true;
                 Folder = Path.Combine(Directory.GetCurrentDirectory() + "\\Accounts\\");
                 LoggerSetting = 0;
