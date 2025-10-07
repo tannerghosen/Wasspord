@@ -34,7 +34,7 @@ namespace Wasspord
 		{
             Account("add");
 			if (WasspordSettings.Autosave == true)
-				WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
+                WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
             PrintRows();
         }
 
@@ -42,7 +42,7 @@ namespace Wasspord
 		{
             Account("delete");
             if (WasspordSettings.Autosave == true)
-                WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
+                WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
             PrintRows();
         }
 
@@ -50,7 +50,7 @@ namespace Wasspord
 		{
             Account("update");
             if (WasspordSettings.Autosave == true)
-                WasspordFilesHandler.Save(WasspordFilesHandler.Filename, WasspordFilesHandler.Folder);
+                WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
             PrintRows();
         }
 
@@ -60,6 +60,7 @@ namespace Wasspord
 			LocationTextbox.ForeColor = UsernameTextbox.ForeColor = PasswordTextbox.ForeColor = Color.FromName("White");
             if (WasspordSettings.Display == false)
                 PasswordTextbox.ForeColor = Color.FromName("Black");
+            FormClosing += new FormClosingEventHandler(WasspordGUI_Closing);
         }
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -707,6 +708,26 @@ namespace Wasspord
             }
             Logger.Update();
             WasspordSettings.SaveSettings();
+        }
+
+        public void WasspordGUI_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (WasspordSettings.Autosave == true && WasspordAccounts.GetCount() > 0)
+            {
+                if (WasspordFilesHandler.Filename == "")
+                {
+                    saveAsToolStripMenuItem_Click(sender, e);
+                }
+                else
+                {
+                    bool choice = ErrorChoice("Do you want to save your changes?", "Exiting Wasspord");
+                    if (choice == true)
+                    {
+                        Logger.Write("Choice is true!");
+                        WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
+                    }
+                }
+            }
         }
     }
 }
