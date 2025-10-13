@@ -723,7 +723,6 @@ namespace Wasspord
                     bool choice = ErrorChoice("Do you want to save your changes?", "Exiting Wasspord");
                     if (choice == true)
                     {
-                        Logger.Write("Choice is true!");
                         WasspordFilesHandler.Save(WasspordFilesHandler.Folder, WasspordFilesHandler.Filename);
                     }
                 }
