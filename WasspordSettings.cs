@@ -24,16 +24,15 @@ namespace Wasspord
         /// Display variable, handles whether or not info like passwords will be shown by default or not on file load.
         /// </summary>
         public static bool Display { get; set; }
-
         /// <summary>
         /// Our folder where .wasspord files go to (by default (folder Wasspord.exe is in)\Accounts))
         /// </summary>
         public static string Folder { get; set; }
-
         /// <summary>
         /// Logger's default setting (either output into one big file, output per session, or don't output at all)
         /// </summary>
         public static int LoggerSetting { get; set; }
+
         public static void Init()
         {
             if (!File.Exists(SettingsFile)) // if settings.json file doesn't exist
