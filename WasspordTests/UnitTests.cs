@@ -79,6 +79,19 @@ namespace WasspordTests
                 {
                     Assert.Fail("Failed to make an account");
                 }
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("Failed to either create an account or update an account due to an exception. " + e);
+            }
+        }
+
+        [TestMethod]
+        public void TestAccountUpdate()
+        {
+            try
+            {
+                WasspordAccounts.ManageAccount("add", "test", "admin", "root");
                 WasspordAccounts.ManageAccount("update", "test", "admin", "boot");
                 if (!WasspordAccounts.GetAccounts().ContainsKey(new WasspordAccounts.Account { location = Encryption.Encrypt("test"), username = Encryption.Encrypt("admin") }))
                 {
