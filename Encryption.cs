@@ -158,7 +158,7 @@ namespace Wasspord
         /// <summary>
         /// Sets key for encryption
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">Key</param>
         public static void SetKey(string key)
         {
             Key = key;
@@ -167,7 +167,7 @@ namespace Wasspord
         /// <summary>
         /// Validates the authenticity of a string by trying to convert it from a Base64 String.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="s">String to validate</param>
         /// <returns>Boolean value depending on the result of whether or not it's a valid Base64 string</returns>
         public static bool Validate(string s)
         {

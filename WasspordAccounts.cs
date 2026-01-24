@@ -135,6 +135,10 @@ namespace Wasspord
             SetAccounts(new Dictionary<Account, string>()); // This prevents a null reference error by giving it a value instead of letting it be initialized as null on the Load method being used.
         }
 
+        /// <summary>
+        /// Gets the total number of accounts in the dictionary
+        /// </summary>
+        /// <returns>Total number of accounts in the dictionary</returns>
         public static int GetCount()
         {
             return Accounts.Count;

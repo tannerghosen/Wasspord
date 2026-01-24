@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace Wasspord
 {
+    /// <summary>
+    /// This class handles exporting the contents of a loaded .wasspord file to other file types.
+    /// </summary>
     public static class Export
     {
+        /// <summary>
+        /// Exports accounts dictionary of loaded file to various file types.
+        /// </summary>
+        /// <param name="location">The location of where this file will go.</param>
+        /// <param name="filename">File name</param>
+        /// <param name="type">The file type</param>
         public static void export(string location, string filename, string type)
         {
             if (WasspordAccounts.GetCount() == 0) return;
