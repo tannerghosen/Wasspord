@@ -104,10 +104,10 @@ namespace Wasspord
                     string line; // our current line
                     while ((line = sr.ReadLine()) != null) // while the current line StreamReader is reading is not empty
                     {
-                        Passwords.Add(Encryption.Decrypt(line)); // Add passwords from file to our Passwords HashSet
+                        Passwords.Add(Encryption.Decrypt(line)); // Add passwords decrypted from file to our Passwords HashSet
                     }
                 }
-                Encryption.SetKey(CurrKey); // We set the encryption key back to the current one now that AddPassword's job is done
+                Encryption.SetKey(CurrKey); // We set the encryption key back to the current one now that Init's job is done
             }
         }
 
