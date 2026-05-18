@@ -9,7 +9,7 @@ namespace Wasspord
      * Properties/Misc: Log
      */
     /// <summary>
-    /// This class handles logging for various classes throughout the program, including a stacktrace output in case we have an error.
+    /// This class handles logging for various classes throughout the program.
     /// </summary>
     public static class Logger // immutable class
     {
@@ -18,12 +18,15 @@ namespace Wasspord
         /// </summary>
         private static string Log = $"./Wasspord.log";
         /// <summary>
-        /// Write: Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate if an issue arises.
+        /// Our log file if we have 'logs per session' enabled
+        /// </summary>
+        private static string PerSessionLogName { get; set; }
+        /// <summary>
+        /// Writes a message to our Wasspord.log, usually important info such as errors, warnings, or debug info I'd appreciate if an issue arises.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="messagetype"></param>
         /// 
-        private static string BackupPerSessionLogName { get; set; }
         public static void Write(string message, string messagetype = "LOG") 
         {
             if (WasspordSettings.LoggerSetting != 0)
@@ -54,11 +57,11 @@ namespace Wasspord
                     Log = "./Wasspord.log";
                     break;
                 case 2:
-                    if (BackupPerSessionLogName == null)
+                    if (PerSessionLogName == null)
                     {
-                        BackupPerSessionLogName = $"./Wasspord {DateTime.Now.ToString("M-d-yyyy h-mm-ss tt")}.log";
+                        PerSessionLogName = $"./Wasspord {DateTime.Now.ToString("M-d-yyyy h-mm-ss tt")}.log";
                     }
-                    Log = BackupPerSessionLogName;
+                    Log = PerSessionLogName;
                     break;
                 case 0:
                 default:
