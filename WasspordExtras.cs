@@ -82,7 +82,7 @@ namespace Wasspord
         /// <returns>Regex result (either positive or negative)</returns>
         public static string ValidatePassword(string password) 
         {
-            return !Regex.IsMatch(password) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
+            return (!Regex.IsMatch(password) || password == null || password == String.Empty) ? "Sorry, this password isn't strong. A strong password should be a minimum of 8 characters but no longer than 32 and contain an uppercase, lowercase, digit, and special character and no excessive repeating characters." : "This password is strong.";
         }
 
         /// <summary>
