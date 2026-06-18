@@ -12,7 +12,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles all encryption and decryption related tasks of the program, including generating a Key to be used for a Key and IV in both tasks as well as validating Base64 strings.
     /// </summary>
-    public static class Encryption // mutable class
+    public static class Encryption
     {
         /* Why do I use a Key and Salt to get an encryption key instead of password and Salt?
          * Mostly this comes down to me not being extremely knowledgeable in Encryption / Decryption, 

@@ -10,7 +10,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles saving and loading of .wasspord files,  as well as setting/getting the wasspord file's password for accessing it.
     /// </summary>
-    public static class WasspordFilesHandler // mutable class
+    public static class WasspordFilesHandler
     {
         /// <summary>
         /// Our opened file's name

@@ -14,7 +14,7 @@ namespace Wasspord
     /// <summary>
     /// This class serves extra features to Wasspord, such as password generation and validation.
     /// </summary>
-    public static class WasspordExtras // mutable class
+    public static class WasspordExtras
     {
         /// <summary>
         /// Contains our encrypted generated passwords

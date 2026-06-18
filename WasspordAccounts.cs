@@ -10,7 +10,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles everything to do with adding, updating, removing, and getting Accounts from individual .wasspord files.
     /// </summary>
-    public static class WasspordAccounts // mutable class
+    public static class WasspordAccounts
     {
         /// <summary>
         /// A dictionary with a key made of 2 parts (location, username)  that contains information on 

@@ -11,7 +11,7 @@ namespace Wasspord
     /// <summary>
     /// This class handles logging for various classes throughout the program.
     /// </summary>
-    public static class Logger // immutable class
+    public static class Logger
     {
         /// <summary>
         /// Our log file is located in the program's folder
